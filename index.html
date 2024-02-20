@@ -87,6 +87,8 @@
 				<button type="button" onclick="chauto(6)">06节点自动化:<span id="atb06"></span></button>
 				<button type="button" onclick="chauto(7)">07节点自动化:<span id="atb07"></span></button>
 				<button type="button" onclick="chauto(8)">08节点自动化:<span id="atb08"></span></button>
+				<br/>
+				<button type="button" onclick="chauto(101)">时间加速自动化:<span id="atbspeedup"></span></button>
 			</p>
 		</div>
 		<div id="page201">
@@ -176,6 +178,7 @@
 					atb06: new Decimal(0),
 					atb07: new Decimal(0),
 					atb08: new Decimal(0),
+					atbspeedup: new Decimal(0),
 				};
 			}
 				
@@ -344,17 +347,35 @@
 						ugjd(i);
 					}
 				}
+				if(player.atbspeedup.compare(new Decimal(1)) == 0)
+				{
+					buySpeedUp();
+				}
 			}
 			
 			function chauto(type)
 			{
-				if(player.boost.compare(new Decimal(2)) >= 0)
+				if(type >= 1 && type <= 8)
 				{
-					if(player["atb0" + type].compare(new Decimal(0)) == 0)
+					if(player.boost.compare(new Decimal(2)) >= 0)
 					{
-						player["atb0" + type] = new Decimal(1);
+						if(player["atb0" + type].compare(new Decimal(0)) == 0)
+						{
+							player["atb0" + type] = new Decimal(1);
+						}
+						else player["atb0" + type] = new Decimal(0);
 					}
-					else player["atb0" + type] = new Decimal(0);
+				}
+				else if(type == 101)
+				{
+					if(player.boost.compare(new Decimal(2)) >= 0)
+					{
+						if(player.atbspeedup.compare(new Decimal(0)) == 0)
+						{
+							player.atbspeedup = new Decimal(1);
+						}
+						else player.atbspeedup = new Decimal(0);
+					}
 				}
 			}
 			
@@ -384,12 +405,12 @@
 			
 			function cheat(time)
 			{
-				for(let i = 1;i <= time;i++)
-				{
-					produce();
-					automation_run();
-					GUI();
-				}
+				//for(let i = 1;i <= time;i++)
+				//{
+				//	produce();
+				//	automation_run();
+				//	GUI();
+				//}
 			}
 			
 			function GUI()
@@ -421,6 +442,8 @@
 					if(notation(player["atb0" + i]) == "0.000") document.getElementById("atb0" + i).innerHTML = "关";
 					else document.getElementById("atb0" + i).innerHTML = "开";
 				}
+				if(notation(player.atbspeedup) == "0.000") document.getElementById("atbspeedup").innerHTML = "关";
+				else document.getElementById("atbspeedup").innerHTML = "开";
 				if(nowpage != "page101") document.getElementById('page101').style.display = 'none';
 				else document.getElementById('page101').style.display = 'block';
 				if(nowpage != "page102") document.getElementById('page102').style.display = 'none';
@@ -462,10 +485,15 @@
 			}
 			else if(playerLen == 57)
 			{
+				player.atbspeedup = new Decimal(0);
+			}
+			else if(playerLen == 58)
+			{
 				//当前版本
 			}
 			const allPropertyNames = Object.getOwnPropertyNames(player);
 			console.log(allPropertyNames);
+			console.log(atbspeedup);
 			
 			setInterval(produce, 100);
 			setInterval(GUI, 10);
