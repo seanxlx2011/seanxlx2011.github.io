@@ -4,10 +4,18 @@
 		<meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.25, maximum-scale=4.0, user-scalable=yes" />
         <title>数据增量</title>
         <link href="style.css" rel="stylesheet" type="text/css" />
+		
+		<style>
+			.automation-button
+			{
+				background-color: red;
+				color: white;
+			}
+		</style>
 	</head>
 
 	<body style="background-color: #000000; font-family: MonospaceTypewriter, monospace ">
-        
+		
 		<p align="center" class="ftsz3">
             <span>你有</span><span class="ftsz5" id="data"></span><span>数据</span>
         </p>
@@ -16,6 +24,7 @@
 			<button type="button" onclick="chpage(201)">硬重置！</button>
 			<button type="button" onclick="chpage(301)">作弊！</button>
 			<br/>
+			<div id="open_automation"><p align="center"><button type="button" class="automation-button" onclick="chpage(102)">自动化</button></p></div>
 		</p>
 		<div id="page101">
 			<p align="center" class="ftsz3">
@@ -62,6 +71,22 @@
 					<br/>
 					需要数据量：<span id="boostcost"></span>
 				</button>
+			</p>
+		</div>
+		<div id="page102">
+			<p align="center" class="ftsz3">
+				<span>自动化·初始层级内容包含：I~VIII型传输节点自动化、时间加速升级自动化</span>
+				<br/>
+				<span class="ftsz2">需要跃迁2次及以上才能开启</span>
+				<br/>
+				<button type="button" onclick="chauto(1)">01节点自动化:<span id="atb01"></span></button>
+				<button type="button" onclick="chauto(2)">02节点自动化:<span id="atb02"></span></button>
+				<button type="button" onclick="chauto(3)">03节点自动化:<span id="atb03"></span></button>
+				<button type="button" onclick="chauto(4)">04节点自动化:<span id="atb04"></span></button>
+				<button type="button" onclick="chauto(5)">05节点自动化:<span id="atb05"></span></button>
+				<button type="button" onclick="chauto(6)">06节点自动化:<span id="atb06"></span></button>
+				<button type="button" onclick="chauto(7)">07节点自动化:<span id="atb07"></span></button>
+				<button type="button" onclick="chauto(8)">08节点自动化:<span id="atb08"></span></button>
 			</p>
 		</div>
 		<div id="page201">
@@ -143,6 +168,14 @@
 					boostx: new Decimal(3),
 					boostcost: new Decimal(18446744073709551616),
 					boostcostx: new Decimal(18446744073709551616),
+					atb01: new Decimal(0),
+					atb02: new Decimal(0),
+					atb03: new Decimal(0),
+					atb04: new Decimal(0),
+					atb05: new Decimal(0),
+					atb06: new Decimal(0),
+					atb07: new Decimal(0),
+					atb08: new Decimal(0),
 				};
 			}
 				
@@ -208,20 +241,21 @@
 			
 			function ugjd(type)
 			{
-				var jdname = "";
-				if(type < 10) jdname = "csjd0" + String(type);
-				else jdname = "csjd" + String(type);
 				var costname = "";
 				if(type < 10) costname = "cost0" + String(type);
 				else costname = "cost" + String(type);
-				var jdxname = "";
-				if(type < 10) jdxname = "jdx0" + String(type);
-				else jdxname = "jdx" + String(type);
-				var costxname = "";
-				if(type < 10) costxname = "costx0" + String(type);
-				else costxname = "costx" + String(type);
+				
 				if(player.data.compare(player[costname]) >= 0)
 				{
+					let jdname = "";
+					if(type < 10) jdname = "csjd0" + String(type);
+					else jdname = "csjd" + String(type);
+					let jdxname = "";
+					if(type < 10) jdxname = "jdx0" + String(type);
+					else jdxname = "jdx" + String(type);
+					let costxname = "";
+					if(type < 10) costxname = "costx0" + String(type);
+					else costxname = "costx" + String(type);
 					player[jdname] = player[jdname].add(new Decimal(10));
 					player.data = player.data.sub(player[costname]);
 					player[jdxname] = player[jdxname].mul(new Decimal(2));
@@ -245,7 +279,7 @@
 			
 			function maxUgjd(type)
 			{
-				var costname = "";
+				let costname = "";
 				if(type < 10) costname = "cost0" + String(type);
 				else costname = "cost" + String(type);
 				while(player.data.compare(player[costname]) >= 0)
@@ -286,7 +320,7 @@
 				player.costx07 = new Decimal(1e14);
 				player.costx08 = new Decimal(1e16);
 				player.speedup = new Decimal(0);
-				player.speedupx = new Decimal(1.125);
+				player.speedupmul = new Decimal(1.125);
 				player.speedupcost = new Decimal(1e8);
 				player.speedupcostx = new Decimal(10);
 			}
@@ -298,6 +332,29 @@
 					boostReset();
 					player.boost = player.boost.add(new Decimal(1));
 					player.boostcost = player.boostcost.mul(player.boostcostx);
+				}
+			}
+			
+			function automation_run()
+			{
+				for(let i = 1;i <= 8;i++)
+				{
+					if(player["atb0" + i].compare(new Decimal(1)) == 0)
+					{
+						ugjd(i);
+					}
+				}
+			}
+			
+			function chauto(type)
+			{
+				if(player.boost.compare(new Decimal(2)) >= 0)
+				{
+					if(player["atb0" + type].compare(new Decimal(0)) == 0)
+					{
+						player["atb0" + type] = new Decimal(1);
+					}
+					else player["atb0" + type] = new Decimal(0);
 				}
 			}
 			
@@ -327,11 +384,12 @@
 			
 			function cheat(time)
 			{
-				//for(let i = 1;i <= time;i++)
-				//{
-				//	produce();
-				//	GUI();
-				//}
+				for(let i = 1;i <= time;i++)
+				{
+					produce();
+					automation_run();
+					GUI();
+				}
 			}
 			
 			function GUI()
@@ -359,13 +417,20 @@
 					if(i < 10) jdxbname = "jdxb0" + i;
 					else jdxbname = "jdxb" + i;
 					document.getElementById(jdxbname).innerHTML = notation(player[jdxbname]);
+					
+					if(notation(player["atb0" + i]) == "0.000") document.getElementById("atb0" + i).innerHTML = "关";
+					else document.getElementById("atb0" + i).innerHTML = "开";
 				}
 				if(nowpage != "page101") document.getElementById('page101').style.display = 'none';
 				else document.getElementById('page101').style.display = 'block';
+				if(nowpage != "page102") document.getElementById('page102').style.display = 'none';
+				else document.getElementById('page102').style.display = 'block';
 				if(nowpage != "page201") document.getElementById('page201').style.display = 'none';
 				else document.getElementById('page201').style.display = 'block';
 				if(nowpage != "page301") document.getElementById('page301').style.display = 'none';
 				else document.getElementById('page301').style.display = 'block';
+				if(player.boost.compare(new Decimal(2)) < 0) document.getElementById('open_automation').style.display = 'none';
+				else document.getElementById('open_automation').style.display = 'block';
 			}
 			
 			init();
@@ -390,14 +455,22 @@
 			}
 			else if(playerLen == 49)
 			{
+				for(let i = 1;i <= 8;i++)
+				{
+					player["atb0" + i] = new Decimal(0);
+				}
+			}
+			else if(playerLen == 57)
+			{
 				//当前版本
 			}
-			
-			console.log(player.boost);
+			const allPropertyNames = Object.getOwnPropertyNames(player);
+			console.log(allPropertyNames);
 			
 			setInterval(produce, 100);
 			setInterval(GUI, 10);
 			setInterval(data_print, 1000);
+			setInterval(automation_run, 100);
 		</script>
 	</body>
 </html>
