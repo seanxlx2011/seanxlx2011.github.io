@@ -45,6 +45,16 @@
 				padding: 5px;
 				border-radius: 5px;
 			}
+			.WC
+			{
+				background-color: blue;
+				color: white;
+				border: 6px solid white;
+				width: 200px;
+				height: 150px;
+				padding: 10px;
+				border-radius: 6px;
+			}
 		</style>
 	</head>
 
@@ -60,11 +70,15 @@
 			<span>你有</span><span class="ftsz5" id="data"></span><span>数据</span>
 			<br/>
 			<span>比起这一秒刚开始，你的数据增长了</span><span class="ftsz4" id="data_add_per_second"></span><span>倍</span>
+			<br/>
+			<span class="ftsz2" id="chalinfo"></span>
+			<button type="button" class="normal-button" onclick="exitchal(1)" id="inWC">退出世界挑战</button>
         </p>
 		<p align="center" class="ftsz2">
 			<button type="button" class="normal-button" onclick="chpage(101)">节点</button>
 			<button type="button" class="automation-button" onclick="chpage(102)" id="open_automation_inline" style="display: none">自动化</button>
 			<button type="button" class="PL1-button" onclick="chpage(103)" id="PL1_open_inline" style="display: none">世界</button>
+			<button type="button" class="PL1-button" onclick="chpage(104)" id="WC_open_inline" style="display: none">世界挑战</button>
 			<button type="button" class="normal-button" onclick="chpage(201)">关于</button>
 			<button type="button" class="normal-button" onclick="chpage(301)">作弊！</button>
 		</p>
@@ -128,25 +142,25 @@
 				<span>IX型传输节点 </span><span class="ftsz4" id="jd11"></span><span> x</span><span class="ftsz4" id="jdxb11"></span>它们生产数据</span>
 				<button type="button" onclick="ugjd(11)" class="buyjd-button" id="ugjd11">升级节点 当前花费：<span id="cost11"></span>世界数据</button>
 				<br/>
-				<span>X型传输节点 </span><span class="ftsz4" id="jd12"></span><span> x</span><span class="ftsz4" id="jdxb12"></span>它们生产I型传输节点</span>
+				<span>X型传输节点 </span><span class="ftsz4" id="jd12"></span><span> x</span><span class="ftsz4" id="jdxb12"></span>它们生产IX型传输节点</span>
 				<button type="button" onclick="ugjd(12)" class="buyjd-button" id="ugjd12">升级节点 当前花费：<span id="cost12"></span>世界数据</button>
 				<br/>
-				<span>XI型传输节点 </span><span class="ftsz4" id="jd13"></span><span> x</span><span class="ftsz4" id="jdxb13"></span>它们生产II型传输节点</span>
+				<span>XI型传输节点 </span><span class="ftsz4" id="jd13"></span><span> x</span><span class="ftsz4" id="jdxb13"></span>它们生产X型传输节点</span>
 				<button type="button" onclick="ugjd(13)" class="buyjd-button" id="ugjd13">升级节点 当前花费：<span id="cost13"></span>世界数据</button>
 				<br/>
-				<span>XII型传输节点 </span><span class="ftsz4" id="jd14"></span><span> x</span><span class="ftsz4" id="jdxb14"></span>它们生产III型传输节点</span>
+				<span>XII型传输节点 </span><span class="ftsz4" id="jd14"></span><span> x</span><span class="ftsz4" id="jdxb14"></span>它们生产XI型传输节点</span>
 				<button type="button" onclick="ugjd(14)" class="buyjd-button" id="ugjd14">升级节点 当前花费：<span id="cost14"></span>世界数据</button>
 				<br/>
-				<span>XIII型传输节点 </span><span class="ftsz4" id="jd15"></span><span> x</span><span class="ftsz4" id="jdxb15"></span>它们生产IV型传输节点</span>
+				<span>XIII型传输节点 </span><span class="ftsz4" id="jd15"></span><span> x</span><span class="ftsz4" id="jdxb15"></span>它们生产XII型传输节点</span>
 				<button type="button" onclick="ugjd(15)" class="buyjd-button" id="ugjd15">升级节点 当前花费：<span id="cost15"></span>世界数据</button>
 				<br/>
-				<span>XIV型传输节点 </span><span class="ftsz4" id="jd16"></span><span> x</span><span class="ftsz4" id="jdxb16"></span>它们生产V型传输节点</span>
+				<span>XIV型传输节点 </span><span class="ftsz4" id="jd16"></span><span> x</span><span class="ftsz4" id="jdxb16"></span>它们生产XIII型传输节点</span>
 				<button type="button" onclick="ugjd(16)" class="buyjd-button" id="ugjd16">升级节点 当前花费：<span id="cost16"></span>世界数据</button>
 				<br/>
-				<span>XV型传输节点 </span><span class="ftsz4" id="jd17"></span><span> x</span><span class="ftsz4" id="jdxb17"></span>它们生产VI型传输节点</span>
+				<span>XV型传输节点 </span><span class="ftsz4" id="jd17"></span><span> x</span><span class="ftsz4" id="jdxb17"></span>它们生产XIV型传输节点</span>
 				<button type="button" onclick="ugjd(17)" class="buyjd-button" id="ugjd17">升级节点 当前花费：<span id="cost17"></span>世界数据</button>
 				<br/>
-				<span>XVI型传输节点 </span><span class="ftsz4" id="jd18"></span><span> x</span><span class="ftsz4" id="jdxb18"></span>它们生产VII型传输节点</span>
+				<span>XVI型传输节点 </span><span class="ftsz4" id="jd18"></span><span> x</span><span class="ftsz4" id="jdxb18"></span>它们生产XV型传输节点</span>
 				<button type="button" onclick="ugjd(18)" class="buyjd-button" id="ugjd18">升级节点 当前花费：<span id="cost18"></span>世界数据</button>
 				<br/>
 			</p></div>
@@ -205,24 +219,151 @@
 				</button>
 				<br/>
 				<button class="PL1ug" type="button" onclick="buyPL1ug(8)" id="ug19">
-					信息会增加9号传输节点倍数。<br/><br/>成本：1E30信息
+					信息会增加9号传输节点倍数。<br/><br/>成本：1E8信息
 				</button>
 				<button class="PL1ug" type="button" onclick="buyPL1ug(9)" id="ug110">
-					9号传输节点以^0.1的速度生产八号传输节点。<br/>成本：1E40信息
+					9号传输节点以^0.1的速度生产八号传输节点。<br/>成本：1E11信息
 				</button>
 				<button class="PL1ug" type="button" onclick="buyPL1ug(10)" id="ug111">
-					解锁世界挑战。<br/><br/><br/>成本：1E50信息
+					解锁世界挑战。<br/><br/><br/>成本：1E12信息
 				</button>
 				<button class="PL1ug" type="button" onclick="buyPL1ug(11)" id="ug112">
-					16号传输节点的倍数以指数加成数据获取量。<br/>成本：1E100信息
+					16号传输节点的倍数以指数加成数据获取量。<br/>成本：1E20信息
 				</button>
 			</p>
+		</div>
+		<div id="page104" align="center">
+			<span class="ftsz4">世界挑战</span>
+			<span class="ftsz3">
+				触发世界挑战时，游戏规则会被修改
+				<br/>
+				你需要在修改后的游戏中达到一定的数据量
+				<br/>
+				总共有12个世界挑战，完成它们会使1~8传输节点、跃迁自动化变快，并开启三个新机制
+				<br/>
+				后3个世界挑战难度高于前9个
+				<br/>
+				<button class="WC ftsz1" type="button" onclick="startWC(1)" id="wc1">
+					WC 1
+					<br/>
+					禁用跃迁、时间加速
+					<br/>
+					<br/>
+					目标：1e3333数据
+					<br/>
+					奖励：01节点自动购买最大化
+				</button>
+				<button class="WC ftsz1" type="button" onclick="startWC(2)" id="wc2">
+					WC 2
+					<br/>
+					高一级传输节点下一次购买的价格指数削弱低一级传输节点倍数
+					<br/>
+					目标：1e3500数据
+					<br/>
+					奖励：02节点自动购买最大化
+				</button>
+				<button class="WC ftsz1" type="button" onclick="startWC(3)" id="wc3">
+					WC 3
+					<br/>
+					购买传输节点会增长其它所有传输节点的价格
+					<br/>
+					目标：1e4000数据
+					<br/>
+					奖励：03节点自动购买最大化
+				</button>
+				<br/>
+				<button class="WC ftsz1" type="button" onclick="startWC(4)" id="wc4">
+					WC 4
+					<br/>
+					01节点的倍数会削弱其它所有传输节点的倍数
+					<br/>
+					目标：1e3400数据
+					<br/>
+					奖励：04节点自动购买最大化
+				</button>
+				<button class="WC ftsz1" type="button" onclick="startWC(5)" id="wc5">
+					WC 5
+					<br/>
+					世界数据效果被禁用
+					<br/>
+					<br/>
+					目标：1e2650数据
+					<br/>
+					奖励：05节点自动购买最大化
+				</button>
+				<button class="WC ftsz1" type="button" onclick="startWC(6)" id="wc6">
+					WC 6
+					<br/>
+					2~8传输节点以更快的速度生产数据，而不是更低级的传输节点
+					<br/>
+					目标：1e750数据
+					<br/>
+					奖励：06节点自动购买最大化
+				</button>
+				<br/>
+				<button class="WC ftsz1" type="button" onclick="startWC(7)" id="wc7">
+					WC 7
+					<br/>
+					2~8传输节点的产量随时间幂一个永远≤1的指数，该指数随时间变小
+					<br/>
+					目标：1e3920数据
+					<br/>
+					奖励：07节点自动购买最大化
+				</button>
+				<button class="WC ftsz1" type="button" onclick="startWC(8)" id="wc8">
+					WC 8
+					<br/>
+					购买传输节点将会导致所有其它传输节点被禁用。初始时，所有传输节点被禁用
+					<br/>
+					目标：1e5750数据
+					<br/>
+					奖励：08节点自动购买最大化
+				</button>
+				<button class="WC ftsz1" type="button" onclick="startWC(9)" id="wc9">
+					WC 9
+					<br/>
+					时间加速的效果倍数随时间降低
+					<br/>
+					<br/>
+					<br/>
+					目标：1e4800数据
+					<br/>
+					奖励：时间加速自动购买最大化
+				</button>
+				<br/>
+				<button class="WC ftsz1" type="button" id="wc10">
+					WC 10
+					<br/>
+					？？？
+					<br/>
+					目标：？？？数据
+					<br/>
+					奖励：解锁4个新的世界升级
+				</button>
+				<button class="WC ftsz1" type="button" id="wc11">
+					WC 11
+					<br/>
+					？？？
+					<br/>
+					目标：？？？数据
+					<br/>
+					奖励：解锁世界线
+				</button>
+				<button class="WC ftsz1" type="button" id="wc12">
+					WC 12
+					<br/>
+					？？？
+					<br/>
+					目标：？？？数据
+					<br/>
+					奖励：解锁宇宙重置
+				</button>
 		</div>
 		<div id="page201" align="center">
 			<br/>
 			<span class="ftsz4">花费折算清单</span>
 			<br/> <span class="ftsz3">时间加速升级折算：购买301次及以上时间加速升级(花费为1e308及以上)时每次会使价格增长倍数×10</span>
-			<br/> <span class="ftsz3">传输节点折算：传输节点的价格超过1e616时每次会使价格增长倍数×10</span>
+			<br/> <span class="ftsz3">传输节点折算：传输节点的价格超过e6000时每次会使价格增长倍数×10</span>
 			<br/> <span class="ftsz3">跃迁折算：跃迁大于等于64个时，每次会使价格增长倍数^2</span>
 			<span class="ftsz3">
 				<br/>
@@ -230,6 +371,7 @@
 				1.0(2024/2/21)远古版本与未记录版本<br/>
 				1.1(2024/2/22)更新了更新记录、版本号与世界升级<br/>
 				1.2(2024/2/24)更新了9~16传输节点，修改界面<br/>
+				1.3(2024/3/3)更新了世界挑战1~9，修改了一些世界升级的适用范围<br/>
 			</span>
 			<span class="ftsz2"><br/>存档硬重置：毁灭一切</span>
 			<button type="button" onclick="hard_reset()">硬重置</button>
@@ -381,12 +523,27 @@
 					PL1ug: [false, false, false, false
 					, false, false, false, false
 					, false, false, false, false],
+					PL1time: new Decimal(0),
+					
+					PL1chal: [false, false, false, false
+					, false, false, false, false
+					, false, false, false, false],
+					PL1chalfinished: [false, false, false, false
+					, false, false, false, false
+					, false, false, false, false],
+					
+					PL1chalnow: 0,
+					lastbuy: 0,
 				};
 			}
 			
 			var PL1ugcost = [new Decimal(2), new Decimal(4), new Decimal(6), new Decimal(10)
 			, new Decimal(20), new Decimal(1000), new Decimal(10000), new Decimal(5e5)
-			, new Decimal(1e30), new Decimal(1e40), new Decimal(1e50), new Decimal(1e100)];
+			, new Decimal(1e8), new Decimal(1e11), new Decimal(1e12), new Decimal(1e20)];
+			
+			var wctarget = [new Decimal('e3333'), new Decimal('e3500'), new Decimal('e4000'), new Decimal('e3400')
+			, new Decimal('e2650'), new Decimal('e750'), new Decimal('e3920'), new Decimal('e5750')
+			, new Decimal('e4800'), new Decimal('ee10000'), new Decimal('ee10000'), new Decimal('ee10000')];
 			
 			var data_in_second_ago = new Decimal(10);
 				
@@ -497,11 +654,23 @@
 						player.data = player.data.sub(player[costname]);
 						player[jdxname] = player[jdxname].mul(new Decimal(2));
 						player[costname] = player[costname].mul(player[costxname]);
-						
-						if(player[costname].compare(new Decimal('1e616')) >= 0)
+						if(player.PL1chalnow == 3)
 						{
-							player[costxname].mul(new Decimal(10));
+							for(let i = 1;i <= 8;i++)
+							{
+								if(i != type)
+								{
+									player['cost0' + i] = player['cost0' + i].mul(player['costx0' + i]);
+								}
+							}
 						}
+						
+						if(player[costname].compare(new Decimal('e6000')) >= 0)
+						{
+							player[costxname] = player[costxname].mul(new Decimal(10));
+						}
+						
+						player.lastbuy = type;
 					}
 				}
 				else if(type >= 11 && type <= 18)
@@ -531,6 +700,7 @@
 			
 			function buySpeedUp()
 			{
+				if(player.PL1chalnow == 1) return;
 				if(player.data.compare(player.speedupcost) >= 0)
 				{
 					player.speedup = player.speedup.add(new Decimal(1));
@@ -594,6 +764,7 @@
 			
 			function buyBoost()
 			{
+				if(player.PL1chalnow == 1) return;
 				if(player.data.compare(player.boostcost) >= 0)
 				{
 					boostReset();
@@ -613,6 +784,7 @@
 				player.boostx = new Decimal(3);
 				player.boostcost = new Decimal(18446744073709551616);
 				player.boostcostx = new Decimal(18446744073709551616);
+				player.PL1time = new Decimal(0);
 			}
 			
 			function buyPL1()
@@ -622,6 +794,15 @@
 					player.PL1info = player.PL1info.add(get_PL1info);
 					PL1Reset();
 					player.PL1 = player.PL1.add(new Decimal(1));
+				}
+			}
+			
+			function startWC(type)
+			{
+				if(player.PL1ug[10] == true)
+				{
+					buyPL1();
+					player.PL1chalnow = type;
 				}
 			}
 			
@@ -638,14 +819,35 @@
 			{
 				for(let i = 1;i <= 8;i++)
 				{
-					if(player["atb0" + i].compare(new Decimal(1)) == 0)
+					if(player.PL1chalfinished[i - 1] == false)
 					{
-						ugjd(i);
+						if(player["atb0" + i].compare(new Decimal(1)) == 0)
+						{
+							ugjd(i);
+						}
+					}
+					else
+					{
+						while(player["atb0" + i].compare(new Decimal(1)) == 0
+						&& player.data.compare(player['cost0' + i]) >= 0)
+						{
+							ugjd(i);
+						}
 					}
 				}
 				if(player.atbspeedup.compare(new Decimal(1)) == 0)
 				{
-					buySpeedUp();
+					if(player.PL1chalfinished[8] == false)
+					{
+						buySpeedUp();
+					}
+					else
+					{
+						while(player.data.compare(player.speedupcost) >= 0)
+						{
+							buySpeedUp();
+						}
+					}
 				}
 				if(player.atbboost == true)
 				{
@@ -690,20 +892,52 @@
 			function produce()
 			{
 				competejdx();
-				player.data = player.data.add(player.csjd01.mul(player.jdxb01).div(new Decimal(10)));
-				player.csjd01 = player.csjd01.add(player.csjd02.mul(player.jdxb02).div(new Decimal(10)));
-				player.csjd02 = player.csjd02.add(player.csjd03.mul(player.jdxb03).div(new Decimal(10)));
-				player.csjd03 = player.csjd03.add(player.csjd04.mul(player.jdxb04).div(new Decimal(10)));
-				player.csjd04 = player.csjd04.add(player.csjd05.mul(player.jdxb05).div(new Decimal(10)));
-				player.csjd05 = player.csjd05.add(player.csjd06.mul(player.jdxb06).div(new Decimal(10)));
-				player.csjd06 = player.csjd06.add(player.csjd07.mul(player.jdxb07).div(new Decimal(10)));
-				player.csjd07 = player.csjd07.add(player.csjd08.mul(player.jdxb08).div(new Decimal(10)));
+				
+				player.PL1time = player.PL1time.add(new Decimal(1));
+				
+				if(player.PL1chalnow == 6)
+				{
+					player.data = player.data.add(player.csjd01.mul(player.jdxb01).div(new Decimal(10)))
+					.add(player.csjd02.mul(player.jdxb02).mul(new Decimal('1e10')).mul(player.csjd01.root(4)))
+					.add(player.csjd03.mul(player.jdxb03).mul(new Decimal('1e20')).mul(player.csjd02.root(4)))
+					.add(player.csjd04.mul(player.jdxb04).mul(new Decimal('1e30')).mul(player.csjd03.root(4)))
+					.add(player.csjd05.mul(player.jdxb05).mul(new Decimal('1e40')).mul(player.csjd04.root(3)))
+					.add(player.csjd06.mul(player.jdxb06).mul(new Decimal('1e50')).mul(player.csjd05.root(3)))
+					.add(player.csjd07.mul(player.jdxb07).mul(new Decimal('1e60')).mul(player.csjd06.root(2)))
+					.add(player.csjd08.mul(player.jdxb08).mul(new Decimal('1e70')).mul(player.csjd07.root(2)));
+				}
+				else
+				{
+					player.data = player.data.add(player.csjd01.mul(player.jdxb01).div(new Decimal(10)));
+					player.csjd01 = player.csjd01.add(player.csjd02.mul(player.jdxb02).div(new Decimal(10)));
+					player.csjd02 = player.csjd02.add(player.csjd03.mul(player.jdxb03).div(new Decimal(10)));
+					player.csjd03 = player.csjd03.add(player.csjd04.mul(player.jdxb04).div(new Decimal(10)));
+					player.csjd04 = player.csjd04.add(player.csjd05.mul(player.jdxb05).div(new Decimal(10)));
+					player.csjd05 = player.csjd05.add(player.csjd06.mul(player.jdxb06).div(new Decimal(10)));
+					player.csjd06 = player.csjd06.add(player.csjd07.mul(player.jdxb07).div(new Decimal(10)));
+					player.csjd07 = player.csjd07.add(player.csjd08.mul(player.jdxb08).div(new Decimal(10)));
+				}
+				
+				if(player.PL1ug[9] == true)
+				{
+					player.csjd08 = player.csjd08.add(player.csjd11.mul(player.jdxb11).pow(0.1).div(new Decimal(10)));
+				}
 				if(player.data.compare(player.highest_data) >= 0) player.highest_data = player.data;
 				
 				player.PL1data = player.PL1data.add(player.csjd11.mul(player.jdxb11).div(new Decimal(10)));
 				for(let i = 1;i <= 7;i++)
 				{
 					player['csjd1' + i] = player['csjd1' + i].add(player['csjd1' + (i + 1)].mul(player['jdxb1' + i]).div(new Decimal(10)));
+				}
+				
+				if(player.PL1chalnow > 0)
+				{
+					if(player.data.compare(wctarget[player.PL1chalnow - 1]) >= 0)
+					{
+						console.log(player.PL1chalnow - 1);
+						player.PL1chalfinished[player.PL1chalnow - 1] = true;
+						exitchal(1);
+					}
 				}
 			}
 			
@@ -719,23 +953,51 @@
 					{
 						player[jdxbname] = player[jdxbname].mul(player.data.add(new Decimal(1)).log10().mul(2).root(10));
 					}
-					if(player.PL1ug[1] == true && i == 1)
+					if(player.PL1ug[1] == true && i == 1
+					&& player.jdxb08.add(new Decimal(1)).log10().root(3).compare(new Decimal(1.0)) >= 0)
 					{
 						player[jdxbname] = player[jdxbname].mul(player.jdxb08.add(new Decimal(1)).log10().root(3));
 					}
-					if(player.PL1ug[6] == true && i >= 2 && player['csjd0' + (i - 1)].compare(new Decimal(1)) >= 0)
+					if(player.PL1ug[6] == true && i >= 2 && player['csjd0' + (i - 1)].compare(new Decimal(1)) >= 0
+					&& player.PL1chalnow != 8)
 					{
 						player[jdxbname] = player[jdxbname].mul(player['csjd0' + (i - 1)].root(40).pow(0.75));
 					}
-					if(player.PL1ug[7] == true)
+					if(player.PL1ug[7] == true && player.PL1chalnow != 5)
 					{
-						player[jdxbname] = player[jdxbname].mul(player.PL1data.pow(5));
+						var exp = new Decimal(5);
+						
+						if(exp.compare(new Decimal(1)) >= 0) player[jdxbname] = player[jdxbname].mul(player.PL1data.pow(exp));
+					}
+					
+					if(player.PL1chalnow == 2 && i < 8)
+					{
+						player[jdxbname] = player[jdxbname].pow((new Decimal(1.0)).div(player['cost0' + (i + 1)].log10().root(16)));
+					}
+					
+					if(player.PL1chalnow == 4 && i > 1)
+					{
+						player[jdxbname] = player[jdxbname].div(player.jdxb01.root(3).div(new Decimal(1e5)));
+					}
+					
+					if(player.PL1chalnow == 7)
+					{
+						player[jdxbname] = player[jdxbname].pow((new Decimal(1.0)).div(player.PL1time.add(2).log10().root(4)));
+					}
+					
+					if(player.PL1chalnow == 8 && player.lastbuy != i)
+					{
+						player[jdxbname] = new Decimal(0);
 					}
 				}
 				for(let i = 11;i <= 18;i++)
 				{
 					var jdxname = "jdx" + i, jdxbname = "jdxb" + i;
 					player[jdxbname] = player[jdxname];
+					if(player.PL1ug[8] == true && i == 11)
+					{
+						player[jdxbname] = player[jdxbname].mul(player.PL1info.root(2).pow(0.2));
+					}
 				}
 				
 				if(player.PL1ug[3] == true)
@@ -753,6 +1015,11 @@
 				{
 					player.speedupmul = (new Decimal(1.125)).add((player.boost.add(2)).log10().div(3));
 				}
+				
+				if(player.PL1chalnow == 9)
+				{
+					player.speedupmul = player.speedupmul.mul((new Decimal(1)).div(player.PL1time.root(6).pow(0.55)));
+				}
 			}
 			
 			function cheat(time)
@@ -763,6 +1030,15 @@
 				//	automation_run();
 				//}
 				//GUI();
+			}
+			
+			function exitchal(type)
+			{
+				if(type == 1 && player.PL1chalnow > 0)
+				{
+					buyPL1();
+					player.PL1chalnow = 0;
+				}
 			}
 			
 			function update_ps()
@@ -841,6 +1117,11 @@
 					if(player.PL1ug[i - 1] == true) document.getElementById("ug1" + i).style["background-color"] = '#6666ff';
 					else document.getElementById("ug1" + i).style["background-color"] = 'black';
 				}
+				 for(let i = 1;i <= 12;i++)
+				{
+					if(player.PL1chalfinished[i - 1] == true) document.getElementById("wc" + i).style["background-color"] = 'blue';
+					else document.getElementById("wc" + i).style["background-color"] = 'black';
+				}
 				if(notation(player.atbspeedup) == "0.000") document.getElementById("atbspeedup").innerHTML = "关";
 				else document.getElementById("atbspeedup").innerHTML = "开";
 				if(player.atbboost == false) document.getElementById("atbboost").innerHTML = "关";
@@ -851,6 +1132,8 @@
 				else document.getElementById('page102').style.display = 'block';
 				if(nowpage != "page103") document.getElementById('page103').style.display = 'none';
 				else document.getElementById('page103').style.display = 'block';
+				if(nowpage != "page104") document.getElementById('page104').style.display = 'none';
+				else document.getElementById('page104').style.display = 'block';
 				if(nowpage != "page201") document.getElementById('page201').style.display = 'none';
 				else document.getElementById('page201').style.display = 'block';
 				if(nowpage != "page301") document.getElementById('page301').style.display = 'none';
@@ -865,80 +1148,35 @@
 				else document.getElementById('PL1_open_inline').style.display = 'inline-block';
 				if(player.PL1ug[4] == 0) document.getElementById('automationPL1open').style.display = 'none';
 				else document.getElementById('automationPL1open').style.display = 'block';
+				if(player.PL1ug[10] == 0) document.getElementById('WC_open_inline').style.display = 'none';
+				else document.getElementById('WC_open_inline').style.display = 'inline-block';
+				
+				if(player.PL1chalnow == 0) document.getElementById('chalinfo').innerHTML = "你当前不在任何挑战中";
+				else document.getElementById('chalinfo').innerHTML = "你当前正在世界挑战" + player.PL1chalnow + "中";
+				if(player.PL1chalnow == 0) document.getElementById('inWC').style.display = "none";
+				else document.getElementById('inWC').style.display = "block";
 			}
 			
+			
 			init();
+			
+			var playerTemp = player;
+			
 			data_input();
+			
 			let playerLen = Object.keys(player).length;
 			console.log(playerLen);
-			if(playerLen < 44)
+			
+			const bKeys = Object.keys(playerTemp);
+			
+			bKeys.forEach(key =>
 			{
-				//远古版本，直接硬重置
-				hard_reset();
-			}
-			if(playerLen == 44)
-			{
-				player.speedupcostx = new Decimal(10);
-			}
-			if(playerLen == 45)
-			{
-				player.boost = new Decimal(0);
-				player.boostx = new Decimal(3);
-				player.boostcost = new Decimal(18446744073709551616);
-				player.boostcostx = new Decimal(18446744073709551616);
-			}
-			if(playerLen == 49)
-			{
-				for(let i = 1;i <= 8;i++)
+				if (!player.hasOwnProperty(key))
 				{
-					player["atb0" + i] = new Decimal(0);
+				  player[key] = playerTemp[key];
 				}
-			}
-			if(playerLen == 57)
-			{
-				player.atbspeedup = new Decimal(0);
-			}
-			if(playerLen == 58)
-			{
-				player.highest_data = new Decimal(10);
-				player.PL1 = new Decimal(0);
-				player.PL1info = new Decimal(0);
-			}
-			if(playerLen == 61)
-			{
-				player.PL1ug = [false, false, false, false, false, false, false, false, false, false, false, false];
-				player.atbboost = false;
-			}
-			if(playerLen == 63)
-			{
-				player.PL1data = new Decimal(1);
-				for(let i = 1;i <= 8;i++)
-				{
-					player['csjd1' + i] = new Decimal(0);
-					player['jdx1' + i] = new Decimal(1);
-					player['jdxb1' + i] = new Decimal(1);
-				}
-				player.cost11 = new Decimal(1);
-				player.cost12 = new Decimal(1e5);
-				player.cost13 = new Decimal(1e10);
-				player.cost14 = new Decimal(1e15);
-				player.cost15 = new Decimal(1e20);
-				player.cost16 = new Decimal(1e25);
-				player.cost17 = new Decimal(1e30);
-				player.cost18 = new Decimal(1e35);
-				player.costx11 = new Decimal(1e5);
-				player.costx12 = new Decimal(1e10);
-				player.costx13 = new Decimal(1e15);
-				player.costx14 = new Decimal(1e20);
-				player.costx15 = new Decimal(1e25);
-				player.costx16 = new Decimal(1e30);
-				player.costx17 = new Decimal(1e35);
-				player.costx18 = new Decimal(1e40);
-			}
-			if(playerLen == 104)
-			{
-				//当前版本
-			}
+			});
+			
 			const allPropertyNames = Object.getOwnPropertyNames(player);
 			console.log(allPropertyNames);
 			console.log(atbspeedup);
