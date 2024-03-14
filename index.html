@@ -55,6 +55,16 @@
 				padding: 10px;
 				border-radius: 6px;
 			}
+			.WL-button
+			{
+				background-color: black;
+				color: white;
+				border: 6px solid blue;
+				width: 200px;
+				height: 150px;
+				padding: 10px;
+				border-radius: 6px;
+			}
 		</style>
 	</head>
 
@@ -62,7 +72,6 @@
 		<p align="center">
 		<button type="button" onclick="cnw(1)" style="background-color: black; color: white; border: 2px solid blue; width: 80px; hight: 40px; padding: 5px">科学计数法</button>
 		<button type="button" onclick="cnw(2)" style="background-color: black; color: white; border: 2px solid red; width: 80px; hight: 40px; padding: 5px">F计数法</button>
-		<button type="button" onclick="cnw(3)" style="background-color: black; color: white; border: 2px solid green; width: 80px; hight: 40px; padding: 5px">层级计数法</button>
 		</p>
 		<div id="PL1_open"><p align="center" class="ftsz3"><span>你有</span><span class="ftsz4" id="PL1info"></span>世界信息</p></div>
         
@@ -78,9 +87,12 @@
 			<button type="button" class="normal-button" onclick="chpage(101)">节点</button>
 			<button type="button" class="automation-button" onclick="chpage(102)" id="open_automation_inline" style="display: none">自动化</button>
 			<button type="button" class="PL1-button" onclick="chpage(103)" id="PL1_open_inline" style="display: none">世界</button>
-			<button type="button" class="PL1-button" onclick="chpage(104)" id="WC_open_inline" style="display: none">世界挑战</button>
 			<button type="button" class="normal-button" onclick="chpage(201)">关于</button>
 			<button type="button" class="normal-button" onclick="chpage(301)">作弊！</button>
+			<br/>
+			<button type="button" class="PL1-button" onclick="chspage(1)" id="WU_open_inline" style="display: none">世界升级</button>
+			<button type="button" class="PL1-button" onclick="chspage(2)" id="WC_open_inline" style="display: none">世界挑战</button>
+			<button type="button" class="PL1-button" onclick="chspage(3)" id="WL_open_inline" style="display: none">世界线</button>
 		</p>
 		<div id="page101">
 			<p align="center" class="ftsz3">
@@ -188,7 +200,7 @@
 				<button type="button" onclick="chauto(102)">跃迁自动化:<span id="atbboost"></span></button>
 			</p>
 		</div>
-		<div id="page103">
+		<div id="page10301">
 			<p align="center" class="ftsz3">
 				<span>世界升级</span>
 				<br/>
@@ -228,11 +240,36 @@
 					解锁世界挑战。<br/><br/><br/>成本：1E12信息
 				</button>
 				<button class="PL1ug" type="button" onclick="buyPL1ug(11)" id="ug112">
-					16号传输节点的倍数以指数加成数据获取量。<br/>成本：1E20信息
+					16号传输节点的倍数以指数加成数据获取量。<br/>成本：1E17信息
 				</button>
+				<br/>
+				<br/>
+				<div id="PL1ugt2_open" align="center">
+					<span class="ftsz3">以下4个世界升级可以多次购买</span><br/>
+					<button class="PL1ug" type="button" onclick="buyPL1ug(13)" id="ug113">
+						等级：<span id="PL1ug13level"></span><br/>
+						你获得×3.0倍世界信息<br/>
+						当前成本：<span id="PL1ug13cost"></span>
+					</button>
+					<button class="PL1ug" type="button" onclick="buyPL1ug(14)" id="ug114">
+						等级：<span id="PL1ug14level"></span><br/>
+						9~16传输节点产能×2.0倍<br/>
+						当前成本：<span id="PL1ug14cost"></span>
+					</button>
+					<button class="PL1ug" type="button" onclick="buyPL1ug(15)" id="ug115">
+						等级：<span id="PL1ug15level"></span><br/>
+						时间加速升级倍率+0.04<br/>
+						当前成本：<span id="PL1ug15cost"></span>
+					</button>
+					<button class="PL1ug" type="button" onclick="buyPL1ug(16)" id="ug116">
+						等级：<span id="PL1ug16level"></span><br/>
+						1~8传输节点指数+0.005<br/>
+						当前成本：<span id="PL1ug16cost"></span>
+					</button>
+				</div>
 			</p>
 		</div>
-		<div id="page104" align="center">
+		<div id="page10302" align="center">
 			<span class="ftsz4">世界挑战</span>
 			<span class="ftsz3">
 				触发世界挑战时，游戏规则会被修改
@@ -331,26 +368,28 @@
 					奖励：时间加速自动购买最大化
 				</button>
 				<br/>
-				<button class="WC ftsz1" type="button" id="wc10">
+				<button class="WC ftsz1" type="button" onclick="startWC(10)" id="wc10">
 					WC 10
 					<br/>
-					？？？
+					你只能购买30次时间加速升级、传输节点、跃迁。
 					<br/>
-					目标：？？？数据
+					目标：1e2250数据
 					<br/>
 					奖励：解锁4个新的世界升级
 				</button>
-				<button class="WC ftsz1" type="button" id="wc11">
+				<button class="WC ftsz1" type="button" onclick="startWC(11)" id="wc11">
 					WC 11
 					<br/>
-					？？？
+					同时运行WC1 WC4 WC5
 					<br/>
-					目标：？？？数据
+					<br/>
+					目标：1e200数据
 					<br/>
 					奖励：解锁世界线
 				</button>
 				<button class="WC ftsz1" type="button" id="wc12">
 					WC 12
+					<br/>
 					<br/>
 					？？？
 					<br/>
@@ -358,6 +397,48 @@
 					<br/>
 					奖励：解锁宇宙重置
 				</button>
+		</div>
+		<div id="page10303" align="center">
+			<span class="ftsz4">世界线</span>
+			<br/>
+			<span class="ftsz2">总共有4个世界线，除了第一个，另外三个都具有故障</span>
+			<br/>
+			<span class="ftsz2">穿越世界线时，会进行世界重置，但你的数据会在下一次穿越回来时恢复</span>
+			<br/>
+			<span class="ftsz2">你需要达到这个世界线的历史最佳数据才能穿越</span>
+			<br/>
+			<span class="ftsz2">你当前处在世界线</span><span class="ftsz3" id="WL_num"></span><span class="ftsz2">中</span>
+			<br/>
+			<span class="ftsz2">达到某个世界线的一定数据量，来购买世界线升级</span>
+			<br/>
+			<button type="button" class="WL-button" onclick="chWL(1)">
+				世界线【1】
+				<br/>
+				该世界线没有故障
+				<br/>
+				最大数据：<span class="ftsz2" id="WLbest0"></span>
+			</button>
+			<button type="button" class="WL-button" onclick="chWL(2)">
+				世界线【2】
+				<br/>
+				世界数据无法起效
+				<br/>
+				最大数据：<span class="ftsz2" id="WLbest1"></span>
+			</button>
+			<button type="button" class="WL-button" onclick="chWL(3)">
+				世界线【3】
+				<br/>
+				无法购买传输节点
+				<br/>
+				最大数据：<span class="ftsz2" id="WLbest2"></span>
+			</button>
+			<button type="button" class="WL-button" onclick="chWL(4)">
+				世界线【4】
+				<br/>
+				无法购买时间加速
+				<br/>
+				最大数据：<span class="ftsz2" id="WLbest3"></span>
+			</button>
 		</div>
 		<div id="page201" align="center">
 			<br/>
@@ -372,6 +453,7 @@
 				1.1(2024/2/22)更新了更新记录、版本号与世界升级<br/>
 				1.2(2024/2/24)更新了9~16传输节点，修改界面<br/>
 				1.3(2024/3/3)更新了世界挑战1~9，修改了一些世界升级的适用范围<br/>
+				1.4(2024/3/14)更新世界挑战10~11,4个新的世界升级<br/>
 			</span>
 			<span class="ftsz2"><br/>存档硬重置：毁灭一切</span>
 			<button type="button" onclick="hard_reset()">硬重置</button>
@@ -404,6 +486,7 @@
 			}
 			
 			var nowpage = "page101";
+			var subpage = "sp1";
 			var get_PL1info = new Decimal(0);
 			var player;
 			function init()
@@ -532,18 +615,36 @@
 					, false, false, false, false
 					, false, false, false, false],
 					
+					PL1ugt2: [new Decimal(0), new Decimal(0), new Decimal(0), new Decimal(0)],
+					PL1ugt2cost: [new Decimal(1e10), new Decimal(1e10), new Decimal(1e10), new Decimal(1e10)],
+					PL1ugt2costx: [new Decimal(1e2), new Decimal(1e2), new Decimal(1e3), new Decimal(1e3)],
 					PL1chalnow: 0,
 					lastbuy: 0,
+					buybeforePL1: 0,
+					
+					nowtime: 0,
+					
+					WLnow: 0,
+					WLug: [false, false, false, false
+					, false, false, false, false
+					, false, false, false, false
+					, false, false, false, false],
+					WLbest: [new Decimal(0), new Decimal(0), new Decimal(0), new Decimal(0)],
 				};
 			}
 			
 			var PL1ugcost = [new Decimal(2), new Decimal(4), new Decimal(6), new Decimal(10)
 			, new Decimal(20), new Decimal(1000), new Decimal(10000), new Decimal(5e5)
-			, new Decimal(1e8), new Decimal(1e11), new Decimal(1e12), new Decimal(1e20)];
+			, new Decimal(1e8), new Decimal(1e11), new Decimal(1e12), new Decimal(1e17)];
 			
 			var wctarget = [new Decimal('e3333'), new Decimal('e3500'), new Decimal('e4000'), new Decimal('e3400')
 			, new Decimal('e2650'), new Decimal('e750'), new Decimal('e3920'), new Decimal('e5750')
-			, new Decimal('e4800'), new Decimal('ee10000'), new Decimal('ee10000'), new Decimal('ee10000')];
+			, new Decimal('e4800'), new Decimal('e2250'), new Decimal('e200'), new Decimal('ee10000')];
+			
+			var WLugcost = [new Decimal('ee10000'), new Decimal('ee10000'), new Decimal('ee10000'), new Decimal('ee10000')
+			, new Decimal('ee10000'), new Decimal('ee10000'), new Decimal('ee10000'), new Decimal('ee10000')
+			, new Decimal('ee10000'), new Decimal('ee10000'), new Decimal('ee10000'), new Decimal('ee10000')
+			, new Decimal('ee10000'), new Decimal('ee10000'), new Decimal('ee10000'), new Decimal('ee10000')]
 			
 			var data_in_second_ago = new Decimal(10);
 				
@@ -586,23 +687,6 @@
 				{
 					return number.mag.toFixed(0) + "f" + number.layer.toFixed(0);
 				}
-				else if(cnw_now == 3)
-				{
-					let PL1_need = (new Decimal(2)).pow(1024);
-					let PL2_need = PL1_need.pow((new Decimal(2)).pow(15));
-					let PL3_need = PL2_need.pow((new Decimal(2)).pow(20));
-					let PL4_need = PL3_need.pow((new Decimal(2)).pow(25));
-					let PL5_need = PL4_need.pow((new Decimal(2)).pow(30));
-					let PL6_need = PL5_need.pow((new Decimal(2)).pow(35));
-					
-					if(number == 0) return "0.000";
-					if(number.compare(PL2_need) < 0) return number.log10().div(PL1_need.log10()).toFixed(3) + "世界";
-					else if(number.compare(PL3_need) < 0) return number.log10().div(PL2_need.log10()).toFixed(3) + "宇宙";
-					else if(number.compare(PL4_need) < 0) return number.log10().div(PL3_need.log10()).toFixed(3) + "混沌";
-					else if(number.compare(PL5_need) < 0) return number.log10().div(PL4_need.log10()).toFixed(3) + "天理";
-					else if(number.compare(PL6_need) < 0) return number.log10().div(PL5_need.log10()).toFixed(3) + "现实";
-					else return number.log10().div(PL6_need.log10()).toFixed(3) + "超越";
-				}
 			}
 			
 			function transformToDecimal(object)
@@ -629,12 +713,22 @@
 			function chpage(pagename)
 			{
 				nowpage = "page" + pagename;
+				subpage = "sp1";
+			}
+			
+			function chspage(spagename)
+			{
+				subpage = "sp" + spagename;
 			}
 			
 			function ugjd(type)
 			{
 				if(type >= 1 && type <= 8)
 				{
+					if(player.PL1chalnow == 10 && player.buybeforePL1 >= 30)
+					{
+						return;
+					}
 					var costname = "";
 					if(type < 10) costname = "cost0" + String(type);
 					else costname = "cost" + String(type);
@@ -671,6 +765,7 @@
 						}
 						
 						player.lastbuy = type;
+						player.buybeforePL1 += 1;
 					}
 				}
 				else if(type >= 11 && type <= 18)
@@ -700,7 +795,11 @@
 			
 			function buySpeedUp()
 			{
-				if(player.PL1chalnow == 1) return;
+				if(player.PL1chalnow == 10 && player.buybeforePL1 >= 30)
+				{
+					return;
+				}
+				if(player.PL1chalnow == 1 || player.PL1chalnow == 4) return;
 				if(player.data.compare(player.speedupcost) >= 0)
 				{
 					player.speedup = player.speedup.add(new Decimal(1));
@@ -711,6 +810,8 @@
 					{
 						player.speedupcostx = player.speedupcostx.mul(new Decimal(10));
 					}
+					
+					player.buybeforePL1 += 1;
 				}
 			}
 			
@@ -764,7 +865,11 @@
 			
 			function buyBoost()
 			{
-				if(player.PL1chalnow == 1) return;
+				if(player.PL1chalnow == 10 && player.buybeforePL1 >= 30)
+				{
+					return;
+				}
+				if(player.PL1chalnow == 1 || player.PL1chalnow == 11) return;
 				if(player.data.compare(player.boostcost) >= 0)
 				{
 					boostReset();
@@ -774,6 +879,7 @@
 					{
 						player.boostcostx = player.boostcostx.pow(2);
 					}
+					player.buybeforePL1 += 1;
 				}
 			}
 			
@@ -785,6 +891,7 @@
 				player.boostcost = new Decimal(18446744073709551616);
 				player.boostcostx = new Decimal(18446744073709551616);
 				player.PL1time = new Decimal(0);
+				player.buybeforePL1 = 0;
 			}
 			
 			function buyPL1()
@@ -801,17 +908,31 @@
 			{
 				if(player.PL1ug[10] == true)
 				{
-					buyPL1();
+					if(player.data.compare(new Decimal(1.797e308)) >= 0) buyPL1();
+					else PL1Reset();
 					player.PL1chalnow = type;
 				}
 			}
 			
 			function buyPL1ug(type)
 			{
-				if(player.PL1info.compare(PL1ugcost[type]) >= 0)
+				if(type <= 12)
 				{
-					player.PL1info = player.PL1info.sub(PL1ugcost[type]);
-					player.PL1ug[type] = true;
+					if(player.PL1info.compare(PL1ugcost[type]) >= 0)
+					{
+						player.PL1info = player.PL1info.sub(PL1ugcost[type]);
+						player.PL1ug[type] = true;
+					}
+				}
+				else
+				{
+					type -= 13;
+					if(player.PL1info.compare(player.PL1ugt2cost[type]) >= 0)
+					{
+						player.PL1info = player.PL1info.sub(player.PL1ugt2cost[type]);
+						player.PL1ugt2[type] = player.PL1ugt2[type].add(new Decimal(1));
+						player.PL1ugt2cost[type] = player.PL1ugt2cost[type].mul(player.PL1ugt2costx[type]);
+					}
 				}
 			}
 			
@@ -843,7 +964,8 @@
 					}
 					else
 					{
-						while(player.data.compare(player.speedupcost) >= 0)
+						while(player.data.compare(player.speedupcost) >= 0
+						&& (player.PL1chalnow != 1 && player.PL1chalnow != 11))
 						{
 							buySpeedUp();
 						}
@@ -963,19 +1085,34 @@
 					{
 						player[jdxbname] = player[jdxbname].mul(player['csjd0' + (i - 1)].root(40).pow(0.75));
 					}
-					if(player.PL1ug[7] == true && player.PL1chalnow != 5)
+					if(player.PL1ug[7] == true && (player.PL1chalnow != 5 && player.PL1chalnow != 11))
 					{
 						var exp = new Decimal(5);
 						
 						if(exp.compare(new Decimal(1)) >= 0) player[jdxbname] = player[jdxbname].mul(player.PL1data.pow(exp));
 					}
+					if(player.PL1ug[11] == true && i == 1)
+					{
+						var poww = player.jdxb18.root(2).div(new Decimal(2.5)).pow(0.875);
+						if(poww.compare(new Decimal(3)) >= 0)
+						{
+							poww = (new Decimal(3)).add((poww.sub(new Decimal(3))).div(8));
+						}
+						if(poww.compare(new Decimal(3.5)) >= 0)
+						{
+							poww = (new Decimal(3.5)).add((poww.sub(new Decimal(3.5))).div(32));
+						}
+						player[jdxbname] = player[jdxbname].pow(poww);
+					}
+					
+					player[jdxbname] = player[jdxbname].pow((new Decimal(1.0)).add((player.PL1ugt2[3]).mul(0.005)));
 					
 					if(player.PL1chalnow == 2 && i < 8)
 					{
 						player[jdxbname] = player[jdxbname].pow((new Decimal(1.0)).div(player['cost0' + (i + 1)].log10().root(16)));
 					}
 					
-					if(player.PL1chalnow == 4 && i > 1)
+					if((player.PL1chalnow == 4 || player.PL1chalnow == 11) && i > 1)
 					{
 						player[jdxbname] = player[jdxbname].div(player.jdxb01.root(3).div(new Decimal(1e5)));
 					}
@@ -998,6 +1135,7 @@
 					{
 						player[jdxbname] = player[jdxbname].mul(player.PL1info.root(2).pow(0.2));
 					}
+					player[jdxbname] = player[jdxbname].mul((new Decimal(2)).pow(player.PL1ugt2[1]));
 				}
 				
 				if(player.PL1ug[3] == true)
@@ -1010,16 +1148,21 @@
 				{
 					get_PL1info = (player.data.root(512).floor());
 				}
+				get_PL1info = get_PL1info.mul((new Decimal(3)).pow(player.PL1ugt2[0]));
 				
+				player.speedupmul = (new Decimal(1.125));
 				if(player.PL1ug[5] == true)
 				{
-					player.speedupmul = (new Decimal(1.125)).add((player.boost.add(2)).log10().div(3));
+					player.speedupmul = player.speedupmul.add((player.boost.add(2)).log10().div(3));
 				}
+				player.speedupmul = player.speedupmul.add((player.PL1ugt2[2]).mul(0.04));
 				
 				if(player.PL1chalnow == 9)
 				{
 					player.speedupmul = player.speedupmul.mul((new Decimal(1)).div(player.PL1time.root(6).pow(0.55)));
 				}
+				
+				
 			}
 			
 			function cheat(time)
@@ -1047,6 +1190,8 @@
 				data_in_second_ago = player.data;
 			}
 			
+			var gui_mod = 0;
+			
 			function GUI()
 			{
 				document.getElementById("data").innerHTML = notation(player.data);
@@ -1062,6 +1207,7 @@
 				document.getElementById("PL1resetinfos").innerHTML = notation(get_PL1info);
 				if(player.PL1ug[7] == true) document.getElementById("PL1jd").style.display = 'block';
 				else document.getElementById("PL1jd").style.display = 'none';
+				document.getElementById("WL_num").innerHTML = player.WLnow + 1;
 				for(let i = 1;i <= 18;i++)
 				{
 					if(i == 9) i = 11;
@@ -1117,10 +1263,15 @@
 					if(player.PL1ug[i - 1] == true) document.getElementById("ug1" + i).style["background-color"] = '#6666ff';
 					else document.getElementById("ug1" + i).style["background-color"] = 'black';
 				}
-				 for(let i = 1;i <= 12;i++)
+				for(let i = 1;i <= 12;i++)
 				{
 					if(player.PL1chalfinished[i - 1] == true) document.getElementById("wc" + i).style["background-color"] = 'blue';
 					else document.getElementById("wc" + i).style["background-color"] = 'black';
+				}
+				for(let i = 0;i < 4;i++)
+				{
+					document.getElementById("PL1ug" + (13 + i) + "level").innerHTML = (player.PL1ugt2[i].toFixed(0));
+					document.getElementById("PL1ug" + (13 + i) + "cost").innerHTML = notation(player.PL1ugt2cost[i]);
 				}
 				if(notation(player.atbspeedup) == "0.000") document.getElementById("atbspeedup").innerHTML = "关";
 				else document.getElementById("atbspeedup").innerHTML = "开";
@@ -1130,10 +1281,12 @@
 				else document.getElementById('page101').style.display = 'block';
 				if(nowpage != "page102") document.getElementById('page102').style.display = 'none';
 				else document.getElementById('page102').style.display = 'block';
-				if(nowpage != "page103") document.getElementById('page103').style.display = 'none';
-				else document.getElementById('page103').style.display = 'block';
-				if(nowpage != "page104") document.getElementById('page104').style.display = 'none';
-				else document.getElementById('page104').style.display = 'block';
+				if(!(nowpage == "page103" && subpage == "sp1")) document.getElementById('page10301').style.display = 'none';
+				else document.getElementById('page10301').style.display = 'block';
+				if(!(nowpage == "page103" && subpage == "sp2")) document.getElementById('page10302').style.display = 'none';
+				else document.getElementById('page10302').style.display = 'block';
+				if(!(nowpage == "page103" && subpage == "sp3")) document.getElementById('page10303').style.display = 'none';
+				else document.getElementById('page10303').style.display = 'block';
 				if(nowpage != "page201") document.getElementById('page201').style.display = 'none';
 				else document.getElementById('page201').style.display = 'block';
 				if(nowpage != "page301") document.getElementById('page301').style.display = 'none';
@@ -1148,13 +1301,23 @@
 				else document.getElementById('PL1_open_inline').style.display = 'inline-block';
 				if(player.PL1ug[4] == 0) document.getElementById('automationPL1open').style.display = 'none';
 				else document.getElementById('automationPL1open').style.display = 'block';
-				if(player.PL1ug[10] == 0) document.getElementById('WC_open_inline').style.display = 'none';
+				
+				if(player.PL1ug[10] == 0 || nowpage != "page103") document.getElementById('WC_open_inline').style.display = 'none';
 				else document.getElementById('WC_open_inline').style.display = 'inline-block';
+				if(player.PL1.compare(new Decimal(0)) < 0 || nowpage != "page103") document.getElementById('WU_open_inline').style.display = 'none';
+				else document.getElementById('WU_open_inline').style.display = 'inline-block';
+				if(player.PL1chalfinished[10] == false || nowpage != "page103") document.getElementById('WL_open_inline').style.display = 'none';
+				else document.getElementById('WL_open_inline').style.display = 'inline-block';
 				
 				if(player.PL1chalnow == 0) document.getElementById('chalinfo').innerHTML = "你当前不在任何挑战中";
 				else document.getElementById('chalinfo').innerHTML = "你当前正在世界挑战" + player.PL1chalnow + "中";
 				if(player.PL1chalnow == 0) document.getElementById('inWC').style.display = "none";
 				else document.getElementById('inWC').style.display = "block";
+				
+				if(player.PL1chal[9] == true) document.getElementById('PL1ugt2_open').style.display = 'none';
+				else document.getElementById('PL1ugt2_open').style.display = 'block';
+				
+				if(gui_mod == 1) player.nowtime = Date.now();
 			}
 			
 			
@@ -1181,9 +1344,31 @@
 			console.log(allPropertyNames);
 			console.log(atbspeedup);
 			
+			GUI();
+			function get_offline_time()
+			{
+				let nt = Date.now();
+				if(nt - player.nowtime > 0 && player.nowtime > 1000)
+				{
+					if(nt - player.nowtime >= 200000)
+					{
+						nt = player.nowtime + 200000;
+					}
+					alert("计算离线进度：" + ((nt - player.nowtime) / 1000) + "秒");
+					for(let i = 0;i < (nt - player.nowtime) / 10;i++)
+					{
+						produce();
+						automation_run();
+					}
+				}
+				gui_mod = 1;
+			}
+			
+			get_offline_time();
+			
 			setInterval(produce, 100);
-			setInterval(GUI, 10);
-			setInterval(data_print, 1000);
+			setInterval(GUI, 40);
+			setInterval(data_print, 400);
 			setInterval(automation_run, 100);
 			setInterval(update_ps, 200);
 		</script>
