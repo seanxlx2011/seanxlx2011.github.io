@@ -282,17 +282,23 @@
 					</td>
 					<td>
 						<button class="PL1bt" onclick="buyPL1ug(6)" id="PL1ug6">
-						...
+							节点一阶软上限弱化50%、二至三阶软上限弱化40%。
+							<br/>
+							成本：10000世界信息
 						</button>
 					</td>
 					<td>
 						<button class="PL1bt" onclick="buyPL1ug(7)" id="PL1ug7">
-						...
+							节点一至三阶软上限延迟1.5次方出现。
+							<br/>
+							成本：30000世界信息
 						</button>
 					</td>
 					<td>
 						<button class="PL1bt" onclick="buyPL1ug(8)" id="PL1ug8">
-						...
+							世界信息公式变得更好。
+							<br/>
+							成本：50000世界信息
 						</button>
 					</td>
 				</table>
@@ -335,7 +341,7 @@
 				};
 			}
 			
-			var PL1upgcost = [N(1), N(2), N(6), N(40), N(2500), N(1e100), N(1e100), N(1e100)];
+			var PL1upgcost = [N(1), N(2), N(6), N(40), N(2500), N(10000), N(30000), N(50000)];
 			
 			function chpage(p)
 			{
@@ -406,6 +412,8 @@
 			function getjdscs(i)
 			{
 				let base = [N(1024), N(1e10), N(1e50), N('e400'), N(1500), N(60000), N(1e6), N(1e10)];
+				if(player.boost.gte(55)) base[2] = base[2].pow(1.5);
+				if(player.PL1upg[6]) for(let j = 0;j < 2;j++) base[j] = base[j].pow(1.5);
 				return base;
 			}
 			
@@ -417,6 +425,9 @@
 				if(player.boost.gte(21)) base[1] = base[1].mul(N(1).div(player.boost.add(1).root(15)));
 				if(player.boost2.gte(2)) base[0] = base[0].mul(N(1).div(player.boost.add(1).root(5)));
 				if(player.PL1upg[1]) base[0] = base[0].mul(0.6);
+				if(player.PL1upg[5]) base[0] = base[0].mul(0.5);
+				if(player.PL1upg[5]) base[1] = base[1].mul(0.6);
+				if(player.PL1upg[5]) base[2] = base[2].mul(0.6);
 				for(let i = 0;i < 8;i++) base[i] = N(1).div(base[i].add(1));
 				return base;
 			}
@@ -454,7 +465,9 @@
 					}
 					if(player.boost2.gte(1)) base[i] = base[i].mul(3);
 					if(player.boost2.gte(3)) base[i] = base[i].mul(player.boost2.add(1).mul(1.25).pow(3.5));
-					if(player.boost.gte(16)) base[i] = base[i].mul(player.boost);
+					if(player.boost2.gte(12)) base[i] = base[i].mul(player.PL1info.add(1).mul(0.5).pow(0.25));
+					if(player.boost.gte(16) && !player.boost.gte(52)) base[i] = base[i].mul(player.boost);
+					if(player.boost.gte(52)) base[i] = base[i].mul(player.boost.pow(2));
 					if(player.PL1upg[2]) base[i] = base[i].mul(player.boost.add(1).pow(1.5));
 				}
 				return base;
@@ -504,6 +517,7 @@
 				let base = N(1);
 				if(player.boost.gte(17)) base = base.mul(0.5);
 				if(player.boost2.gte(5)) base = base.mul(0.5);
+				if(player.boost2.gte(11)) base = base.mul(0.9);
 				if(player.PL1upg[3]) base = base.mul(0.5);
 				base = base.add(1);
 				return base;
@@ -527,8 +541,8 @@
 			}
 			
 			var boosteffectlist = [N(1), N(2), N(3), N(4), N(5), N(6), N(7), N(8)
-			, N(15), N(16), N(17), N(20), N(21)];
-			var boosteffectnum = 13;
+			, N(15), N(16), N(17), N(20), N(21), N(52), N(55)];
+			var boosteffectnum = 15;
 			
 			function getboosteffect(b)
 			{
@@ -584,11 +598,19 @@
 				{
 					return '在21跃迁，跃迁弱化传输节点的二阶软上限，当前：×' + notation(N(1).div(player.boost.add(1).root(15)));
 				}
+				else if(!b.gte(52))
+				{
+					return '在52跃迁，16跃迁的效果改为增加等同于跃迁数量的平方的倍数';
+				}
+				else if(!b.gte(55))
+				{
+					return '在55跃迁，节点三阶软上限延迟1.5次方出现。';
+				}
 				else return '';
 			}
 			
-			var boost2effectlist = [N(1), N(2), N(3), N(5), N(10)];
-			var boost2effectnum = 5;
+			var boost2effectlist = [N(1), N(2), N(3), N(5), N(10), N(11), N(12)];
+			var boost2effectnum = 7;
 			
 			function getboost2effect(b)
 			{
@@ -611,6 +633,14 @@
 				else if(!b.gte(10))
 				{
 					return '在10二重跃迁，跃迁数量加成世界信息获取量。当前：×' + notation(player.boost.add(1).mul(1.5).pow(0.75));
+				}
+				else if(!b.gte(11))
+				{
+					return '在11二重跃迁，使10跃迁及以上的折算弱化10%。';
+				}
+				else if(!b.gte(12))
+				{
+					return '在12二重跃迁，世界信息增幅节点产能。当前：×' + notation(player.PL1info.add(1).mul(0.5).pow(0.25));
 				}
 				else return '';
 			}
@@ -685,10 +715,15 @@
 			var PL1infoget = N(0);
 			function updatePLinfoget()
 			{
-				if(player.data.gte(1e80)) PL1infoget = player.data.root(80).sub(9).floor();
+				if(player.data.gte(1e80))
+				{
+					if(!player.PL1upg[7]) PL1infoget = player.data.root(80).sub(9);
+					else PL1infoget = player.data.root(10).div(1e8);
+				}
 				else PL1infoget = N(0);
 				
 				if(player.boost2.gte(10)) PL1infoget = PL1infoget.mul(player.boost.add(1).mul(1.5).pow(0.75));
+				PL1infoget = PL1infoget.floor();
 			}
 			
 			function buyPL1()
@@ -840,6 +875,8 @@
 					
 					if(player.autobuyjd[i]) document.getElementById('autobuyjds' + (i + 1)).innerHTML = '自动购买：开';
 					else document.getElementById('autobuyjds' + (i + 1)).innerHTML = '自动购买：关';
+					if(player.PL1upg[4]) document.getElementById('autobuyjdbt' + (i + 1)).style.display = 'block';
+					else document.getElementById('autobuyjdbt' + (i + 1)).style.display = 'none';
 				}
 				document.getElementById('boostcost').innerHTML = notation(boostcost);
 				if(player.data.gte(boostcost))
