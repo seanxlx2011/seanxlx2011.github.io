@@ -173,6 +173,18 @@
 			font-size: 14px;
 			float: center;
 		}
+		
+		.unlock_ins {
+			background-color: black;
+			height: 100px;
+			width: 150px;
+			border: 5px solid white;
+			color: white;
+			padding: 10px;
+			text-align: center;
+			font-size: 12px;
+			float: center;
+		}
 		</style>
 	</head>
 
@@ -398,7 +410,21 @@
 				</table>
 			</div>
 			<div id="spage3_4" align="center">
-				
+				<button class="unlock_ins">
+					解锁铭刻
+					价格：1e130世界信息
+				</button>
+				<div id="unlock_ins" align="center">
+					<p class="ftsz3">
+						你拥有<span id="ins0"></span>原始铭刻
+						<br/>
+						你拥有<span id="ins1"></span>α铭刻
+						<br/>
+						你拥有<span id="ins2"></span>β铭刻
+						<br/>
+						你拥有<span id="ins3"></span>γ铭刻
+					</p>
+				</div>
 			</div>
 		</div>
 		
@@ -443,6 +469,7 @@
 					sliceupg: [false, false, false, false],
 					ins: [N(0), N(0), N(0), N(0)],
 					insupg: [N(0), N(0), N(0), N(0), N(0), N(0)],
+					unlock_ins: false,
 				};
 			}
 			
@@ -1062,20 +1089,25 @@
 					let zstext = ['一阶软上限', '二阶软上限', '三阶软上限', '四阶软上限', '五阶软上限', '六阶软上限', '七阶软上限', '八阶软上限'];
 					document.getElementById('jdzs' + (i + 1)).innerHTML = '';
 					document.getElementById('jdzs' + (i + 1)).style['color'] = '#ffffff';
+					let now_x = N(2).pow(player.buyjd[i]);
 					for(let j = 0;j < 4;j++)
 					{
-						if((N(2).pow(player.buyjd[i])).gte(scs[j]))
+						if(now_x.gte(scs[j]))
 						{
 							document.getElementById('jdzs' + (i + 1)).innerHTML = zstext[j];
 							document.getElementById('jdzs' + (i + 1)).style['color'] = zscolor[j];
+							now_x = scs[j].mul(now_x.div(scs[j]).pow(scx[j]));
 						}
 					}
+					let jd_x = getjdx();
+					let jd_xi = jd_x[i];
 					for(let j = 4;j < 8;j++)
 					{
-						if((N(2).pow(player.buyjd[i])).gte(N(10).pow(scs[j])))
+						if(jd_xi.gte(N(10).pow(scs[j])))
 						{
 							document.getElementById('jdzs' + (i + 1)).innerHTML = zstext[j];
 							document.getElementById('jdzs' + (i + 1)).style['color'] = zscolor[j];
+							jd_xi = (N(10).pow(scs[j])).mul(N(10).pow(jd_xi.log10().div(scs[j]).pow(scx[j])));
 						}
 					}
 					if(player.boost.gte(jdunlock[i]))
