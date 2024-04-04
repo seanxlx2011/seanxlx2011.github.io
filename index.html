@@ -284,6 +284,7 @@
 			<p align="center">
 				<button class="spagebt" onclick="chspage(1)">世界升级</button>
 				<button class="spagebt" onclick="chspage(2)" id="spagebt2_4">位面切片</button>
+				<button class="spagebt" onclick="chspage(3)">铭刻</button>
 			</p>
 			<div id="spage1_4" align="center">
 				<table align="center">
@@ -396,6 +397,9 @@
 					</td>
 				</table>
 			</div>
+			<div id="spage3_4" align="center">
+				
+			</div>
 		</div>
 		
 		<script>
@@ -437,6 +441,8 @@
 					slice: N(0),
 					sliceupg_rep: [N(0), N(0), N(0), N(0)],
 					sliceupg: [false, false, false, false],
+					ins: [N(0), N(0), N(0), N(0)],
+					insupg: [N(0), N(0), N(0), N(0), N(0), N(0)],
 				};
 			}
 			
@@ -966,7 +972,7 @@
 			
 			function GUI()
 			{
-				let page_has_spage = [0, 0, 3, 2];
+				let page_has_spage = [0, 0, 3, 3];
 				
 				if(page == 1) document.getElementById('page1').style.display = 'block';
 				else document.getElementById('page1').style.display = 'none';
@@ -1089,7 +1095,7 @@
 					
 					if(player.autobuyjd[i]) document.getElementById('autobuyjds' + (i + 1)).innerHTML = '自动购买：开';
 					else document.getElementById('autobuyjds' + (i + 1)).innerHTML = '自动购买：关';
-					if(player.PL1upg[1]) document.getElementById('autobuyjdbt' + (i + 1)).style.display = 'block';
+					if(player.PL1upg[0]) document.getElementById('autobuyjdbt' + (i + 1)).style.display = 'block';
 					else document.getElementById('autobuyjdbt' + (i + 1)).style.display = 'none';
 				}
 				if(player.PL1upg[7])
