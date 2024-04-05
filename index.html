@@ -176,13 +176,25 @@
 		
 		.unlock_ins {
 			background-color: black;
-			height: 100px;
-			width: 150px;
-			border: 5px solid white;
+			height: 120px;
+			width: 180px;
+			border: 2px solid white;
 			color: white;
-			padding: 10px;
+			padding: 8px;
 			text-align: center;
 			font-size: 12px;
+			float: center;
+		}
+		
+		.insupgbt {
+			background-color: black;
+			height: 100px;
+			width: 240px;
+			border: 3px solid blue;
+			color: white;
+			padding: 5px;
+			text-align: center;
+			font-size: 16px;
 			float: center;
 		}
 		</style>
@@ -364,7 +376,7 @@
 				<br/>
 				<span class="slicetext">它们使传输节点产能变为</span><span class="slicetext" id="slice_effect"></span><span class="slicetext">倍</span>
 				<br/>
-				<span class="ftsz2">位面切片升级不消耗位面切片。世界重置不会重置位面切片。</span>
+				<span class="ftsz2">世界重置不会重置位面切片。</span>
 				<table>
 					<td>
 						<button class="slicebt" id="slicebt1" onclick="buysliceupg(1)">
@@ -408,22 +420,51 @@
 						<button class="slicebt" id="slicebt8" onclick="buysliceupg(8)">解锁宇宙重置<br/>需要：<span class="slicetext" id="sliceupgcost8"></span>位面切片</button>
 					</td>
 				</table>
+				<span class="ftsz3" style="color: red;">位面切片软上限在 1e7、5e8、1e60</span>
 			</div>
 			<div id="spage3_4" align="center">
-				<button class="unlock_ins">
-					解锁铭刻
+				<button class="unlock_ins" onclick="unlock_ins()" id="uunlock_ins">
+					解锁铭刻<br/>
 					价格：1e130世界信息
 				</button>
 				<div id="unlock_ins" align="center">
 					<p class="ftsz3">
-						你拥有<span id="ins0"></span>原始铭刻
+						你拥有<span id="ins0" class="ftsz4"></span>原始铭刻
 						<br/>
-						你拥有<span id="ins1"></span>α铭刻
+						<button class="insupgbt" onclick="addins0()">获得<span class="ftsz3" id="ins0gen"></span>原始铭刻</button>
 						<br/>
-						你拥有<span id="ins2"></span>β铭刻
-						<br/>
-						你拥有<span id="ins3"></span>γ铭刻
 					</p>
+					<p class="ftsz3">
+						你拥有<span id="ins1" class="ftsz4"></span>α铭刻
+						<br/>
+						<table>
+							<td><button class="insupgbt" onclick="tranins(1)">转化所有原始铭刻</button></td>
+							<td><button class="insupgbt" onclick="buyinsupg(0)">传输节点产能^(1+0.05×等级)<br/>价格：<span id="insupg0cost"></span></button></td>
+							<td><button class="insupgbt" onclick="buyinsupg(1)">增幅原始和β铭刻获取量^(1+0.25×等级)<br/>价格：<span id="insupg1cost"></span></button></td>
+						</table>
+						<br/>
+					</p>
+					<p class="ftsz3">
+						你拥有<span id="ins2" class="ftsz4"></span>β铭刻
+						<br/>
+						<table>
+							<td><button class="insupgbt" onclick="tranins(2)">转化所有原始铭刻</button></td>
+							<td><button class="insupgbt" onclick="buyinsupg(2)">位面切片获取量^(1+0.1×等级)<br/>价格：<span id="insupg2cost"></span></button></td>
+							<td><button class="insupgbt" onclick="buyinsupg(3)">增幅原始和γ铭刻获取量^(1+0.25×等级)<br/>价格：<span id="insupg3cost"></span></button></td>
+						</table>
+						<br/>
+					</p>
+					<p class="ftsz3">
+						你拥有<span id="ins3" class="ftsz4"></span>γ铭刻
+						<br/>
+						<table>
+							<td><button class="insupgbt" onclick="tranins(3)">转化所有原始铭刻</button></td>
+							<td><button class="insupgbt" onclick="buyinsupg(4)">节点1~4阶软上限推迟^(1+0.1×等级)<br/>价格：<span id="insupg4cost"></span></button></td>
+							<td><button class="insupgbt" onclick="buyinsupg(5)">增幅原始和α铭刻获取量^(1+0.25×等级)<br/>价格：<span id="insupg5cost"></span></button></td>
+						</table>
+					</p>
+					<span class="ftsz3" style="color: red;">原始铭刻获取数量软上限在 1e9、1e21、1e45</span>
+					<span class="ftsz3" style="color: red;">次级铭刻获取数量软上限在 1e7、1e14、1e28</span>
 				</div>
 			</div>
 		</div>
@@ -475,6 +516,8 @@
 			
 			var PL1upgcost = [N(1), N(2), N(6), N(40), N(2500), N(10000), N(30000), N(50000)];
 			var sliceupgcost = [N(5), N(6), N(7), N(8), N(300), N(15000), N(1e10), N(1e300)];
+			var insupgcostb = [N(300), N(500), N(300), N(500), N(300), N(500)];
+			var insupgcostx = [N(100), N(100), N(100), N(100), N(100), N(100)];
 			
 			function chpage(p)
 			{
@@ -548,6 +591,7 @@
 				if(player.boost.gte(55)) base[2] = base[2].pow(1.5);
 				if(player.PL1upg[6]) for(let j = 0;j < 2;j++) base[j] = base[j].pow(1.5);
 				if(player.sliceupg[2]) for(let j = 0;j < 3;j++) base[j] = base[j].pow(1.5);
+				if(player.unlock_ins) for(let j = 0;j < 4;j++) base[j] = base[j].pow(N(1).add(player.insupg[4].mul(0.1)));
 				return base;
 			}
 			
@@ -601,6 +645,8 @@
 					//pow
 					if(player.boost.gte(65)) base[i] = base[i].pow(N(1).add(player.boost.root(10).div(15)));
 					if(player.PL1upg[7]) base[i] = base[i].pow(N(1).add(player.sliceupg_rep[0].mul(0.005)));
+					if(player.unlock_ins) base[i] = base[i].pow(N(1).add(player.insupg[0].mul(0.05)));
+					
 					for(let j = 4;j < 8;j++)
 					{
 						if(base[i].gte(N(10).pow(scs[j])))
@@ -943,6 +989,76 @@
 				}
 			}
 			
+			function unlock_ins()
+			{
+				if(player.PL1info.gte(1e130) && !player.unlock_ins)
+				{
+					player.PL1info = player.PL1info.sub(1e130);
+					player.unlock_ins = true;
+				}
+			}
+			
+			function getins0gen()
+			{
+				let ins_gen = N(1);
+				ins_gen = ins_gen.add(player.ins[0].pow(0.25));
+				ins_gen = ins_gen.pow(N(1).add(player.insupg[1].mul(0.25)));
+				ins_gen = ins_gen.pow(N(1).add(player.insupg[3].mul(0.25)));
+				ins_gen = ins_gen.pow(N(1).add(player.insupg[5].mul(0.25)));
+				if(ins_gen.gte(1e9)) ins_gen = N(1e9).mul(N(5).pow(ins_gen.div(1e9).log10().pow(0.1)));
+				if(ins_gen.gte(1e21)) ins_gen = N(1e21).mul(N(4).pow(ins_gen.div(1e21).log10().pow(0.1)));
+				if(ins_gen.gte(1e45)) ins_gen = N(1e45).mul(ins_gen.div(1e45).log10().pow(N(1).div(1e6)));
+				return ins_gen;
+			}
+			
+			function tranins(num)
+			{
+				let gen = player.ins[0];
+				if(num == 1) gen = gen.pow(N(1).add(player.insupg[5].mul(0.25)));
+				if(num == 2) gen = gen.pow(N(1).add(player.insupg[1].mul(0.25)));
+				if(num == 3) gen = gen.pow(N(1).add(player.insupg[3].mul(0.25)));
+				if(gen.gte(1e7)) gen = N(1e7).mul(N(3).pow(gen.div(1e7).log10().pow(0.3)));
+				if(gen.gte(1e14)) gen = N(1e14).mul(N(1.125).pow(gen.div(1e14).log10().pow(0.001)));
+				if(gen.gte(1e28)) gen = N(1e28).mul(gen.div(1e28).log10().pow(N(1).div(1e9)));
+				player.ins[num] = player.ins[num].add(gen);
+				player.ins[0] = N(0);
+			}
+			
+			function addins0()
+			{
+				let ins_gen = getins0gen();
+				if(player.unlock_ins) player.ins[0] = player.ins[0].add(ins_gen);
+			}
+			
+			function buyinsupg(num)
+			{
+				let cost = insupgcostb[num].mul(insupgcostx[num].pow(player.insupg[num]));
+				if(num >= 0 && num <= 1) 
+				{
+					if(player.ins[1].gte(cost))
+					{
+						player.ins[1] = player.ins[1].sub(cost);
+						player.insupg[num] = player.insupg[num].add(1);
+					}
+				}
+				if(num >= 2 && num <= 3) 
+				{
+					if(player.ins[2].gte(cost))
+					{
+						player.ins[2] = player.ins[2].sub(cost);
+						player.insupg[num] = player.insupg[num].add(1);
+					}
+				}
+				if(num >= 4 && num <= 5) 
+				{
+					if(player.ins[3].gte(cost))
+					{
+						player.ins[3] = player.ins[3].sub(cost);
+						player.insupg[num] = player.insupg[num].add(1);
+					}
+				}
+			}
+			
 			function automation()
 			{
 				if(player.PL1upg[0])
@@ -987,10 +1103,16 @@
 					if(!player.slice.gte(1e7)) slice_gen = slice_gen.mul(player.slice.div(600).root(1.25).max(1));
 					else slice_gen = slice_gen.mul(player.slice.div(1e7).pow(0.8).mul(1e7).div(600).root(1.25).max(1));
 					
-					if(slice_gen.gte(5e8)) slice_gen = N(5e8).mul(slice_gen.div(5e8).pow(0.75));
-					if(slice_gen.gte(1e300)) slice_gen = N(1e300).mul(slice_gen.div(1e300).pow(0.3));
-					slice_gen = slice_gen.mul(N(1.5).pow(player.sliceupg_rep[0]));
+					//mul
 					if(player.boost.gte(67)) slice_gen = slice_gen.mul(player.PL1info.add(1).log(2).root(1.5));
+					slice_gen = slice_gen.mul(N(1.5).pow(player.sliceupg_rep[0]));
+					//pow
+					if(player.unlock_ins)
+					{
+						slice_gen = slice_gen.pow(N(1).add(player.insupg[2].mul(0.1)));
+					}
+					if(slice_gen.gte(5e8)) slice_gen = N(5e8).mul(slice_gen.div(5e8).pow(0.75));
+					if(slice_gen.gte(1e60)) slice_gen = N(1e60).mul(N(10).pow(slice_gen.div(1e60).log10().pow(0.6)));
 					player.slice = player.slice.add(slice_gen);
 				}
 				
@@ -1052,6 +1174,13 @@
 				for(let xm = 1;xm < 9;xm++) document.getElementById('slicebt' + xm).style['border-color'] = 'rgb(' + sbc[0] + ',' + sbc[1] + ',' + sbc[2] + ')';
 				document.getElementById('boostnum').innerHTML = notation(player.boost);
 				document.getElementById('boost2num').innerHTML = notation(player.boost2);
+				document.getElementById('unlock_ins').style.display = (player.unlock_ins ? 'block' : 'none');
+				document.getElementById('uunlock_ins').style.display = (!player.unlock_ins ? 'block' : 'none');
+				for(let i = 0;i < 4;i++)
+				{
+					document.getElementById('ins' + i).innerHTML = notation(player.ins[i]);
+				}
+				document.getElementById('ins0gen').innerHTML = notation(getins0gen());
 				let jdx = getjdx();
 				let boostcost = getboostcost();
 				let boost2cost = getboost2cost();
@@ -1169,6 +1298,10 @@
 					else document.getElementById('PL1ug' + (i + 1)).style['background-color'] = '#000000';
 				}
 				document.getElementById('PL1ug3effect').innerHTML = notation(player.boost.add(1).pow(1.5));
+				for(let i = 0;i < 6;i++)
+				{
+					document.getElementById('insupg' + i + 'cost').innerHTML = notation(insupgcostb[i].mul(insupgcostx[i].pow(player.insupg[i])));
+				}
 			}
 			
 			
