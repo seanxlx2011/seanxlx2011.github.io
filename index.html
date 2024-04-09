@@ -162,6 +162,18 @@
 			float: center;
 		}
 		
+		.PL2bt {
+			background-color: purple;
+			height: 150px;
+			width: 200px;
+			border: 3px solid white;
+			color: white;
+			padding: 10px;
+			text-align: center;
+			font-size: 14px;
+			float: center;
+		}
+		
 		.slicebt {
 			background-color: black;
 			height: 150px;
@@ -210,78 +222,95 @@
 			<button class="pagebt" onclick="chpage(2)">层级</button>
 			<button class="pagebt" onclick="chpage(3)">统计</button>
 			<button class="pagebt" onclick="chpage(4)" style="background-color: blue;" id="PL1pbt">世界</button>
+			<button class="pagebt" onclick="chpage(5)" style="background-color: purple;" id="PL2pbt">宇宙</button>
 		</p>
 		
 		<div id="page1">
-			<table align="center">
-				<td>
-					<button class="autoboost" id="autoboostbt" onclick="chautoboost()"><span id="autoboostbts"></span></button>
-				</td>
-				<td>
-					<button class="autoboost" id="autoboost2bt" onclick="chautoboost2()"><span id="autoboost2bts"></span></button>
-				</td>
-				<tr>
-				<td>
-					<button class="boostbt" id="boostbt" onclick="buyboost()">跃迁<span id="boostnum"></span>
-					<br/>重置数据和传输节点，但提升跃迁。<span id="boosteffect"></span><br/>成本：<span id="boostcost"></span>数据</button>
-				</td>
-				<td>
-					<button class="boostbt" id="boost2bt" onclick="buyboost2()">二重跃迁<span id="boost2num"></span>
-					<br/>重置跃迁，但提升二重跃迁。<span id="boost2effect"></span><br/>成本：<span id="boost2cost"></span>跃迁</button>
-				</td>
-			</table>
-			
-			<p class="ftsz3">
-				<button class="buymaxjd" onclick="allmaxjd()">全部最大化</button>
+			<p align="center">
+				<button class="spagebt" onclick="chspage(1)">传输节点</button>
+				<button class="spagebt" onclick="chspage(2)" id="spagebt2_1">星辰节点</button>
 			</p>
-			
-			<p class="ftsz3" id="unlockjd1">
-				<span id="jdzs1">折算</span><span>1号传输节点 # 等级 </span><span id="jdbuy1"></span><span> # </span><span id="jdnum1"></span><span> × </span><span id="jdx1"></span>
-				<button class="autobuybt" onclick="chautobuyjd(1)" id="autobuyjdbt1"><span id="autobuyjds1"></span></button>
-				<button class="buyjd" onclick="buyjd(1)" id="jdbuybt1">花费<span id="jdcost1"></span>数据升级</button>
-			</p>
-			<p class="ftsz3" id="unlockjd2">
-				<span id="jdzs2">折算</span><span>2号传输节点 # 等级 </span><span id="jdbuy2"></span><span> # </span><span id="jdnum2"></span><span> × </span><span id="jdx2"></span>
-				<button class="autobuybt" onclick="chautobuyjd(2)" id="autobuyjdbt2"><span id="autobuyjds2"></span></button>
-				<button class="buyjd" onclick="buyjd(2)" id="jdbuybt2">花费<span id="jdcost2"></span>数据升级</button>
-			</p>
-			<p class="ftsz3" id="unlockjd3">
-				<span id="jdzs3">折算</span><span>3号传输节点 # 等级 </span><span id="jdbuy3"></span><span> # </span><span id="jdnum3"></span><span> × </span><span id="jdx3"></span>
-				<button class="autobuybt" onclick="chautobuyjd(3)" id="autobuyjdbt3"><span id="autobuyjds3"></span></button>
-				<button class="buyjd" onclick="buyjd(3)" id="jdbuybt3">花费<span id="jdcost3"></span>数据升级</button>
-			</p>
-			<p class="ftsz3" id="unlockjd4">
-				<span id="jdzs4">折算</span><span>4号传输节点 # 等级 </span><span id="jdbuy4"></span><span> # </span><span id="jdnum4"></span><span> × </span><span id="jdx4"></span>
-				<button class="autobuybt" onclick="chautobuyjd(4)" id="autobuyjdbt4"><span id="autobuyjds4"></span></button>
-				<button class="buyjd" onclick="buyjd(4)" id="jdbuybt4">花费<span id="jdcost4"></span>数据升级</button>
-			</p>
-			<p class="ftsz3" id="unlockjd5">
-				<span id="jdzs5">折算</span><span>5号传输节点 # 等级 </span><span id="jdbuy5"></span><span> # </span><span id="jdnum5"></span><span> × </span><span id="jdx5"></span>
-				<button class="autobuybt" onclick="chautobuyjd(5)" id="autobuyjdbt5"><span id="autobuyjds5"></span></button>
-				<button class="buyjd" onclick="buyjd(5)" id="jdbuybt5">花费<span id="jdcost5"></span>数据升级</button>
-			</p>
-			<p class="ftsz3" id="unlockjd6">
-				<span id="jdzs6">折算</span><span>6号传输节点 # 等级 </span><span id="jdbuy6"></span><span> # </span><span id="jdnum6"></span><span> × </span><span id="jdx6"></span>
-				<button class="autobuybt" onclick="chautobuyjd(6)" id="autobuyjdbt6"><span id="autobuyjds6"></span></button>
-				<button class="buyjd" onclick="buyjd(6)" id="jdbuybt6">花费<span id="jdcost6"></span>数据升级</button>
-			</p>
-			<p class="ftsz3" id="unlockjd7">
-				<span id="jdzs7">折算</span><span>7号传输节点 # 等级 </span><span id="jdbuy7"></span><span> # </span><span id="jdnum7"></span><span> × </span><span id="jdx7"></span>
-				<button class="autobuybt" onclick="chautobuyjd(7)" id="autobuyjdbt7"><span id="autobuyjds7"></span></button>
-				<button class="buyjd" onclick="buyjd(7)" id="jdbuybt7">花费<span id="jdcost7"></span>数据升级</button>
-			</p>
-			<p class="ftsz3" id="unlockjd8">
-				<span id="jdzs8">折算</span><span>8号传输节点 # 等级 </span><span id="jdbuy8"></span><span> # </span><span id="jdnum8"></span><span> × </span><span id="jdx8"></span>
-				<button class="autobuybt" onclick="chautobuyjd(8)" id="autobuyjdbt8"><span id="autobuyjds8"></span></button>
-				<button class="buyjd" onclick="buyjd(8)" id="jdbuybt8">花费<span id="jdcost8"></span>数据升级</button>
-			</p>
+			<div id="spage1_1">
+				<table align="center">
+					<td>
+						<button class="autoboost" id="autoboostbt" onclick="chautoboost()"><span id="autoboostbts"></span></button>
+					</td>
+					<td>
+						<button class="autoboost" id="autoboost2bt" onclick="chautoboost2()"><span id="autoboost2bts"></span></button>
+					</td>
+					<tr>
+					<td>
+						<button class="boostbt" id="boostbt" onclick="buyboost()">跃迁<span id="boostnum"></span>
+						<br/>重置数据和传输节点，但提升跃迁。<span id="boosteffect"></span><br/>成本：<span id="boostcost"></span>数据</button>
+					</td>
+					<td>
+						<button class="boostbt" id="boost2bt" onclick="buyboost2()">二重跃迁<span id="boost2num"></span>
+						<br/>重置跃迁，但提升二重跃迁。<span id="boost2effect"></span><br/>成本：<span id="boost2cost"></span>跃迁</button>
+					</td>
+				</table>
+				
+				<p class="ftsz3">
+					<button class="buymaxjd" onclick="allmaxjd()">全部最大化</button>
+				</p>
+				
+				<p class="ftsz3" id="unlockjd1">
+					<span id="jdzs1">折算</span><span>1号传输节点 # 等级 </span><span id="jdbuy1"></span><span> # </span><span id="jdnum1"></span><span> × </span><span id="jdx1"></span>
+					<button class="autobuybt" onclick="chautobuyjd(1)" id="autobuyjdbt1"><span id="autobuyjds1"></span></button>
+					<button class="buyjd" onclick="buyjd(1)" id="jdbuybt1">花费<span id="jdcost1"></span>数据升级</button>
+				</p>
+				<p class="ftsz3" id="unlockjd2">
+					<span id="jdzs2">折算</span><span>2号传输节点 # 等级 </span><span id="jdbuy2"></span><span> # </span><span id="jdnum2"></span><span> × </span><span id="jdx2"></span>
+					<button class="autobuybt" onclick="chautobuyjd(2)" id="autobuyjdbt2"><span id="autobuyjds2"></span></button>
+					<button class="buyjd" onclick="buyjd(2)" id="jdbuybt2">花费<span id="jdcost2"></span>数据升级</button>
+				</p>
+				<p class="ftsz3" id="unlockjd3">
+					<span id="jdzs3">折算</span><span>3号传输节点 # 等级 </span><span id="jdbuy3"></span><span> # </span><span id="jdnum3"></span><span> × </span><span id="jdx3"></span>
+					<button class="autobuybt" onclick="chautobuyjd(3)" id="autobuyjdbt3"><span id="autobuyjds3"></span></button>
+					<button class="buyjd" onclick="buyjd(3)" id="jdbuybt3">花费<span id="jdcost3"></span>数据升级</button>
+				</p>
+				<p class="ftsz3" id="unlockjd4">
+					<span id="jdzs4">折算</span><span>4号传输节点 # 等级 </span><span id="jdbuy4"></span><span> # </span><span id="jdnum4"></span><span> × </span><span id="jdx4"></span>
+					<button class="autobuybt" onclick="chautobuyjd(4)" id="autobuyjdbt4"><span id="autobuyjds4"></span></button>
+					<button class="buyjd" onclick="buyjd(4)" id="jdbuybt4">花费<span id="jdcost4"></span>数据升级</button>
+				</p>
+				<p class="ftsz3" id="unlockjd5">
+					<span id="jdzs5">折算</span><span>5号传输节点 # 等级 </span><span id="jdbuy5"></span><span> # </span><span id="jdnum5"></span><span> × </span><span id="jdx5"></span>
+					<button class="autobuybt" onclick="chautobuyjd(5)" id="autobuyjdbt5"><span id="autobuyjds5"></span></button>
+					<button class="buyjd" onclick="buyjd(5)" id="jdbuybt5">花费<span id="jdcost5"></span>数据升级</button>
+				</p>
+				<p class="ftsz3" id="unlockjd6">
+					<span id="jdzs6">折算</span><span>6号传输节点 # 等级 </span><span id="jdbuy6"></span><span> # </span><span id="jdnum6"></span><span> × </span><span id="jdx6"></span>
+					<button class="autobuybt" onclick="chautobuyjd(6)" id="autobuyjdbt6"><span id="autobuyjds6"></span></button>
+					<button class="buyjd" onclick="buyjd(6)" id="jdbuybt6">花费<span id="jdcost6"></span>数据升级</button>
+				</p>
+				<p class="ftsz3" id="unlockjd7">
+					<span id="jdzs7">折算</span><span>7号传输节点 # 等级 </span><span id="jdbuy7"></span><span> # </span><span id="jdnum7"></span><span> × </span><span id="jdx7"></span>
+					<button class="autobuybt" onclick="chautobuyjd(7)" id="autobuyjdbt7"><span id="autobuyjds7"></span></button>
+					<button class="buyjd" onclick="buyjd(7)" id="jdbuybt7">花费<span id="jdcost7"></span>数据升级</button>
+				</p>
+				<p class="ftsz3" id="unlockjd8">
+					<span id="jdzs8">折算</span><span>8号传输节点 # 等级 </span><span id="jdbuy8"></span><span> # </span><span id="jdnum8"></span><span> × </span><span id="jdx8"></span>
+					<button class="autobuybt" onclick="chautobuyjd(8)" id="autobuyjdbt8"><span id="autobuyjds8"></span></button>
+					<button class="buyjd" onclick="buyjd(8)" id="jdbuybt8">花费<span id="jdcost8"></span>数据升级</button>
+				</p>
+			</div>
+			<div id="spage2_1" align="center">
+				
+			</div>
 		</div>
 		<div id="page2">
-			<p align="center">
-				<span class="ftsz3">你拥有 </span><span class="ftsz4" id="PL1info"></span><span class="ftsz3"> 世界信息</span>
-				<br/>
-				<button class="PL1bt" onclick="buyPL1()">世界重置：重置之前的所有内容，但获得世界信息。<br/>+ <span id="PL1infoget"></span> 世界信息。<br/>需要e80数据</button>
-			</p>
+			<table align="center">
+				<td style="width: 500px; float: center;">
+					<span class="ftsz3">你拥有 </span><span class="ftsz4" id="PL1info"></span><span class="ftsz3"> 世界信息</span>
+					<br/>
+					<button class="PL1bt" onclick="buyPL1()">世界重置：重置之前的所有内容，但获得世界信息。<br/>+ <span id="PL1infoget"></span> 世界信息。<br/>需要e80数据</button>
+				</td>
+				<td style="width: 500px; float: center;">
+					<span class="ftsz3">你拥有 </span><span class="ftsz4" id="PL2info"></span><span class="ftsz3"> 宇宙信息</span>
+					<br/>
+					<button class="PL2bt" onclick="buyPL2()">宇宙重置：重置之前的所有内容，但获得宇宙信息。<br/>+ <span id="PL2infoget"></span> 宇宙信息。<br/>需要e5500世界信息</button>
+				</td>
+			</table>
 		</div>
 		<div id="page3">
 			<p align="center">
@@ -376,7 +405,7 @@
 				<br/>
 				<span class="slicetext">它们使传输节点产能变为</span><span class="slicetext" id="slice_effect"></span><span class="slicetext">倍</span>
 				<br/>
-				<span class="ftsz2">世界重置不会重置位面切片。</span>
+				<span class="ftsz2">在 1.000e64 位面切片将解锁自动升级。世界重置不会重置位面切片。</span>
 				<table>
 					<td>
 						<button class="slicebt" id="slicebt1" onclick="buysliceupg(1)">
@@ -420,7 +449,7 @@
 						<button class="slicebt" id="slicebt8" onclick="buysliceupg(8)">解锁宇宙重置<br/>需要：<span class="slicetext" id="sliceupgcost8"></span>位面切片</button>
 					</td>
 				</table>
-				<span class="ftsz3" style="color: red;">位面切片软上限在 1e7、5e8、1e60</span>
+				<span class="ftsz3" style="color: red;">位面切片软上限在 1e7、5e8、1e200</span>
 			</div>
 			<div id="spage3_4" align="center">
 				<button class="unlock_ins" onclick="unlock_ins()" id="uunlock_ins">
@@ -439,8 +468,8 @@
 						<br/>
 						<table>
 							<td><button class="insupgbt" onclick="tranins(1)">转化所有原始铭刻</button></td>
-							<td><button class="insupgbt" onclick="buyinsupg(0)">传输节点产能^(1+0.05×等级)<br/>价格：<span id="insupg0cost"></span></button></td>
-							<td><button class="insupgbt" onclick="buyinsupg(1)">增幅原始和β铭刻获取量^(1+0.25×等级)<br/>价格：<span id="insupg1cost"></span></button></td>
+							<td><button class="insupgbt" onclick="buyinsupg(0)">Lv <span id="insupglevel0"></span><br/>传输节点产能^(1+0.008×等级)<br/>价格：<span id="insupg0cost"></span></button></td>
+							<td><button class="insupgbt" onclick="buyinsupg(1)">Lv <span id="insupglevel1"></span><br/>增幅原始和β铭刻获取量×(1.75^等级)<br/>价格：<span id="insupg1cost"></span></button></td>
 						</table>
 						<br/>
 					</p>
@@ -449,8 +478,8 @@
 						<br/>
 						<table>
 							<td><button class="insupgbt" onclick="tranins(2)">转化所有原始铭刻</button></td>
-							<td><button class="insupgbt" onclick="buyinsupg(2)">位面切片获取量^(1+0.1×等级)<br/>价格：<span id="insupg2cost"></span></button></td>
-							<td><button class="insupgbt" onclick="buyinsupg(3)">增幅原始和γ铭刻获取量^(1+0.25×等级)<br/>价格：<span id="insupg3cost"></span></button></td>
+							<td><button class="insupgbt" onclick="buyinsupg(2)">Lv <span id="insupglevel2"></span><br/>位面切片获取量^(1+0.05×等级)<br/>价格：<span id="insupg2cost"></span></button></td>
+							<td><button class="insupgbt" onclick="buyinsupg(3)">Lv <span id="insupglevel3"></span><br/>增幅原始和γ铭刻获取量×(1.75^等级)<br/>价格：<span id="insupg3cost"></span></button></td>
 						</table>
 						<br/>
 					</p>
@@ -459,13 +488,20 @@
 						<br/>
 						<table>
 							<td><button class="insupgbt" onclick="tranins(3)">转化所有原始铭刻</button></td>
-							<td><button class="insupgbt" onclick="buyinsupg(4)">节点1~4阶软上限推迟^(1+0.1×等级)<br/>价格：<span id="insupg4cost"></span></button></td>
-							<td><button class="insupgbt" onclick="buyinsupg(5)">增幅原始和α铭刻获取量^(1+0.25×等级)<br/>价格：<span id="insupg5cost"></span></button></td>
+							<td><button class="insupgbt" onclick="buyinsupg(4)">Lv <span id="insupglevel4"></span><br/>节点1~4阶软上限推迟^(1+0.1×等级)<br/>价格：<span id="insupg4cost"></span></button></td>
+							<td><button class="insupgbt" onclick="buyinsupg(5)">Lv <span id="insupglevel5"></span><br/>增幅原始和α铭刻获取量×(1.75^等级)<br/>价格：<span id="insupg5cost"></span></button></td>
 						</table>
 					</p>
-					<span class="ftsz3" style="color: red;">原始铭刻获取数量软上限在 1e9、1e21、1e45</span>
-					<span class="ftsz3" style="color: red;">次级铭刻获取数量软上限在 1e7、1e14、1e28</span>
+					<span class="ftsz3" style="color: red;">增幅铭刻获取量的升级的软上限在 1000 倍</span><br/>
+					<span class="ftsz3">铭刻转化量软上限在 1.000e12</span><br/>
 				</div>
+			</div>
+		</div>
+		<div id="page5">
+			<div id="spage1_5">
+				<p class="ftsz3" align="center">
+					<span>你已经经过了</span><span id="PL2tms" style="color: purple;"></span><span>次宇宙重置</span>
+				</p>
 			</div>
 		</div>
 		
@@ -480,8 +516,8 @@
 				cnw_now = type;
 			}
 			
-			var nowpage = "page101";
-			var subpage = "sp1";
+			var nowpage = 1;
+			var subpage = 1;
 			var get_PL1info = new Decimal(0);
 			var player;
 			
@@ -494,11 +530,14 @@
 			{
 				player =
 				{
+					//start
 					data: N(10),
 					buyjd: [N(0), N(0), N(0), N(0), N(0), N(0), N(0), N(0)],
 					jdnum: [N(0), N(0), N(0), N(0), N(0), N(0), N(0), N(0)],
 					boost: N(0),
 					boost2: N(0),
+					
+					//world
 					PL1info: N(0),
 					PL1unlock: false,
 					PL1upg: [false, false, false, false, false, false, false, false],
@@ -511,13 +550,30 @@
 					ins: [N(0), N(0), N(0), N(0)],
 					insupg: [N(0), N(0), N(0), N(0), N(0), N(0)],
 					unlock_ins: false,
+					
+					//universe
+					PL2info: N(0),
+					PL2unlock: false,
+					PL2tms: N(0),
+					star_node: [N(0), N(0), N(0), N(0), N(0), N(0), N(0), N(0)],
+					star: N(0),
+					
+					//chaos
+					
+					//void
+					
+					//theorem
+					
+					//reality
+					
+					//beyond
 				};
 			}
 			
 			var PL1upgcost = [N(1), N(2), N(6), N(40), N(2500), N(10000), N(30000), N(50000)];
-			var sliceupgcost = [N(5), N(6), N(7), N(8), N(300), N(15000), N(1e10), N(1e300)];
-			var insupgcostb = [N(300), N(500), N(300), N(500), N(300), N(500)];
-			var insupgcostx = [N(100), N(100), N(100), N(100), N(100), N(100)];
+			var sliceupgcost = [N(5), N(6), N(7), N(8), N(300), N(15000), N(1e10), N(1e111)];
+			var insupgcostb = [N(300), N(50), N(300), N(50), N(300), N(50)];
+			var insupgcostx = [N(100), N(6), N(100), N(6), N(100), N(6)];
 			
 			function chpage(p)
 			{
@@ -587,7 +643,7 @@
 			
 			function getjdscs(i)
 			{
-				let base = [N(1024), N(1e10), N(1e50), N('e400'), N(1500), N(60000), N(1e6), N(1e10)];
+				let base = [N(1024), N(1e10), N(1e50), N('e400'), N(1e9), N(1e100), N('e40000'), N('ee50')];
 				if(player.boost.gte(55)) base[2] = base[2].pow(1.5);
 				if(player.PL1upg[6]) for(let j = 0;j < 2;j++) base[j] = base[j].pow(1.5);
 				if(player.sliceupg[2]) for(let j = 0;j < 3;j++) base[j] = base[j].pow(1.5);
@@ -602,6 +658,7 @@
 				if(player.boost.gte(20)) base[0] = base[0].mul(0.4);
 				if(player.boost.gte(21)) base[1] = base[1].mul(N(1).div(player.boost.add(1).root(15)));
 				if(player.boost2.gte(2)) base[0] = base[0].mul(N(1).div(player.boost.add(1).root(5)));
+				if(player.boost2.gte(48)) for(let j = 0;j < 3;j++) base[j] = base[j].mul(N(1).div(player.boost2.root(10)));
 				if(player.PL1upg[1]) base[0] = base[0].mul(0.6);
 				if(player.PL1upg[5]) base[0] = base[0].mul(0.5);
 				if(player.PL1upg[5]) base[1] = base[1].mul(0.6);
@@ -645,7 +702,7 @@
 					//pow
 					if(player.boost.gte(65)) base[i] = base[i].pow(N(1).add(player.boost.root(10).div(15)));
 					if(player.PL1upg[7]) base[i] = base[i].pow(N(1).add(player.sliceupg_rep[0].mul(0.005)));
-					if(player.unlock_ins) base[i] = base[i].pow(N(1).add(player.insupg[0].mul(0.05)));
+					if(player.unlock_ins) base[i] = base[i].pow(N(1).add(player.insupg[0].mul(0.008)));
 					
 					for(let j = 4;j < 8;j++)
 					{
@@ -727,8 +784,9 @@
 			}
 			
 			var boosteffectlist = [N(1), N(2), N(3), N(4), N(5), N(6), N(7), N(8)
-			, N(9), N(15), N(16), N(20), N(21), N(52), N(55), N(65), N(67)];
-			var boosteffectnum = 17;
+			, N(9), N(15), N(16), N(20), N(21), N(52), N(55), N(65)
+			, N(67), N(95), N(100)];
+			var boosteffectnum = 19;
 			
 			function getboosteffect(b)
 			{
@@ -800,11 +858,20 @@
 				{
 					return '在67跃迁，世界信息增幅位面切片获取量。当前：×' + notation(player.PL1info.add(1).log(2).root(1.5));
 				}
+				else if(!b.gte(95))
+				{
+					return '在95跃迁，位面切片增幅指数增加0.2。';
+				}
+				else if(!b.gte(100))
+				{
+					return '在100跃迁，位面切片数量增幅67跃迁的效果。当前：×' + notation(player.slice.log(2).pow(1.15));
+				}
 				else return '';
 			}
 			
-			var boost2effectlist = [N(1), N(2), N(3), N(5), N(10), N(11), N(12)];
-			var boost2effectnum = 7;
+			var boost2effectlist = [N(1), N(2), N(3), N(5), N(10), N(11), N(12), N(30)
+			, N(48)];
+			var boost2effectnum = 9;
 			
 			function getboost2effect(b)
 			{
@@ -836,6 +903,14 @@
 				{
 					return '在12二重跃迁，世界信息增幅节点产能。当前：×' + notation(player.PL1info.add(1).mul(0.5).pow(0.25));
 				}
+				else if(!b.gte(30))
+				{
+					return '在30二重跃迁，铭刻升级2,4,6增幅位面切片产能。当前：×' + notation((player.insupg[1].add(player.insupg[3]).add(player.insupg[5])).pow(2));
+				}
+				else if(!b.gte(48))
+				{
+					return '在48二重跃迁，二重跃迁弱化节点一至三阶软上限。当前：×' + notation(N(1).div(player.boost2.root(10)));
+				}
 				else return '';
 			}
 			
@@ -859,6 +934,19 @@
 			{
 				boost2reset();
 				player.boost2 = N(0);
+			}
+			
+			function PL2reset()
+			{
+				PL1reset();
+				player.PL1info = N(0);
+				player.PL1upg = [true, false, false, false, true, false, false, true];
+				player.slice = N(0);
+				player.sliceupg = [true, false, false, true];
+				player.sliceupg_rep = [N(0), N(0), N(0), N(0)];
+				player.ins = [N(0), N(0), N(0), N(0)];
+				player.insupg = [N(0), N(0), N(0), N(0), N(0), N(0)];
+				player.unlock_ins = false;
 			}
 			
 			function buyboost()
@@ -922,7 +1010,7 @@
 				}
 			}
 			
-			var PL1infoget = N(0);
+			var PL1infoget = N(0), PL2infoget = N(0);
 			function updatePLinfoget()
 			{
 				if(player.data.gte(1e80))
@@ -935,6 +1023,14 @@
 				
 				if(player.boost2.gte(10)) PL1infoget = PL1infoget.mul(player.boost.add(1).mul(1.5).pow(0.75));
 				PL1infoget = PL1infoget.floor();
+				
+				if(player.PL1info.gte('e5500'))
+				{
+					PL2infoget = player.PL1info.root(2750).div(100);
+				}
+				else PL2infoget = N(0);
+				
+				PL2infoget = PL2infoget.floor();
 			}
 			
 			function buyPL1()
@@ -944,6 +1040,17 @@
 					PL1reset();
 					player.PL1info = player.PL1info.add(PL1infoget);
 					player.PL1unlock = true;
+				}
+			}
+			
+			function buyPL2()
+			{
+				if(player.PL1info.gte('e5500'))
+				{
+					PL2reset();
+					player.PL2info = player.PL2info.add(PL2infoget);
+					player.PL2unlock = true;
+					player.PL2tms = player.PL2tms.add(1);
 				}
 			}
 			
@@ -961,6 +1068,7 @@
 			{
 				let p = N(0.5);
 				if(player.PL1upg[7]) p = p.add(player.sliceupg_rep[1].mul(0.05));
+				if(player.boost.gte(95)) p = p.add(0.2);
 				
 				let effect = player.slice.pow(p).max(1);
 				return effect;
@@ -1002,24 +1110,47 @@
 			{
 				let ins_gen = N(1);
 				ins_gen = ins_gen.add(player.ins[0].pow(0.25));
-				ins_gen = ins_gen.pow(N(1).add(player.insupg[1].mul(0.25)));
-				ins_gen = ins_gen.pow(N(1).add(player.insupg[3].mul(0.25)));
-				ins_gen = ins_gen.pow(N(1).add(player.insupg[5].mul(0.25)));
-				if(ins_gen.gte(1e9)) ins_gen = N(1e9).mul(N(5).pow(ins_gen.div(1e9).log10().pow(0.1)));
-				if(ins_gen.gte(1e21)) ins_gen = N(1e21).mul(N(4).pow(ins_gen.div(1e21).log10().pow(0.1)));
-				if(ins_gen.gte(1e45)) ins_gen = N(1e45).mul(ins_gen.div(1e45).log10().pow(N(1).div(1e6)));
+				let mult = N(1.75).pow(player.insupg[1]);
+				if(mult.gte(1000)) mult = N(1000).mul(mult.div(1000).pow(0.4));
+				ins_gen = ins_gen.mul(mult);
+				
+				mult = N(1.75).pow(player.insupg[3]);
+				if(mult.gte(1000)) mult = N(1000).mul(mult.div(1000).pow(0.4));
+				ins_gen = ins_gen.mul(mult);
+				
+				mult = N(1.75).pow(player.insupg[5]);
+				if(mult.gte(1000)) mult = N(1000).mul(mult.div(1000).pow(0.4));
+				ins_gen = ins_gen.mul(mult);
 				return ins_gen;
+			}
+			
+			function gettraninsnum(num)
+			{
+				let gen = player.ins[0];
+				
+				let mult = N(1.75).pow(player.insupg[5]);
+				if(mult.gte(1000)) mult = N(1000).mul(mult.div(1000).pow(0.4));
+				
+				if(num == 1) gen = gen.mul(mult);
+				
+				mult = N(1.75).pow(player.insupg[1]);
+				if(mult.gte(1000)) mult = N(1000).mul(mult.div(1000).pow(0.4));
+				
+				if(num == 2) gen = gen.mul(mult);
+				
+				mult = N(1.75).pow(player.insupg[3]);
+				if(mult.gte(1000)) mult = N(1000).mul(mult.div(1000).pow(0.4));
+				
+				if(num == 3) gen = gen.mul(mult);
+				
+				if(gen.gte(1e12)) gen = N(1e12).mul(gen.div(1e12).pow(0.025));
+				
+				return gen;
 			}
 			
 			function tranins(num)
 			{
-				let gen = player.ins[0];
-				if(num == 1) gen = gen.pow(N(1).add(player.insupg[5].mul(0.25)));
-				if(num == 2) gen = gen.pow(N(1).add(player.insupg[1].mul(0.25)));
-				if(num == 3) gen = gen.pow(N(1).add(player.insupg[3].mul(0.25)));
-				if(gen.gte(1e7)) gen = N(1e7).mul(N(3).pow(gen.div(1e7).log10().pow(0.3)));
-				if(gen.gte(1e14)) gen = N(1e14).mul(N(1.125).pow(gen.div(1e14).log10().pow(0.001)));
-				if(gen.gte(1e28)) gen = N(1e28).mul(gen.div(1e28).log10().pow(N(1).div(1e9)));
+				let gen = gettraninsnum(num);
 				player.ins[num] = player.ins[num].add(gen);
 				player.ins[0] = N(0);
 			}
@@ -1076,6 +1207,14 @@
 				{
 					if(player.autoboost2) buymaxboost2();
 				}
+				
+				if(player.slice.gte(1e64))
+				{
+					player.sliceupg_rep[0] = player.slice.log(sliceupgcost[0]).floor();
+					player.sliceupg_rep[1] = player.slice.log(sliceupgcost[1]).floor();
+					player.sliceupg_rep[2] = player.slice.log(sliceupgcost[2]).floor();
+					player.sliceupg_rep[3] = player.slice.log(sliceupgcost[3]).floor();
+				}
 			}
 			
 			function produce()
@@ -1105,14 +1244,16 @@
 					
 					//mul
 					if(player.boost.gte(67)) slice_gen = slice_gen.mul(player.PL1info.add(1).log(2).root(1.5));
+					if(player.boost.gte(100)) slice_gen = slice_gen.mul(player.slice.log(2).pow(1.15));
+					if(player.boost2.gte(30)) slice_gen = slice_gen.mul((player.insupg[1].add(player.insupg[3]).add(player.insupg[5])).pow(2));
 					slice_gen = slice_gen.mul(N(1.5).pow(player.sliceupg_rep[0]));
 					//pow
 					if(player.unlock_ins)
 					{
-						slice_gen = slice_gen.pow(N(1).add(player.insupg[2].mul(0.1)));
+						slice_gen = slice_gen.pow(N(1).add(player.insupg[2].mul(0.05)));
 					}
 					if(slice_gen.gte(5e8)) slice_gen = N(5e8).mul(slice_gen.div(5e8).pow(0.75));
-					if(slice_gen.gte(1e60)) slice_gen = N(1e60).mul(N(10).pow(slice_gen.div(1e60).log10().pow(0.6)));
+					if(slice_gen.gte(1e200)) slice_gen = N(1e200).mul(N(10).pow(slice_gen.div(1e200).log10().pow(0.75)));
 					player.slice = player.slice.add(slice_gen);
 				}
 				
@@ -1121,7 +1262,7 @@
 			
 			function GUI()
 			{
-				let page_has_spage = [0, 0, 3, 3];
+				let page_has_spage = [2, 0, 3, 3, 1];
 				
 				if(page == 1) document.getElementById('page1').style.display = 'block';
 				else document.getElementById('page1').style.display = 'none';
@@ -1131,6 +1272,8 @@
 				else document.getElementById('page3').style.display = 'none';
 				if(page == 4) document.getElementById('page4').style.display = 'block';
 				else document.getElementById('page4').style.display = 'none';
+				if(page == 5) document.getElementById('page5').style.display = 'block';
+				else document.getElementById('page5').style.display = 'none';
 				
 				if(page_has_spage[page - 1] >= 1)
 				{
@@ -1155,14 +1298,23 @@
 				
 				if(player.PL1unlock) document.getElementById('PL1pbt').style.display = 'inline-block';
 				else document.getElementById('PL1pbt').style.display = 'none';
+				if(player.PL2unlock) document.getElementById('PL2pbt').style.display = 'inline-block';
+				else document.getElementById('PL2pbt').style.display = 'none';
 				
 				if(player.PL1upg[7]) document.getElementById('spagebt2_4').style.display = 'inline-block';
 				else document.getElementById('spagebt2_4').style.display = 'none';
 				
+				if(player.PL2unlock) document.getElementById('spagebt2_1').style.display = 'inline-block';
+				else document.getElementById('spagebt2_1').style.display = 'none';
+				
 				document.getElementById('PL1infoget').innerHTML = notation(PL1infoget);
+				document.getElementById('PL2infoget').innerHTML = notation(PL2infoget);
 				
 				document.getElementById('data').innerHTML = notation(player.data);
 				document.getElementById('PL1info').innerHTML = notation(player.PL1info);
+				document.getElementById('PL2info').innerHTML = notation(player.PL2info);
+				document.getElementById('PL2tms').innerHTML = notation(player.PL2tms);
+				
 				document.getElementById('slice').innerHTML = notation(player.slice);
 				document.getElementById('slice_effect').innerHTML = notation(getsliceeffect());
 				for(let i = 0;i < 3;i++)
@@ -1301,6 +1453,7 @@
 				for(let i = 0;i < 6;i++)
 				{
 					document.getElementById('insupg' + i + 'cost').innerHTML = notation(insupgcostb[i].mul(insupgcostx[i].pow(player.insupg[i])));
+					document.getElementById('insupglevel' + i).innerHTML = notation(player.insupg[i]);
 				}
 			}
 			
