@@ -209,6 +209,18 @@
 			font-size: 16px;
 			float: center;
 		}
+		
+		.PL2mlstbt {
+			background-color: white;
+			height: 150px;
+			width: 200px;
+			border: 5px solid purple;
+			color: black;
+			padding: 10px;
+			text-align: center;
+			font-size: 14px;
+			float: center;
+		}
 		</style>
 	</head>
 
@@ -216,6 +228,8 @@
 		<script type="text/javascript" src="break_eternity.js"></script>
 		
 		<p align="center" class="ftsz3"><span>你有</span><span id="data"></span><span>数据</span></p>
+		
+		<p align="center" class="ftsz2" style="color: red;" id="uni_crowded">你的数据超过了 1.000e65536 导致宇宙变得拥挤。<br/>数据会随着时间减少<br/>达到 1.000e131072 数据后宇宙将坍缩。（待更新）</span> 
 		
 		<p align="center">
 			<button class="pagebt" onclick="chpage(1)">传输节点</button>
@@ -246,6 +260,10 @@
 					<td>
 						<button class="boostbt" id="boost2bt" onclick="buyboost2()">二重跃迁<span id="boost2num"></span>
 						<br/>重置跃迁，但提升二重跃迁。<span id="boost2effect"></span><br/>成本：<span id="boost2cost"></span>跃迁</button>
+					</td>
+					<td>
+						<button class="boostbt" id="boost3bt" onclick="buyboost3()">三重跃迁<span id="boost3num"></span>
+						<br/>重置二重跃迁，但提升三重跃迁。<span id="boost3effect"></span><br/>成本：<span id="boost3cost"></span>二重跃迁</button>
 					</td>
 				</table>
 				
@@ -295,7 +313,44 @@
 				</p>
 			</div>
 			<div id="spage2_1" align="center">
-				
+				<p align="center">
+					<button class="boostbt" id="dimbt" onclick="buydim()">维度<span id="dim"></span><br/>提升星辰节点指数^x，并给予1星辰<br/>价格：<span id="dimcost"></span>宇宙信息</button>
+				</p>
+				<p class="ftsz2">
+					<span>你拥有</span><span id="star"></span><span>星辰，它们以log10(x+10)^0.5将节点升级效果 × </span><span id="stareffect"></span><br/>
+				</p>
+				<p class="ftsz3" align="left"><span id="snzs1">折算</span>
+				    <span>1号星辰节点 # 等级 </span><span id="snbuy1"></span><span> # </span><span id="snnum1"></span><span> × </span><span id="snx1"></span>
+					<button class="buyjd" onclick="buysn(1)" id="snbuybt1">花费<span id="sncost1"></span>星辰升级</button>
+				</p>
+				<p class="ftsz3" align="left"><span id="snzs2">折算</span>
+				    <span>2号星辰节点 # 等级 </span><span id="snbuy2"></span><span> # </span><span id="snnum2"></span><span> × </span><span id="snx2"></span>
+					<button class="buyjd" onclick="buysn(2)" id="snbuybt2">花费<span id="sncost2"></span>星辰升级</button>
+				</p>
+				<p class="ftsz3" align="left"><span id="snzs3">折算</span>
+				    <span>3号星辰节点 # 等级 </span><span id="snbuy3"></span><span> # </span><span id="snnum3"></span><span> × </span><span id="snx3"></span>
+					<button class="buyjd" onclick="buysn(3)" id="snbuybt3">花费<span id="sncost3"></span>星辰升级</button>
+				</p>
+				<p class="ftsz3" align="left"><span id="snzs4">折算</span>
+				    <span>4号星辰节点 # 等级 </span><span id="snbuy4"></span><span> # </span><span id="snnum4"></span><span> × </span><span id="snx4"></span>
+					<button class="buyjd" onclick="buysn(4)" id="snbuybt4">花费<span id="sncost4"></span>星辰升级</button>
+				</p>
+				<p class="ftsz3" align="left"><span id="snzs5">折算</span>
+				    <span>5号星辰节点 # 等级 </span><span id="snbuy5"></span><span> # </span><span id="snnum5"></span><span> × </span><span id="snx5"></span>
+					<button class="buyjd" onclick="buysn(5)" id="snbuybt5">花费<span id="sncost5"></span>星辰升级</button>
+				</p>
+				<p class="ftsz3" align="left"><span id="snzs6">折算</span>
+				    <span>6号星辰节点 # 等级 </span><span id="snbuy6"></span><span> # </span><span id="snnum6"></span><span> × </span><span id="snx6"></span>
+					<button class="buyjd" onclick="buysn(6)" id="snbuybt6">花费<span id="sncost6"></span>星辰升级</button>
+				</p>
+				<p class="ftsz3" align="left"><span id="snzs7">折算</span>
+				    <span>7号星辰节点 # 等级 </span><span id="snbuy7"></span><span> # </span><span id="snnum7"></span><span> × </span><span id="snx7"></span>
+					<button class="buyjd" onclick="buysn(7)" id="snbuybt7">花费<span id="sncost7"></span>星辰升级</button>
+				</p>
+				<p class="ftsz3" align="left"><span id="snzs8">折算</span>
+				    <span>8号星辰节点 # 等级 </span><span id="snbuy8"></span><span> # </span><span id="snnum8"></span><span> × </span><span id="snx8"></span>
+					<button class="buyjd" onclick="buysn(8)" id="snbuybt8">花费<span id="sncost8"></span>星辰升级</button>
+				</p>
 			</div>
 		</div>
 		<div id="page2">
@@ -305,7 +360,7 @@
 					<br/>
 					<button class="PL1bt" onclick="buyPL1()">世界重置：重置之前的所有内容，但获得世界信息。<br/>+ <span id="PL1infoget"></span> 世界信息。<br/>需要e80数据</button>
 				</td>
-				<td style="width: 500px; float: center;">
+				<td style="width: 500px; float: center;" id="PL2bt">
 					<span class="ftsz3">你拥有 </span><span class="ftsz4" id="PL2info"></span><span class="ftsz3"> 宇宙信息</span>
 					<br/>
 					<button class="PL2bt" onclick="buyPL2()">宇宙重置：重置之前的所有内容，但获得宇宙信息。<br/>+ <span id="PL2infoget"></span> 宇宙信息。<br/>需要e5500世界信息</button>
@@ -317,6 +372,7 @@
 				<button class="spagebt" onclick="chspage(1)">节点软上限</button>
 				<button class="spagebt" onclick="chspage(2)">跃迁</button>
 				<button class="spagebt" onclick="chspage(3)">二重跃迁</button>
+				<button class="spagebt" onclick="chspage(4)" id="spagebt4_3">三重跃迁</button>
 			</p>
 			<div id="spage1_3" align="center">
 				<p class="ftsz2">
@@ -332,6 +388,7 @@
 			</div>
 			<div id="spage2_3" align="center"><span class="ftsz2" id="boosteffectlist"></span></div>
 			<div id="spage3_3" align="center"><span class="ftsz2" id="boost2effectlist"></span></div>
+			<div id="spage4_3" align="center"><span class="ftsz2" id="boost3effectlist"></span></div>
 		</div>
 		<div id="page4">
 			<p align="center">
@@ -449,7 +506,7 @@
 						<button class="slicebt" id="slicebt8" onclick="buysliceupg(8)">解锁宇宙重置<br/>需要：<span class="slicetext" id="sliceupgcost8"></span>位面切片</button>
 					</td>
 				</table>
-				<span class="ftsz3" style="color: red;">位面切片软上限在 1e7、5e8、1e200</span>
+				<span class="ftsz3" style="color: red;">位面切片软上限在 1e7、5e8、1e135</span>
 			</div>
 			<div id="spage3_4" align="center">
 				<button class="unlock_ins" onclick="unlock_ins()" id="uunlock_ins">
@@ -498,988 +555,1253 @@
 			</div>
 		</div>
 		<div id="page5">
+			<p align="center">
+				<button class="spagebt" onclick="chspage(1)">多宇宙</button>
+				<button class="spagebt" onclick="chspage(2)">坍缩</button>
+			</p>
 			<div id="spage1_5">
 				<p class="ftsz3" align="center">
 					<span>你已经经过了</span><span id="PL2tms" style="color: purple;"></span><span>次宇宙重置</span>
 				</p>
+				<table align="center">
+					<td><button class="PL2mlstbt" id="PL2mlst0">1宇宙重置<br/>永久自动位面切片升级</button></td>
+					<td><button class="PL2mlstbt" id="PL2mlst1">2宇宙重置<br/>重置时世界升级全部处于已购买状态</button></td>
+					<td><button class="PL2mlstbt" id="PL2mlst2">4宇宙重置<br/>重置时位面切片一次性升级全部处于已购买状态</button></td>
+					<td><button class="PL2mlstbt" id="PL2mlst3">7宇宙重置<br/>世界重置将不重置任何东西，宇宙重置不重置铭刻相关内容</button></td>
+					<tr>
+					<td><button class="PL2mlstbt" id="PL2mlst4">10宇宙重置<br/>10跃迁及以上的折算弱化25%</button></td>
+					<td><button class="PL2mlstbt" id="PL2mlst5">15宇宙重置<br/>取消位面切片在 5.000e8 的软上限</button></td>
+					<td><button class="PL2mlstbt" id="PL2mlst6">25宇宙重置<br/>解锁三重跃迁</button></td>
+					<td><button class="PL2mlstbt" id="PL2mlst7">35宇宙重置+5小时后<br/>你可以自动购买三重跃迁，三重跃迁将不重置任何东西</button></td>
+				</table>
+			</div>
+			<div id="spage2_5">
+				<p align="center"><span class="ftsz3">5小时后更新</span></p>
 			</div>
 		</div>
 		
 		<script>
-			var page = 1;
-			var subpage = 1;
-			var sbc = [255, 255, 255];
-			var sbct = [-3, -2, -1];
-			
-			function cnw(type)
+var page = 1;
+var subpage = 1;
+var sbc = [255, 255, 255];
+var sbct = [-3, -2, -1];
+
+function cnw(type)
+{
+	cnw_now = type;
+}
+
+var nowpage = 1;
+var subpage = 1;
+var get_PL1info = new Decimal(0);
+var player;
+
+function N(num)
+{
+	return new Decimal(num);
+}
+
+function init()
+{
+	player =
+	{
+		//start
+		data: N(10),
+		buyjd: [N(0), N(0), N(0), N(0), N(0), N(0), N(0), N(0)],
+		jdnum: [N(0), N(0), N(0), N(0), N(0), N(0), N(0), N(0)],
+		boost: N(0),
+		boost2: N(0),
+		
+		//world
+		PL1info: N(0),
+		PL1unlock: false,
+		PL1upg: [false, false, false, false, false, false, false, false],
+		autobuyjd: [false, false, false, false, false, false, false, false],
+		autoboost: false,
+		autoboost2: false,
+		slice: N(0),
+		sliceupg_rep: [N(0), N(0), N(0), N(0)],
+		sliceupg: [false, false, false, false],
+		ins: [N(0), N(0), N(0), N(0)],
+		insupg: [N(0), N(0), N(0), N(0), N(0), N(0)],
+		unlock_ins: false,
+		
+		//universe
+		PL2info: N(0),
+		PL2unlock: false,
+		PL2tms: N(0),
+		buysn: [N(0), N(0), N(0), N(0), N(0), N(0), N(0), N(0)],
+		star_node: [N(0), N(0), N(0), N(0), N(0), N(0), N(0), N(0)],
+		star: N(0),
+		dimension: N(0),
+		boost3: N(0),
+		
+		//chaos
+		
+		//void
+		
+		//theorem
+		
+		//reality
+		
+		//beyond
+	};
+}
+
+var PL1upgcost = [N(1), N(2), N(6), N(40), N(2500), N(10000), N(30000), N(50000)];
+var sliceupgcost = [N(5), N(6), N(7), N(8), N(300), N(15000), N(1e10), N(1e111)];
+var insupgcostb = [N(300), N(50), N(300), N(50), N(300), N(50)];
+var insupgcostx = [N(100), N(6), N(100), N(6), N(100), N(6)];
+
+function chpage(p)
+{
+	page = p;
+	subpage = 1;
+}
+
+function chspage(p)
+{
+	subpage = p;
+}
+
+function hard_reset()
+{
+	init();
+	data_print();
+}
+
+function notation(number)
+{
+	var string = "";
+	if (number.sign == -1) {
+		string = string + "-";
+		number.sign = 1;
+	}
+	if(number.mag == Infinity) return "Infinity";
+	let power1 = Decimal.floor(Decimal.log10(number));
+	let base1 = number.div(Decimal.pow(10, power1));
+	let power2 = Decimal.floor(Decimal.log10(power1));
+	let base2 = power1.div(Decimal.pow(10, power2));
+	let power3 = Decimal.floor(Decimal.log10(power2));
+	let base3 = power2.div(Decimal.pow(10, power3));
+	if (number == 0) return "0.000";
+	if (power1 < -3) return base1.mul(10).toFixed(3) + "e" + power1;
+	if (power1 < -2) return number.toFixed(6);
+	if (power1 < -1) return number.toFixed(5);
+	if (power1 < 0) return number.toFixed(4);
+	if (power1 < 1) return number.toFixed(3);
+	if (power1 < 2) return number.toFixed(2);
+	if (power1 < 3) return number.toFixed(1);
+	if (power1 < 6) return number.toFixed(0);
+	if (power1 < 100000000) return base1.toFixed(3) + "e" + power1;
+	if (power2 < 100000000) return "e" + base2.toFixed(3) + "e" + power2;
+	if (power3 < 100000000) return "ee" + base3.toFixed(3) + "e" + power3;
+	return number.mag.toFixed(0) + "f" + number.layer.toFixed(0);
+}
+
+function transformToDecimal(object)
+{
+	for (i in object) {
+		if (typeof (object[i]) == "string" && !isNaN(new Decimal(object[i]).mag)) object[i] = new Decimal(object[i]);
+		if (typeof (object[i]) == "object" && !isNaN(new Decimal(object[i]).mag)) transformToDecimal(object[i]);
+		if (new Decimal(object[i]).gte("F1e308")) object[i] = new Decimal(1);
+	}
+}
+
+function data_print()
+{
+	localStorage.QWERTYUIOP2 = btoa(JSON.stringify(player));
+}
+
+function data_input()
+{
+	if (!localStorage.QWERTYUIOP2) return;
+	player = JSON.parse(atob(localStorage.QWERTYUIOP2));
+	transformToDecimal(player);
+}
+
+function getjdscs(i)
+{
+	let base = [N(1024), N(1e10), N(1e50), N('e400'), N(1e9), N(1e100), N('e40000'), N('ee50')];
+	if(player.boost.gte(55)) base[2] = base[2].pow(1.5);
+	if(player.PL1upg[6]) for(let j = 0;j < 2;j++) base[j] = base[j].pow(1.5);
+	if(player.sliceupg[2]) for(let j = 0;j < 3;j++) base[j] = base[j].pow(1.5);
+	if(player.unlock_ins) for(let j = 0;j < 4;j++) base[j] = base[j].pow(N(1).add(player.insupg[4].mul(0.1)));
+	//delete
+	if(player.boost3.gte(3)) base[0] = N(1e309);
+	return base;
+}
+
+function getjdscx(i)
+{
+	let base = [N(1), N(4), N(99), N(999), N(1), N(39), N(999), N(999999)];
+	if(player.boost.gte(15)) base[0] = base[0].mul(0.75);
+	if(player.boost.gte(20)) base[0] = base[0].mul(0.4);
+	if(player.boost.gte(21)) base[1] = base[1].mul(N(1).div(player.boost.add(1).root(15)));
+	if(player.boost2.gte(2)) base[0] = base[0].mul(N(1).div(player.boost.add(1).root(5)));
+	if(player.boost2.gte(48)) for(let j = 0;j < 3;j++) base[j] = base[j].mul(N(1).div(player.boost2.root(10)));
+	if(player.PL1upg[1]) base[0] = base[0].mul(0.6);
+	if(player.PL1upg[5]) base[0] = base[0].mul(0.5);
+	if(player.PL1upg[5]) base[1] = base[1].mul(0.6);
+	if(player.PL1upg[5]) base[2] = base[2].mul(0.6);
+	for(let i = 0;i < 8;i++) base[i] = N(1).div(base[i].add(1));
+	return base;
+}
+
+function getjdprice()
+{
+	let base = [N(10), N(1000), N(1e5), N(1e7), N(1e9), N(1e11), N(1e13), N(1e15)];
+	let basex = [N(10), N(100), N(1000), N(1e4), N(1e5), N(1e6), N(1e7), N(1e8)];
+	let jdprice = base;
+	for(let i = 0;i < 8;i++) jdprice[i] = jdprice[i].mul(basex[i].pow(player.buyjd[i]));
+	return jdprice;
+}
+
+function getbuyjdeffect()
+{
+	let base = N(2);
+	if(player.PL2unlock) base = base.mul(player.star.add(10).log10().pow(0.5));
+	return base;
+}
+
+function getjdx()
+{
+	let base = [N(1), N(1), N(1), N(1), N(1), N(1), N(1), N(1)];
+	for(let i = 0;i < 8;i++)
+	{
+		let scs = getjdscs(i);
+		let scx = getjdscx(i);
+		base[i] = base[i].mul(getbuyjdeffect().pow(player.buyjd[i]));
+		for(let j = 0;j < 4;j++)
+		{
+			if(base[i].gte(scs[j]))
 			{
-				cnw_now = type;
+				base[i] = scs[j].mul(base[i].div(scs[j]).pow(scx[j]));
 			}
-			
-			var nowpage = 1;
-			var subpage = 1;
-			var get_PL1info = new Decimal(0);
-			var player;
-			
-			function N(num)
+		}
+		//mult
+		if(player.boost2.gte(1)) base[i] = base[i].mul(3);
+		if(player.boost2.gte(3)) base[i] = base[i].mul(player.boost2.add(1).mul(1.25).pow(3.5));
+		if(player.boost2.gte(12)) base[i] = base[i].mul(player.PL1info.add(1).mul(0.5).pow(0.25));
+		if(player.boost.gte(9) && !player.boost.gte(52)) base[i] = base[i].mul(player.boost);
+		if(player.boost.gte(52)) base[i] = base[i].mul(player.boost.pow(2));
+		if(player.PL1upg[2]) base[i] = base[i].mul(player.boost.add(1).pow(1.5));
+		if(player.PL1upg[7]) base[i] = base[i].mul(getsliceeffect());
+		//pow
+		if(player.boost.gte(65)) base[i] = base[i].pow(N(1).add(player.boost.root(10).div(15)));
+		if(player.PL1upg[7]) base[i] = base[i].pow(N(1).add(player.sliceupg_rep[0].mul(0.005)));
+		if(player.unlock_ins) base[i] = base[i].pow(N(1).add(player.insupg[0].mul(0.008)));
+		
+		for(let j = 4;j < 8;j++)
+		{
+			if(base[i].gte(N(10).pow(scs[j])))
 			{
-				return new Decimal(num);
+				base[i] = (N(10).pow(scs[j])).mul(N(10).pow(base[i].log10().div(scs[j]).pow(scx[j])));
 			}
-			
-			function init()
+		}
+	}
+	return base;
+}
+
+function buyjd(num)
+{
+	num = num - 1;
+	let costlist = getjdprice();
+	let cost = costlist[num];
+	if(player.data.gte(cost))
+	{
+		if(!player.PL1upg[0]) player.data = player.data.sub(cost);
+		player.buyjd[num] = player.buyjd[num].add(1);
+		player.jdnum[num] = player.jdnum[num].add(10);
+	}
+}
+
+function buymaxjd(num)
+{
+	num = num - 1;
+	let base = [N(10), N(1000), N(1e5), N(1e7), N(1e9), N(1e11), N(1e13), N(1e15)];
+	let basex = [N(10), N(100), N(1000), N(1e4), N(1e5), N(1e6), N(1e7), N(1e8)];
+	let cost = getjdprice();
+	if(player.data.gte(cost[num]))
+	{
+		let ans = player.data.div(base[num]).log(basex[num]).floor().add(1);
+		if(!player.PL1upg[0]) player.data = player.data.sub(cost[num]);
+		player.jdnum[num] = player.jdnum[num].add(ans.sub(player.buyjd[num]).mul(10));
+		player.buyjd[num] = ans;
+	}
+}
+
+function chautobuyjd(num)
+{
+	num = num - 1;
+	player.autobuyjd[num] = !player.autobuyjd[num];
+}
+
+function allmaxjd()
+{
+	for(let i = 0;i < 8;i++) buymaxjd(i + 1);
+}
+
+function getboostzs1x()
+{
+	let base = N(1);
+	if(player.boost.gte(16)) base = base.mul(0.5);
+	if(player.boost2.gte(5)) base = base.mul(0.5);
+	if(player.boost2.gte(11)) base = base.mul(0.9);
+	if(player.boost2.gte(90)) base = base.mul(N(1).div(player.boost2.add(2).root(11)));
+	if(player.boost3.gte(1)) base = base.mul(0.7);
+	if(player.PL1upg[3]) base = base.mul(0.5);
+	if(player.PL2tms.gte(10)) base = base.mul(0.75);
+	base = base.add(1);
+	return base;
+}
+
+function getboostcost()
+{
+	let base = N(10).pow(player.boost);
+	if(player.boost.gte(10))
+	{
+		let zsx = getboostzs1x();
+		base = N(10).pow(10).mul(N(10).pow(N(zsx).pow(player.boost.sub(10))));
+	}
+	return base;
+}
+
+function getboost2cost()
+{
+	let base = player.boost2.mul(4).add(16);
+	if(player.PL1upg[7]) base = base.sub(player.sliceupg_rep[2]);
+	if(player.boost3.gte(2)) base = base.sub(player.boost3.add(1).mul(2).pow(1.25));
+	return base;
+}
+
+function getboost3cost()
+{
+	let base = player.boost3.add(8).pow(2);
+	return base;
+}
+
+var boosteffectlist = [N(1), N(2), N(3), N(4), N(5), N(6), N(7), N(8)
+, N(9), N(15), N(16), N(20), N(21), N(52), N(55), N(65)
+, N(67), N(95), N(100)];
+var boosteffectnum = 19;
+
+function getboosteffect(b)
+{
+	if(!b.gte(1))
+	{
+		return '在1跃迁，解锁1号传输节点。';
+	}
+	else if(!b.gte(2))
+	{
+		return '在2跃迁，解锁2号传输节点。';
+	}
+	else if(!b.gte(3))
+	{
+		return '在3跃迁，解锁3号传输节点。';
+	}
+	else if(!b.gte(4))
+	{
+		return '在4跃迁，解锁4号传输节点。';
+	}
+	else if(!b.gte(5))
+	{
+		return '在5跃迁，解锁5号传输节点。';
+	}
+	else if(!b.gte(6))
+	{
+		return '在6跃迁，解锁6号传输节点。';
+	}
+	else if(!b.gte(7))
+	{
+		return '在7跃迁，解锁7号传输节点。';
+	}
+	else if(!b.gte(8))
+	{
+		return '在8跃迁，解锁8号传输节点。';
+	}
+	else if(!b.gte(9))
+	{
+		return '在9跃迁，节点产能增加等同于跃迁数量的倍数。';
+	}
+	else if(!b.gte(15))
+	{
+		return '在15跃迁，传输节点的一阶软上限弱化25%。';
+	}
+	else if(!b.gte(16))
+	{
+		return '在16跃迁，使10跃迁及以上的折算弱化50%。';
+	}
+	else if(!b.gte(20))
+	{
+		return '在20跃迁，传输节点的一阶软上限弱化60%。';
+	}
+	else if(!b.gte(21))
+	{
+		return '在21跃迁，跃迁弱化传输节点的二阶软上限，当前：×' + notation(N(1).div(player.boost.add(1).root(15)));
+	}
+	else if(!b.gte(52))
+	{
+		return '在52跃迁，9跃迁的效果改为增加等同于跃迁数量的平方的倍数';
+	}
+	else if(!b.gte(55))
+	{
+		return '在55跃迁，节点三阶软上限延迟1.5次方出现。';
+	}
+	else if(!b.gte(65))
+	{
+		return '在65跃迁，跃迁提高传输节点的指数。当前：+' + notation(player.boost.root(10).div(15));
+	}
+	else if(!b.gte(67))
+	{
+		return '在67跃迁，世界信息增幅位面切片获取量。当前：×' + notation(player.PL1info.add(10).log(2).root(1.5));
+	}
+	else if(!b.gte(95))
+	{
+		return '在95跃迁，位面切片增幅指数增加0.2。';
+	}
+	else if(!b.gte(100))
+	{
+		return '在100跃迁，位面切片数量增幅67跃迁的效果。当前：×' + notation(player.slice.log(2).pow(1.15));
+	}
+	else return '';
+}
+
+var boost2effectlist = [N(1), N(2), N(3), N(5), N(10), N(11), N(12), N(30)
+, N(48), N(90)];
+var boost2effectnum = 10;
+
+function getboost2effect(b)
+{
+	if(!b.gte(1))
+	{
+		return '在1二重跃迁，节点产能增加3倍。';
+	}
+	else if(!b.gte(2))
+	{
+		return '在2二重跃迁，跃迁弱化传输节点的一阶软上限。当前：×' + notation(N(1).div(player.boost.add(1).root(5)));
+	}
+	else if(!b.gte(3))
+	{
+		return '在3二重跃迁，二重跃迁增幅节点产能。当前：×' + notation(player.boost2.add(1).mul(1.25).pow(3.5));
+	}
+	else if(!b.gte(5))
+	{
+		return '在5二重跃迁，使10跃迁及以上的折算弱化50%。';
+	}
+	else if(!b.gte(10))
+	{
+		return '在10二重跃迁，跃迁数量加成世界信息获取量。当前：×' + notation(player.boost.add(1).mul(1.5).pow(0.75));
+	}
+	else if(!b.gte(11))
+	{
+		return '在11二重跃迁，使10跃迁及以上的折算弱化10%。';
+	}
+	else if(!b.gte(12))
+	{
+		return '在12二重跃迁，世界信息增幅节点产能。当前：×' + notation(player.PL1info.add(1).mul(0.5).pow(0.25));
+	}
+	else if(!b.gte(30))
+	{
+		return '在30二重跃迁，铭刻升级2,4,6增幅位面切片产能。当前：×' + notation((player.insupg[1].add(player.insupg[3]).add(player.insupg[5])).pow(2));
+	}
+	else if(!b.gte(48))
+	{
+		return '在48二重跃迁，二重跃迁弱化节点一至三阶软上限。当前：×' + notation(N(1).div(player.boost2.root(10)));
+	}
+	else if(!b.gte(90))
+	{
+		return '在90二重跃迁，二重跃迁弱化10跃迁及以上折算。当前：×' + notation(N(1).div(player.boost2.add(2).root(11)));
+	}
+	else return '';
+}
+
+var boost3effectlist = [N(1), N(2), N(3)];
+var boost3effectnum = 3;
+
+function getboost3effect(b)
+{
+	if(!b.gte(1))
+	{
+		return '在1三重跃迁，10跃迁及以上的折算弱化30%。';
+	}
+	else if(!b.gte(2))
+	{
+		return '在2三重跃迁，三重跃迁减少二重跃迁成本。当前：-' + notation(player.boost3.add(1).mul(2).pow(1.25));
+	}
+	else if(!b.gte(3))
+	{
+		return '在3三重跃迁，移除节点一阶软上限。';
+	}
+	else return '';
+}
+
+function boostreset()
+{
+	player.data = N(10);
+	for(let i = 0;i < 8;i++)
+	{
+		player.buyjd[i] = N(0);
+		player.jdnum[i] = N(0);
+	}
+}
+
+function boost2reset()
+{
+	boostreset();
+	player.boost = N(0);
+}
+
+function boost3reset()
+{
+	boost2reset();
+	player.boost2 = N(0);
+}
+
+function PL1reset()
+{
+	boost2reset();
+	player.boost2 = N(0);
+}
+
+function PL2reset()
+{
+	PL1reset();
+	player.PL1info = N(0);
+	player.PL1upg = [true, false, false, false, true, false, false, true];
+	player.slice = N(0);
+	player.sliceupg = [true, false, false, true];
+	player.sliceupg_rep = [N(0), N(0), N(0), N(0)];
+	player.ins = [N(0), N(0), N(0), N(0)];
+	player.insupg = [N(0), N(0), N(0), N(0), N(0), N(0)];
+	player.unlock_ins = false;
+	player.boost3 = N(0);
+}
+
+function buyboost()
+{
+	let cost = getboostcost();
+	if(player.data.gte(cost))
+	{
+		if(!player.PL1upg[4]) boostreset();
+		player.boost = player.boost.add(N(1));
+	}
+}
+
+function buymaxboost()
+{
+	if(!player.PL1upg[4]) return;
+	let zs1x = getboostzs1x();
+	let ans = N(0);
+	if(!player.data.gte(1e10))
+	{
+		ans = player.data.log(10).floor().add(1);
+	}
+	else
+	{
+		ans = ((player.data.div(1e10)).log10().log(zs1x)).floor().add(11);
+	}
+	
+	if(ans.gte(player.boost))
+	{
+		player.boost = ans;
+	}
+}
+
+function buyboost2()
+{
+	let cost = getboost2cost();
+	if(player.boost.gte(cost))
+	{
+		if(!player.sliceupg[0]) boost2reset();
+		player.boost2 = player.boost2.add(N(1));
+	}
+}
+
+function buymaxboost2()
+{
+	let cost_sub = N(0);
+	if(player.PL1upg[7]) cost_sub = cost_sub.add(player.sliceupg_rep[2]);
+	if(player.boost3.gte(2)) cost_sub = cost_sub.add(player.boost3.add(1).mul(2).pow(1.25));
+	let ans = player.boost.add(cost_sub).sub(16).div(4).floor().add(1);
+	if(ans.gte(player.boost2))
+	{
+		player.boost2 = ans;
+	}
+}
+
+function buyboost3()
+{
+	let cost = getboost3cost();
+	if(player.boost2.gte(cost))
+	{
+		boost3reset();
+		player.boost3 = player.boost3.add(N(1));
+	}
+}
+
+function chautoboost()
+{
+	if(player.PL1upg[4]) player.autoboost = !player.autoboost;
+}
+
+function chautoboost2()
+{
+	if(player.sliceupg[0]) player.autoboost2 = !player.autoboost2;
+}
+
+var PL1infoget = N(0), PL2infoget = N(0);
+function updatePLinfoget()
+{
+	if(player.data.gte(1e80))
+	{
+		if(player.sliceupg[1]) PL1infoget = player.data.root(8).div(1e10);
+		else if(player.PL1upg[7]) PL1infoget = player.data.root(10).div(1e8);
+		else PL1infoget = player.data.root(80).sub(9);
+	}
+	else PL1infoget = N(0);
+	
+	if(player.boost2.gte(10)) PL1infoget = PL1infoget.mul(player.boost.add(1).mul(1.5).pow(0.75));
+	PL1infoget = PL1infoget.floor();
+	
+	if(player.PL1info.gte('e5500'))
+	{
+		PL2infoget = player.PL1info.root(2750).div(100);
+	}
+	else PL2infoget = N(0);
+	
+	PL2infoget = PL2infoget.floor();
+}
+
+function buyPL1()
+{
+	if(player.data.gte(1e80))
+	{
+		if(!player.PL2tms.gte(7)) PL1reset();
+		player.PL1info = player.PL1info.add(PL1infoget);
+		player.PL1unlock = true;
+	}
+}
+
+function buyPL2()
+{
+	if(player.PL1info.gte('e5500'))
+	{
+		let inso = player.ins;
+		let insuo = player.insupg;
+		PL2reset();
+		player.PL2info = player.PL2info.add(PL2infoget);
+		player.PL2unlock = true;
+		player.PL2tms = player.PL2tms.add(1);
+		
+		if(player.PL2tms.gte(2)) player.PL1upg = [true, true, true, true, true, true, true, true];
+		if(player.PL2tms.gte(4)) player.sliceupg = [true, true, true, true];
+		if(player.PL2tms.gte(7)) {player.ins = inso; player.insupg = insuo; player.unlock_ins = true;}
+	}
+}
+
+function buyPL1ug(i)
+{
+	i = i - 1;
+	if(player.PL1info.gte(PL1upgcost[i]) && !player.PL1upg[i])
+	{
+		player.PL1info = player.PL1info.sub(PL1upgcost[i]);
+		player.PL1upg[i] = true;
+	}
+}
+
+function getsliceeffect()
+{
+	let p = N(0.5);
+	if(player.PL1upg[7]) p = p.add(player.sliceupg_rep[1].mul(0.05));
+	if(player.boost.gte(95)) p = p.add(0.2);
+	
+	let effect = player.slice.pow(p).max(1);
+	return effect;
+}
+
+function buysliceupg(num)
+{
+	num = num - 1;
+	if(num < 4)
+	{
+		if(player.sliceupg_rep[num].gte(200)) return;
+		let cost = sliceupgcost[num].pow(player.sliceupg_rep[num].add(1));
+		if(player.slice.gte(cost))
+		{
+			player.slice = player.slice.sub(cost);
+			player.sliceupg_rep[num] = player.sliceupg_rep[num].add(1);
+		}
+	}
+	else
+	{
+		let cost = sliceupgcost[num];
+		if(player.slice.gte(cost) && !player.sliceupg[num - 4])
+		{
+			player.slice = player.slice.sub(cost);
+			player.sliceupg[num - 4] = true;
+		}
+	}
+}
+
+function unlock_ins()
+{
+	if(player.PL1info.gte(1e130) && !player.unlock_ins)
+	{
+		player.PL1info = player.PL1info.sub(1e130);
+		player.unlock_ins = true;
+	}
+}
+
+function getins0gen()
+{
+	let ins_gen = N(1);
+	ins_gen = ins_gen.add(player.ins[0].pow(0.25));
+	let mult = N(1.75).pow(player.insupg[1]);
+	if(mult.gte(1000)) mult = N(1000).mul(mult.div(1000).pow(0.4));
+	ins_gen = ins_gen.mul(mult);
+	
+	mult = N(1.75).pow(player.insupg[3]);
+	if(mult.gte(1000)) mult = N(1000).mul(mult.div(1000).pow(0.4));
+	ins_gen = ins_gen.mul(mult);
+	
+	mult = N(1.75).pow(player.insupg[5]);
+	if(mult.gte(1000)) mult = N(1000).mul(mult.div(1000).pow(0.4));
+	ins_gen = ins_gen.mul(mult);
+	return ins_gen;
+}
+
+function gettraninsnum(num)
+{
+	let gen = player.ins[0];
+	
+	let mult = N(1.75).pow(player.insupg[5]);
+	if(mult.gte(1000)) mult = N(1000).mul(mult.div(1000).pow(0.4));
+	
+	if(num == 1) gen = gen.mul(mult);
+	
+	mult = N(1.75).pow(player.insupg[1]);
+	if(mult.gte(1000)) mult = N(1000).mul(mult.div(1000).pow(0.4));
+	
+	if(num == 2) gen = gen.mul(mult);
+	
+	mult = N(1.75).pow(player.insupg[3]);
+	if(mult.gte(1000)) mult = N(1000).mul(mult.div(1000).pow(0.4));
+	
+	if(num == 3) gen = gen.mul(mult);
+	
+	if(gen.gte(1e12)) gen = N(1e12).mul(gen.div(1e12).pow(0.025));
+	
+	return gen;
+}
+
+function tranins(num)
+{
+	let gen = gettraninsnum(num);
+	player.ins[num] = player.ins[num].add(gen);
+	player.ins[0] = N(0);
+}
+
+function addins0()
+{
+	let ins_gen = getins0gen();
+	if(player.unlock_ins) player.ins[0] = player.ins[0].add(ins_gen);
+}
+
+function buyinsupg(num)
+{
+	let cost = insupgcostb[num].mul(insupgcostx[num].pow(player.insupg[num]));
+	if(num >= 0 && num <= 1) 
+	{
+		if(player.ins[1].gte(cost))
+		{
+			player.ins[1] = player.ins[1].sub(cost);
+			player.insupg[num] = player.insupg[num].add(1);
+		}
+	}
+	if(num >= 2 && num <= 3) 
+	{
+		if(player.ins[2].gte(cost))
+		{
+			player.ins[2] = player.ins[2].sub(cost);
+			player.insupg[num] = player.insupg[num].add(1);
+		}
+	}
+	if(num >= 4 && num <= 5) 
+	{
+		if(player.ins[3].gte(cost))
+		{
+			player.ins[3] = player.ins[3].sub(cost);
+			player.insupg[num] = player.insupg[num].add(1);
+		}
+	}
+}
+
+function getdimcost()
+{
+	let cost = (N(10).pow(N(2).pow(player.dimension)));
+	return cost;
+}
+
+function buydim()
+{
+	if(player.PL2info.gte(getdimcost()))
+	{
+		player.PL2info = player.PL2info.sub(getdimcost());
+		player.dimension = player.dimension.add(1);
+		player.star = player.star.add(1);
+	}
+}
+
+function getsnscs()
+{
+	let base = [N(16384), N(1e100), N('e1000'), N('e10000')];
+	return base;
+}
+
+function getsnscx()
+{
+	let base = [N(4), N(24), N(1e5 - 1), N(1e25)];
+	for(let i = 0;i < 4;i++) base[i] = N(1).div(base[i].add(1));
+	return base;
+}
+
+function getsncost(num)
+{
+	let base = [N(1), N(1e4), N(1e8), N(1e12), N(1e16), N(1e20), N(1e24), N(1e28)];
+	let basex = [N(100), N(10000), N(1e6), N(1e10), N(1e16), N(1e25), N(1e36), N(1e50)];
+	return base[num].mul(basex[num].pow(player.buysn[num]));
+}
+
+function buysn(num)
+{
+	num = num - 1;
+	let cost = getsncost(num);
+	if(player.star.gte(cost))
+	{
+		player.star = player.star.sub(cost);
+		player.buysn[num] = player.buysn[num].add(1);
+		player.star_node[num] = player.star_node[num].add(1);
+	}
+}
+
+function getsnx()
+{
+	let scs = getsnscs();
+	let scx = getsnscx();
+	let snx = [N(1), N(1), N(1), N(1), N(1), N(1), N(1), N(1)];
+	for(let i = 0;i < 8;i++)
+	{
+		snx[i] = snx[i].mul(N(2).pow(player.buysn[i])).pow(player.dimension);
+		//mult
+		//pow
+		//sc
+		for(let j = 0;j < 4;j++)
+		{
+			if(snx[i].gte(scs[j]))
 			{
-				player =
-				{
-					//start
-					data: N(10),
-					buyjd: [N(0), N(0), N(0), N(0), N(0), N(0), N(0), N(0)],
-					jdnum: [N(0), N(0), N(0), N(0), N(0), N(0), N(0), N(0)],
-					boost: N(0),
-					boost2: N(0),
-					
-					//world
-					PL1info: N(0),
-					PL1unlock: false,
-					PL1upg: [false, false, false, false, false, false, false, false],
-					autobuyjd: [false, false, false, false, false, false, false, false],
-					autoboost: false,
-					autoboost2: false,
-					slice: N(0),
-					sliceupg_rep: [N(0), N(0), N(0), N(0)],
-					sliceupg: [false, false, false, false],
-					ins: [N(0), N(0), N(0), N(0)],
-					insupg: [N(0), N(0), N(0), N(0), N(0), N(0)],
-					unlock_ins: false,
-					
-					//universe
-					PL2info: N(0),
-					PL2unlock: false,
-					PL2tms: N(0),
-					star_node: [N(0), N(0), N(0), N(0), N(0), N(0), N(0), N(0)],
-					star: N(0),
-					
-					//chaos
-					
-					//void
-					
-					//theorem
-					
-					//reality
-					
-					//beyond
-				};
+				snx[i] = scs[j].mul(snx[i].div(scs[j]).pow(scx[j]));
 			}
-			
-			var PL1upgcost = [N(1), N(2), N(6), N(40), N(2500), N(10000), N(30000), N(50000)];
-			var sliceupgcost = [N(5), N(6), N(7), N(8), N(300), N(15000), N(1e10), N(1e111)];
-			var insupgcostb = [N(300), N(50), N(300), N(50), N(300), N(50)];
-			var insupgcostx = [N(100), N(6), N(100), N(6), N(100), N(6)];
-			
-			function chpage(p)
+		}
+	}
+	return snx;
+}
+
+function automation()
+{
+	if(player.PL1upg[0])
+	{
+		for(let i = 0;i < 8;i++)
+		{
+			if(player.autobuyjd[i]) buymaxjd(i + 1);
+		}
+	}
+	if(player.PL1upg[4])
+	{
+		if(player.autoboost) buymaxboost();
+	}
+	if(player.sliceupg[0])
+	{
+		if(player.autoboost2) buymaxboost2();
+	}
+	
+	if(player.slice.gte(1e64) || player.PL2tms.gte(1))
+	{
+		player.sliceupg_rep[0] = player.slice.log(sliceupgcost[0]).floor();
+		player.sliceupg_rep[1] = player.slice.log(sliceupgcost[1]).floor();
+		player.sliceupg_rep[2] = player.slice.log(sliceupgcost[2]).floor();
+		player.sliceupg_rep[3] = player.slice.log(sliceupgcost[3]).floor();
+		for(let i = 0;i <= 3;i++) if(player.sliceupg_rep[i].gte(200)) player.sliceupg_rep[i] = N(200);
+	}
+}
+
+function produce()
+{
+	updatePLinfoget();
+	
+	let jdprice = getjdprice();
+	let jdx = getjdx();
+	let jdunlock = [N(1), N(2), N(3), N(4), N(5), N(6), N(7), N(8)];
+	for(let i = 7;i >= 1;i--)
+	{
+		if(player.boost.gte(jdunlock[i]))
+		{
+			player.jdnum[i - 1] = player.jdnum[i - 1].add(player.jdnum[i].mul(jdx[i]).div(10));
+		}
+	}
+	if(player.boost.gte(jdunlock[0]))
+	{
+		player.data = player.data.add(player.jdnum[0].mul(jdx[0]).div(10));
+		if(player.data.gte('e65536'))
+		{
+			player.data = N(10).pow(player.data.log10().mul(9).add(65536).div(10));
+		}
+	}
+	if(player.PL2unlock)
+	{
+		let snx = getsnx();
+		for(let i = 7;i >= 1;i--)
+		{
+			player.star_node[i - 1] = player.star_node[i - 1].add(player.star_node[i].mul(snx[i]).div(10));
+		}
+		player.star = player.star.add(player.star_node[0].mul(snx[0]).div(10));
+	}
+	
+	if(player.PL1upg[7])
+	{
+		let slice_gen = N(0.05);
+		if(!player.slice.gte(1e7)) slice_gen = slice_gen.mul(player.slice.div(600).root(1.25).max(1));
+		else slice_gen = slice_gen.mul(player.slice.div(1e7).pow(0.8).mul(1e7).div(600).root(1.25).max(1));
+		
+		//mul
+		if(player.boost.gte(67)) slice_gen = slice_gen.mul(player.PL1info.add(10).log(2).root(1.5));
+		if(player.boost.gte(100)) slice_gen = slice_gen.mul(player.slice.log(2).pow(1.15));
+		if(player.boost2.gte(30)) slice_gen = slice_gen.mul((player.insupg[1].add(player.insupg[3]).add(player.insupg[5])).pow(2));
+		slice_gen = slice_gen.mul(N(1.5).pow(player.sliceupg_rep[0]));
+		//pow
+		if(player.unlock_ins)
+		{
+			slice_gen = slice_gen.pow(N(1).add(player.insupg[2].mul(0.05)));
+		}
+		if(slice_gen.gte(5e8) && !player.PL2tms.gte(15)) slice_gen = N(5e8).mul(slice_gen.div(5e8).pow(0.75));
+		if(slice_gen.gte(1e130)) slice_gen = N(1e130).mul(N(10).pow(slice_gen.div(1e130).log10().pow(0.5)));
+		player.slice = player.slice.add(slice_gen);
+	}
+	
+	automation();
+}
+
+function GUI()
+{
+	let page_has_spage = [2, 0, 4, 3, 2];
+	
+	if(page == 1) document.getElementById('page1').style.display = 'block';
+	else document.getElementById('page1').style.display = 'none';
+	if(page == 2) document.getElementById('page2').style.display = 'block';
+	else document.getElementById('page2').style.display = 'none';
+	if(page == 3) document.getElementById('page3').style.display = 'block';
+	else document.getElementById('page3').style.display = 'none';
+	if(page == 4) document.getElementById('page4').style.display = 'block';
+	else document.getElementById('page4').style.display = 'none';
+	if(page == 5) document.getElementById('page5').style.display = 'block';
+	else document.getElementById('page5').style.display = 'none';
+	
+	if(page_has_spage[page - 1] >= 1)
+	{
+		if(subpage == 1) document.getElementById('spage1_' + page).style.display = 'block';
+		else document.getElementById('spage1_' + page).style.display = 'none';
+	}
+	if(page_has_spage[page - 1] >= 2)
+	{
+		if(subpage == 2) document.getElementById('spage2_' + page).style.display = 'block';
+		else document.getElementById('spage2_' + page).style.display = 'none';
+	}
+	if(page_has_spage[page - 1] >= 3)
+	{
+		if(subpage == 3) document.getElementById('spage3_' + page).style.display = 'block';
+		else document.getElementById('spage3_' + page).style.display = 'none';
+	}
+	if(page_has_spage[page - 1] >= 4)
+	{
+		if(subpage == 4) document.getElementById('spage4_' + page).style.display = 'block';
+		else document.getElementById('spage4_' + page).style.display = 'none';
+	}
+	
+	if(player.PL1unlock) document.getElementById('PL1pbt').style.display = 'inline-block';
+	else document.getElementById('PL1pbt').style.display = 'none';
+	if(player.PL2unlock) document.getElementById('PL2pbt').style.display = 'inline-block';
+	else document.getElementById('PL2pbt').style.display = 'none';
+	if(player.sliceupg[3]) document.getElementById('PL2bt').style.display = 'block';
+	else document.getElementById('PL2bt').style.display = 'none';
+	
+	if(player.PL1upg[7]) document.getElementById('spagebt2_4').style.display = 'inline-block';
+	else document.getElementById('spagebt2_4').style.display = 'none';
+	
+	if(player.PL2unlock) document.getElementById('spagebt2_1').style.display = 'inline-block';
+	else document.getElementById('spagebt2_1').style.display = 'none';
+	
+	if(player.PL2tms.gte(25)) document.getElementById('spagebt4_3').style.display = 'inline-block';
+	else document.getElementById('spagebt4_3').style.display = 'none';
+	
+	document.getElementById('PL1infoget').innerHTML = notation(PL1infoget);
+	document.getElementById('PL2infoget').innerHTML = notation(PL2infoget);
+	
+	document.getElementById('data').innerHTML = notation(player.data);
+	document.getElementById('PL1info').innerHTML = notation(player.PL1info);
+	document.getElementById('PL2info').innerHTML = notation(player.PL2info);
+	document.getElementById('PL2tms').innerHTML = notation(player.PL2tms);
+	
+	document.getElementById('slice').innerHTML = notation(player.slice);
+	document.getElementById('slice_effect').innerHTML = notation(getsliceeffect());
+	for(let i = 0;i < 3;i++)
+	{
+		sbc[i] += sbct[i];
+		if(sbc[i] < 0) sbc[i] = 0, sbct[i] = ((-sbct[i]) + 1) % 3;
+		else if(sbc[i] > 255) sbc[i] = 255, sbct[i] = ((-sbct[i]) - 1) % 3;
+	}
+	for(let xm = 1;xm < 9;xm++) document.getElementById('slicebt' + xm).style['border-color'] = 'rgb(' + sbc[0] + ',' + sbc[1] + ',' + sbc[2] + ')';
+	document.getElementById('boostnum').innerHTML = notation(player.boost);
+	document.getElementById('boost2num').innerHTML = notation(player.boost2);
+	document.getElementById('boost3num').innerHTML = notation(player.boost3);
+	document.getElementById('unlock_ins').style.display = (player.unlock_ins ? 'block' : 'none');
+	document.getElementById('uunlock_ins').style.display = (!player.unlock_ins ? 'block' : 'none');
+	for(let i = 0;i < 4;i++)
+	{
+		document.getElementById('ins' + i).innerHTML = notation(player.ins[i]);
+	}
+	document.getElementById('ins0gen').innerHTML = notation(getins0gen());
+	if(player.data.gte('e65536')) document.getElementById('uni_crowded').style.display = 'block';
+	else document.getElementById('uni_crowded').style.display = 'none';
+	document.getElementById('dim').innerHTML = notation(player.dimension);
+	document.getElementById('dimcost').innerHTML = notation(getdimcost());
+	document.getElementById('star').innerHTML = notation(player.star);
+	document.getElementById('stareffect').innerHTML = notation(player.star.add(10).log10().pow(0.5));
+	if(player.PL2info.gte(getdimcost()))
+	{
+		document.getElementById('dimbt').style['background-color'] = '#666666';
+	}
+	else
+	{
+		document.getElementById('dimbt').style['background-color'] = 'black';
+	}
+	let PL2mlst_num = 8;
+	let PL2mlst_dis = [N(1), N(2), N(4), N(7), N(10), N(15), N(25), N(35)];
+	for(let i = 0;i < PL2mlst_num;i++)
+	{
+		if(player.PL2tms.gte(PL2mlst_dis[i]))
+		{
+			document.getElementById('PL2mlst' + i).style['background-color'] = 'purple';
+			document.getElementById('PL2mlst' + i).style['border-color'] = 'white';
+			document.getElementById('PL2mlst' + i).style['color'] = 'white';
+		}
+		else
+		{
+			document.getElementById('PL2mlst' + i).style['background-color'] = 'white';
+			document.getElementById('PL2mlst' + i).style['border-color'] = 'purple';
+			document.getElementById('PL2mlst' + i).style['color'] = 'black';
+		}
+	}
+	
+	let jdx = getjdx();
+	let boostcost = getboostcost();
+	let boost2cost = getboost2cost();
+	let boost3cost = getboost3cost();
+	let jdcost = getjdprice();
+	let jdunlock = [N(1), N(2), N(3), N(4), N(5), N(6), N(7), N(8)];
+	document.getElementById('boosteffect').innerHTML = getboosteffect(player.boost);
+	document.getElementById('boost2effect').innerHTML = getboost2effect(player.boost2);
+	document.getElementById('boost3effect').innerHTML = getboost3effect(player.boost3);
+	let beff = '', b2eff = '', b3eff = '';
+	for(let i = 0;i < boosteffectnum;i++)
+	{
+		if(player.boost.gte(boosteffectlist[i])) beff = beff + getboosteffect(boosteffectlist[i].sub(1)) + '<br/>';
+	}
+	for(let i = 0;i < boost2effectnum;i++)
+	{
+		if(player.boost2.gte(boost2effectlist[i])) b2eff = b2eff + getboost2effect(boost2effectlist[i].sub(1)) + '<br/>';
+	}
+	for(let i = 0;i < boost3effectnum;i++)
+	{
+		if(player.boost3.gte(boost3effectlist[i])) b3eff = b3eff + getboost3effect(boost3effectlist[i].sub(1)) + '<br/>';
+	}
+	document.getElementById('boosteffectlist').innerHTML = beff;
+	document.getElementById('boost2effectlist').innerHTML = b2eff;
+	document.getElementById('boost3effectlist').innerHTML = b3eff;
+	if(player.autoboost) document.getElementById('autoboostbts').innerHTML = '自动购买：开';
+	else document.getElementById('autoboostbts').innerHTML = '自动购买：关';
+	if(player.autoboost2) document.getElementById('autoboost2bts').innerHTML = '自动购买：开';
+	else document.getElementById('autoboost2bts').innerHTML = '自动购买：关';
+	if(player.PL1upg[4]) document.getElementById('autoboostbt').style.display = 'block';
+	else document.getElementById('autoboostbt').style.display = 'none';
+	if(player.sliceupg[0]) document.getElementById('autoboost2bt').style.display = 'block';
+	else document.getElementById('autoboost2bt').style.display = 'none';
+	for(let i = 0;i < 8;i++)
+	{
+		let scs = getjdscs(i);
+		let scx = getjdscx(i);
+		for(let j = 0;j < 8;j++) document.getElementById('jdscs' + (j + 1)).innerHTML = notation(scs[j]);
+		for(let j = 0;j < 8;j++) document.getElementById('jdscx' + (j + 1)).innerHTML = notation(scx[j]);
+		let jdx = getjdx();
+		let zscolor = ['#ff0000', '#aa2200', '#22aa00', '#00ff00', '#00aa22', '#0022aa', '#0000ff', '#2200aa'];
+		let zstext = ['一阶软上限', '二阶软上限', '三阶软上限', '四阶软上限', '五阶软上限', '六阶软上限', '七阶软上限', '八阶软上限'];
+		document.getElementById('jdzs' + (i + 1)).innerHTML = '';
+		document.getElementById('jdzs' + (i + 1)).style['color'] = '#ffffff';
+		let now_x = getbuyjdeffect().pow(player.buyjd[i]);
+		for(let j = 0;j < 4;j++)
+		{
+			if(now_x.gte(scs[j]))
 			{
-				page = p;
-				subpage = 1;
+				document.getElementById('jdzs' + (i + 1)).innerHTML = zstext[j];
+				document.getElementById('jdzs' + (i + 1)).style['color'] = zscolor[j];
+				now_x = scs[j].mul(now_x.div(scs[j]).pow(scx[j]));
 			}
-			
-			function chspage(p)
+		}
+		let jd_x = getjdx();
+		let jd_xi = jd_x[i];
+		for(let j = 4;j < 8;j++)
+		{
+			if(jd_xi.gte(N(10).pow(scs[j])))
 			{
-				subpage = p;
+				document.getElementById('jdzs' + (i + 1)).innerHTML = zstext[j];
+				document.getElementById('jdzs' + (i + 1)).style['color'] = zscolor[j];
+				jd_xi = (N(10).pow(scs[j])).mul(N(10).pow(jd_xi.log10().div(scs[j]).pow(scx[j])));
 			}
-			
-			function hard_reset()
+		}
+		if(player.boost.gte(jdunlock[i]))
+		{
+			document.getElementById('unlockjd' + (i + 1)).style.display = 'block';
+		}
+		else
+		{
+			document.getElementById('unlockjd' + (i + 1)).style.display = 'none';
+		}
+		document.getElementById('jdnum' + (i + 1)).innerHTML = notation(player.jdnum[i]);
+		document.getElementById('jdbuy' + (i + 1)).innerHTML = notation(player.buyjd[i]);
+		document.getElementById('jdx' + (i + 1)).innerHTML = notation(jdx[i]);
+		document.getElementById('jdcost' + (i + 1)).innerHTML = notation(jdcost[i]);
+		if(player.data.gte(jdcost[i])) document.getElementById('jdbuybt' + (i + 1)).style['background-color'] = '#666666';
+		else document.getElementById('jdbuybt' + (i + 1)).style['background-color'] = '#000000';
+		
+		if(player.autobuyjd[i]) document.getElementById('autobuyjds' + (i + 1)).innerHTML = '自动购买：开';
+		else document.getElementById('autobuyjds' + (i + 1)).innerHTML = '自动购买：关';
+		if(player.PL1upg[0]) document.getElementById('autobuyjdbt' + (i + 1)).style.display = 'block';
+		else document.getElementById('autobuyjdbt' + (i + 1)).style.display = 'none';
+	}
+	if(player.PL1upg[7])
+	{
+		for(let i = 0;i < 4;i++)
+		{
+			if(player.sliceupg_rep[i].gte(200)) document.getElementById('slicebt' + (i + 1)).style['background-color'] = 'green';
+			else document.getElementById('slicebt' + (i + 1)).style['background-color'] = 'black';
+			document.getElementById('sliceupgcost' + (i + 1)).innerHTML = notation(sliceupgcost[i].pow(player.sliceupg_rep[i].add(1)));
+			document.getElementById('sliceupglevel' + (i + 1)).innerHTML = notation(player.sliceupg_rep[i]);
+		}
+		for(let i = 4;i < 8;i++)
+		{
+			if(player.sliceupg[i - 4]) document.getElementById('slicebt' + (i + 1)).style['background-color'] = 'green';
+			else document.getElementById('slicebt' + (i + 1)).style['background-color'] = 'black';
+			document.getElementById('sliceupgcost' + (i + 1)).innerHTML = notation(sliceupgcost[i]);
+		}
+	}
+	if(player.PL2unlock)
+	{
+		for(let i = 0;i < 8;i++)
+		{
+			let zscolor = ['#ff0000', '#aa2200', '#22aa00', '#00ff00'];
+			let zstext = ['一阶软上限', '二阶软上限', '三阶软上限', '四阶软上限'];
+			let snx = getsnx();
+			let sncost = getsncost(i);
+			let scs = getsnscs();
+			document.getElementById('snbuy' + (i + 1)).innerHTML = notation(player.buysn[i]);
+			document.getElementById('sncost' + (i + 1)).innerHTML = notation(getsncost(i));
+			document.getElementById('snnum' + (i + 1)).innerHTML = notation(player.star_node[i]);
+			document.getElementById('snx' + (i + 1)).innerHTML = notation(snx[i]);
+			if(player.star.gte(sncost))
 			{
-				init();
-				data_print();
+				document.getElementById('snbuybt' + (i + 1)).style['background-color'] = '#666666';
 			}
-			
-			function notation(number)
+			else
 			{
-				var string = "";
-				if (number.sign == -1) {
-					string = string + "-";
-					number.sign = 1;
-				}
-				let power1 = Decimal.floor(Decimal.log10(number));
-				let base1 = number.div(Decimal.pow(10, power1));
-				let power2 = Decimal.floor(Decimal.log10(power1));
-				let base2 = power1.div(Decimal.pow(10, power2));
-				let power3 = Decimal.floor(Decimal.log10(power2));
-				let base3 = power2.div(Decimal.pow(10, power3));
-				if (number == 0) return "0.000";
-				if (power1 < -3) return base1.mul(10).toFixed(3) + "e" + power1;
-				if (power1 < -2) return number.toFixed(6);
-				if (power1 < -1) return number.toFixed(5);
-				if (power1 < 0) return number.toFixed(4);
-				if (power1 < 1) return number.toFixed(3);
-				if (power1 < 2) return number.toFixed(2);
-				if (power1 < 3) return number.toFixed(1);
-				if (power1 < 6) return number.toFixed(0);
-				if (power1 < 100000000) return base1.toFixed(3) + "e" + power1;
-				if (power2 < 100000000) return "e" + base2.toFixed(3) + "e" + power2;
-				if (power3 < 100000000) return "ee" + base3.toFixed(3) + "e" + power3;
-				return number.mag.toFixed(0) + "f" + number.layer.toFixed(0);
+				document.getElementById('snbuybt' + (i + 1)).style['background-color'] = '#000000';
 			}
-			
-			function transformToDecimal(object)
+			document.getElementById('snzs' + (i + 1)).innerHTML = '';
+			document.getElementById('snzs' + (i + 1)).style['color'] = 'black';
+			for(let j = 0;j < 4;j++)
 			{
-				for (i in object) {
-					if (typeof (object[i]) == "string" && !isNaN(new Decimal(object[i]).mag)) object[i] = new Decimal(object[i]);
-					if (typeof (object[i]) == "object" && !isNaN(new Decimal(object[i]).mag)) transformToDecimal(object[i]);
-					if (new Decimal(object[i]).gte("F1e308")) object[i] = new Decimal(1);
-				}
-			}
-			
-			function data_print()
-			{
-				localStorage.QWERTYUIOP2 = btoa(JSON.stringify(player));
-			}
-			
-			function data_input()
-			{
-				if (!localStorage.QWERTYUIOP2) return;
-				player = JSON.parse(atob(localStorage.QWERTYUIOP2));
-				transformToDecimal(player);
-			}
-			
-			function getjdscs(i)
-			{
-				let base = [N(1024), N(1e10), N(1e50), N('e400'), N(1e9), N(1e100), N('e40000'), N('ee50')];
-				if(player.boost.gte(55)) base[2] = base[2].pow(1.5);
-				if(player.PL1upg[6]) for(let j = 0;j < 2;j++) base[j] = base[j].pow(1.5);
-				if(player.sliceupg[2]) for(let j = 0;j < 3;j++) base[j] = base[j].pow(1.5);
-				if(player.unlock_ins) for(let j = 0;j < 4;j++) base[j] = base[j].pow(N(1).add(player.insupg[4].mul(0.1)));
-				return base;
-			}
-			
-			function getjdscx(i)
-			{
-				let base = [N(1), N(4), N(99), N(999), N(1), N(39), N(999), N(999999)];
-				if(player.boost.gte(15)) base[0] = base[0].mul(0.75);
-				if(player.boost.gte(20)) base[0] = base[0].mul(0.4);
-				if(player.boost.gte(21)) base[1] = base[1].mul(N(1).div(player.boost.add(1).root(15)));
-				if(player.boost2.gte(2)) base[0] = base[0].mul(N(1).div(player.boost.add(1).root(5)));
-				if(player.boost2.gte(48)) for(let j = 0;j < 3;j++) base[j] = base[j].mul(N(1).div(player.boost2.root(10)));
-				if(player.PL1upg[1]) base[0] = base[0].mul(0.6);
-				if(player.PL1upg[5]) base[0] = base[0].mul(0.5);
-				if(player.PL1upg[5]) base[1] = base[1].mul(0.6);
-				if(player.PL1upg[5]) base[2] = base[2].mul(0.6);
-				for(let i = 0;i < 8;i++) base[i] = N(1).div(base[i].add(1));
-				return base;
-			}
-			
-			function getjdprice()
-			{
-				let base = [N(10), N(1000), N(1e5), N(1e7), N(1e9), N(1e11), N(1e13), N(1e15)];
-				let basex = [N(10), N(100), N(1000), N(1e4), N(1e5), N(1e6), N(1e7), N(1e8)];
-				let jdprice = base;
-				for(let i = 0;i < 8;i++) jdprice[i] = jdprice[i].mul(basex[i].pow(player.buyjd[i]));
-				return jdprice;
-			}
-			
-			function getjdx()
-			{
-				let base = [N(1), N(1), N(1), N(1), N(1), N(1), N(1), N(1)];
-				for(let i = 0;i < 8;i++)
+				if(snx[i].gte(scs[j]))
 				{
-					let scs = getjdscs(i);
-					let scx = getjdscx(i);
-					base[i] = base[i].mul(N(2).pow(player.buyjd[i]));
-					for(let j = 0;j < 4;j++)
-					{
-						if(base[i].gte(scs[j]))
-						{
-							base[i] = scs[j].mul(base[i].div(scs[j]).pow(scx[j]));
-						}
-					}
-					//mult
-					if(player.boost2.gte(1)) base[i] = base[i].mul(3);
-					if(player.boost2.gte(3)) base[i] = base[i].mul(player.boost2.add(1).mul(1.25).pow(3.5));
-					if(player.boost2.gte(12)) base[i] = base[i].mul(player.PL1info.add(1).mul(0.5).pow(0.25));
-					if(player.boost.gte(9) && !player.boost.gte(52)) base[i] = base[i].mul(player.boost);
-					if(player.boost.gte(52)) base[i] = base[i].mul(player.boost.pow(2));
-					if(player.PL1upg[2]) base[i] = base[i].mul(player.boost.add(1).pow(1.5));
-					if(player.PL1upg[7]) base[i] = base[i].mul(getsliceeffect());
-					//pow
-					if(player.boost.gte(65)) base[i] = base[i].pow(N(1).add(player.boost.root(10).div(15)));
-					if(player.PL1upg[7]) base[i] = base[i].pow(N(1).add(player.sliceupg_rep[0].mul(0.005)));
-					if(player.unlock_ins) base[i] = base[i].pow(N(1).add(player.insupg[0].mul(0.008)));
-					
-					for(let j = 4;j < 8;j++)
-					{
-						if(base[i].gte(N(10).pow(scs[j])))
-						{
-							base[i] = (N(10).pow(scs[j])).mul(N(10).pow(base[i].log10().div(scs[j]).pow(scx[j])));
-						}
-					}
-				}
-				return base;
-			}
-			
-			function buyjd(num)
-			{
-				num = num - 1;
-				let costlist = getjdprice();
-				let cost = costlist[num];
-				if(player.data.gte(cost))
-				{
-					if(!player.PL1upg[0]) player.data = player.data.sub(cost);
-					player.buyjd[num] = player.buyjd[num].add(1);
-					player.jdnum[num] = player.jdnum[num].add(10);
-				}
-			}
-			
-			function buymaxjd(num)
-			{
-				num = num - 1;
-				let base = [N(10), N(1000), N(1e5), N(1e7), N(1e9), N(1e11), N(1e13), N(1e15)];
-				let basex = [N(10), N(100), N(1000), N(1e4), N(1e5), N(1e6), N(1e7), N(1e8)];
-				let cost = getjdprice();
-				if(player.data.gte(cost[num]))
-				{
-					let ans = player.data.div(base[num]).log(basex[num]).floor().add(1);
-					if(!player.PL1upg[0]) player.data = player.data.sub(cost[num]);
-					player.jdnum[num] = player.jdnum[num].add(ans.sub(player.buyjd[num]).mul(10));
-					player.buyjd[num] = ans;
-				}
-			}
-			
-			function chautobuyjd(num)
-			{
-				num = num - 1;
-				player.autobuyjd[num] = !player.autobuyjd[num];
-			}
-			
-			function allmaxjd()
-			{
-				for(let i = 0;i < 8;i++) buymaxjd(i + 1);
-			}
-			
-			function getboostzs1x()
-			{
-				let base = N(1);
-				if(player.boost.gte(16)) base = base.mul(0.5);
-				if(player.boost2.gte(5)) base = base.mul(0.5);
-				if(player.boost2.gte(11)) base = base.mul(0.9);
-				if(player.PL1upg[3]) base = base.mul(0.5);
-				base = base.add(1);
-				return base;
-			}
-			
-			function getboostcost()
-			{
-				let base = N(10).pow(player.boost);
-				if(player.boost.gte(10))
-				{
-					let zsx = getboostzs1x();
-					base = N(10).pow(10).mul(N(10).pow(N(zsx).pow(player.boost.sub(10))));
-				}
-				return base;
-			}
-			
-			function getboost2cost()
-			{
-				let base = player.boost2.mul(4).add(16);
-				if(player.PL1upg[7]) base = base.sub(player.sliceupg_rep[2]);
-				return base;
-			}
-			
-			var boosteffectlist = [N(1), N(2), N(3), N(4), N(5), N(6), N(7), N(8)
-			, N(9), N(15), N(16), N(20), N(21), N(52), N(55), N(65)
-			, N(67), N(95), N(100)];
-			var boosteffectnum = 19;
-			
-			function getboosteffect(b)
-			{
-				if(!b.gte(1))
-				{
-					return '在1跃迁，解锁1号传输节点。';
-				}
-				else if(!b.gte(2))
-				{
-					return '在2跃迁，解锁2号传输节点。';
-				}
-				else if(!b.gte(3))
-				{
-					return '在3跃迁，解锁3号传输节点。';
-				}
-				else if(!b.gte(4))
-				{
-					return '在4跃迁，解锁4号传输节点。';
-				}
-				else if(!b.gte(5))
-				{
-					return '在5跃迁，解锁5号传输节点。';
-				}
-				else if(!b.gte(6))
-				{
-					return '在6跃迁，解锁6号传输节点。';
-				}
-				else if(!b.gte(7))
-				{
-					return '在7跃迁，解锁7号传输节点。';
-				}
-				else if(!b.gte(8))
-				{
-					return '在8跃迁，解锁8号传输节点。';
-				}
-				else if(!b.gte(9))
-				{
-					return '在9跃迁，节点产能增加等同于跃迁数量的倍数。';
-				}
-				else if(!b.gte(15))
-				{
-					return '在15跃迁，传输节点的一阶软上限弱化25%。';
-				}
-				else if(!b.gte(16))
-				{
-					return '在16跃迁，使10跃迁及以上的折算弱化50%。';
-				}
-				else if(!b.gte(20))
-				{
-					return '在20跃迁，传输节点的一阶软上限弱化60%。';
-				}
-				else if(!b.gte(21))
-				{
-					return '在21跃迁，跃迁弱化传输节点的二阶软上限，当前：×' + notation(N(1).div(player.boost.add(1).root(15)));
-				}
-				else if(!b.gte(52))
-				{
-					return '在52跃迁，9跃迁的效果改为增加等同于跃迁数量的平方的倍数';
-				}
-				else if(!b.gte(55))
-				{
-					return '在55跃迁，节点三阶软上限延迟1.5次方出现。';
-				}
-				else if(!b.gte(65))
-				{
-					return '在65跃迁，跃迁提高传输节点的指数。当前：+' + notation(player.boost.root(10).div(15));
-				}
-				else if(!b.gte(67))
-				{
-					return '在67跃迁，世界信息增幅位面切片获取量。当前：×' + notation(player.PL1info.add(1).log(2).root(1.5));
-				}
-				else if(!b.gte(95))
-				{
-					return '在95跃迁，位面切片增幅指数增加0.2。';
-				}
-				else if(!b.gte(100))
-				{
-					return '在100跃迁，位面切片数量增幅67跃迁的效果。当前：×' + notation(player.slice.log(2).pow(1.15));
-				}
-				else return '';
-			}
-			
-			var boost2effectlist = [N(1), N(2), N(3), N(5), N(10), N(11), N(12), N(30)
-			, N(48)];
-			var boost2effectnum = 9;
-			
-			function getboost2effect(b)
-			{
-				if(!b.gte(1))
-				{
-					return '在1二重跃迁，节点产能增加3倍。';
-				}
-				else if(!b.gte(2))
-				{
-					return '在2二重跃迁，跃迁弱化传输节点的一阶软上限。当前：×' + notation(N(1).div(player.boost.add(1).root(5)));
-				}
-				else if(!b.gte(3))
-				{
-					return '在3二重跃迁，二重跃迁增幅节点产能。当前：×' + notation(player.boost2.add(1).mul(1.25).pow(3.5));
-				}
-				else if(!b.gte(5))
-				{
-					return '在5二重跃迁，使10跃迁及以上的折算弱化50%。';
-				}
-				else if(!b.gte(10))
-				{
-					return '在10二重跃迁，跃迁数量加成世界信息获取量。当前：×' + notation(player.boost.add(1).mul(1.5).pow(0.75));
-				}
-				else if(!b.gte(11))
-				{
-					return '在11二重跃迁，使10跃迁及以上的折算弱化10%。';
-				}
-				else if(!b.gte(12))
-				{
-					return '在12二重跃迁，世界信息增幅节点产能。当前：×' + notation(player.PL1info.add(1).mul(0.5).pow(0.25));
-				}
-				else if(!b.gte(30))
-				{
-					return '在30二重跃迁，铭刻升级2,4,6增幅位面切片产能。当前：×' + notation((player.insupg[1].add(player.insupg[3]).add(player.insupg[5])).pow(2));
-				}
-				else if(!b.gte(48))
-				{
-					return '在48二重跃迁，二重跃迁弱化节点一至三阶软上限。当前：×' + notation(N(1).div(player.boost2.root(10)));
-				}
-				else return '';
-			}
-			
-			function boostreset()
-			{
-				player.data = N(10);
-				for(let i = 0;i < 8;i++)
-				{
-					player.buyjd[i] = N(0);
-					player.jdnum[i] = N(0);
+					document.getElementById('snzs' + (i + 1)).innerHTML = zstext[j];
+					document.getElementById('snzs' + (i + 1)).style['color'] = zscolor[j];
 				}
 			}
-			
-			function boost2reset()
-			{
-				boostreset();
-				player.boost = N(0);
-			}
-			
-			function PL1reset()
-			{
-				boost2reset();
-				player.boost2 = N(0);
-			}
-			
-			function PL2reset()
-			{
-				PL1reset();
-				player.PL1info = N(0);
-				player.PL1upg = [true, false, false, false, true, false, false, true];
-				player.slice = N(0);
-				player.sliceupg = [true, false, false, true];
-				player.sliceupg_rep = [N(0), N(0), N(0), N(0)];
-				player.ins = [N(0), N(0), N(0), N(0)];
-				player.insupg = [N(0), N(0), N(0), N(0), N(0), N(0)];
-				player.unlock_ins = false;
-			}
-			
-			function buyboost()
-			{
-				let cost = getboostcost();
-				if(player.data.gte(cost))
-				{
-					if(!player.PL1upg[4]) boostreset();
-					player.boost = player.boost.add(N(1));
-				}
-			}
-			
-			function buymaxboost()
-			{
-				if(!player.PL1upg[4]) return;
-				let zs1x = getboostzs1x();
-				let ans = N(0);
-				if(!player.data.gte(1e10))
-				{
-					ans = player.data.log(10).floor().add(1);
-				}
-				else
-				{
-					ans = ((player.data.div(1e10)).log10().log(zs1x)).floor().add(11);
-				}
-				
-				if(ans.gte(player.boost))
-				{
-					player.boost = ans;
-				}
-			}
-			
-			function chautoboost()
-			{
-				if(player.PL1upg[4]) player.autoboost = !player.autoboost;
-			}
-			
-			function chautoboost2()
-			{
-				if(player.sliceupg[0]) player.autoboost2 = !player.autoboost2;
-			}
-			
-			function buyboost2()
-			{
-				let cost = getboost2cost();
-				if(player.boost.gte(cost))
-				{
-					if(!player.sliceupg[0]) boost2reset();
-					player.boost2 = player.boost2.add(N(1));
-				}
-			}
-			
-			function buymaxboost2()
-			{
-				let cost_sub = N(0);
-				if(player.PL1upg[7]) cost_sub = cost_sub.add(player.sliceupg_rep[2]);
-				let ans = player.boost.add(cost_sub).sub(16).div(4).floor().add(1);
-				if(ans.gte(player.boost2))
-				{
-					player.boost2 = ans;
-				}
-			}
-			
-			var PL1infoget = N(0), PL2infoget = N(0);
-			function updatePLinfoget()
-			{
-				if(player.data.gte(1e80))
-				{
-					if(player.sliceupg[1]) PL1infoget = player.data.root(8).div(1e10);
-					else if(player.PL1upg[7]) PL1infoget = player.data.root(10).div(1e8);
-					else PL1infoget = player.data.root(80).sub(9);
-				}
-				else PL1infoget = N(0);
-				
-				if(player.boost2.gte(10)) PL1infoget = PL1infoget.mul(player.boost.add(1).mul(1.5).pow(0.75));
-				PL1infoget = PL1infoget.floor();
-				
-				if(player.PL1info.gte('e5500'))
-				{
-					PL2infoget = player.PL1info.root(2750).div(100);
-				}
-				else PL2infoget = N(0);
-				
-				PL2infoget = PL2infoget.floor();
-			}
-			
-			function buyPL1()
-			{
-				if(player.data.gte(1e80))
-				{
-					PL1reset();
-					player.PL1info = player.PL1info.add(PL1infoget);
-					player.PL1unlock = true;
-				}
-			}
-			
-			function buyPL2()
-			{
-				if(player.PL1info.gte('e5500'))
-				{
-					PL2reset();
-					player.PL2info = player.PL2info.add(PL2infoget);
-					player.PL2unlock = true;
-					player.PL2tms = player.PL2tms.add(1);
-				}
-			}
-			
-			function buyPL1ug(i)
-			{
-				i = i - 1;
-				if(player.PL1info.gte(PL1upgcost[i]) && !player.PL1upg[i])
-				{
-					player.PL1info = player.PL1info.sub(PL1upgcost[i]);
-					player.PL1upg[i] = true;
-				}
-			}
-			
-			function getsliceeffect()
-			{
-				let p = N(0.5);
-				if(player.PL1upg[7]) p = p.add(player.sliceupg_rep[1].mul(0.05));
-				if(player.boost.gte(95)) p = p.add(0.2);
-				
-				let effect = player.slice.pow(p).max(1);
-				return effect;
-			}
-			
-			function buysliceupg(num)
-			{
-				num = num - 1;
-				if(num < 4)
-				{
-					let cost = sliceupgcost[num].pow(player.sliceupg_rep[num].add(1));
-					if(player.slice.gte(cost))
-					{
-						player.slice = player.slice.sub(cost);
-						player.sliceupg_rep[num] = player.sliceupg_rep[num].add(1);
-					}
-				}
-				else
-				{
-					let cost = sliceupgcost[num];
-					if(player.slice.gte(cost) && !player.sliceupg[num - 4])
-					{
-						player.slice = player.slice.sub(cost);
-						player.sliceupg[num - 4] = true;
-					}
-				}
-			}
-			
-			function unlock_ins()
-			{
-				if(player.PL1info.gte(1e130) && !player.unlock_ins)
-				{
-					player.PL1info = player.PL1info.sub(1e130);
-					player.unlock_ins = true;
-				}
-			}
-			
-			function getins0gen()
-			{
-				let ins_gen = N(1);
-				ins_gen = ins_gen.add(player.ins[0].pow(0.25));
-				let mult = N(1.75).pow(player.insupg[1]);
-				if(mult.gte(1000)) mult = N(1000).mul(mult.div(1000).pow(0.4));
-				ins_gen = ins_gen.mul(mult);
-				
-				mult = N(1.75).pow(player.insupg[3]);
-				if(mult.gte(1000)) mult = N(1000).mul(mult.div(1000).pow(0.4));
-				ins_gen = ins_gen.mul(mult);
-				
-				mult = N(1.75).pow(player.insupg[5]);
-				if(mult.gte(1000)) mult = N(1000).mul(mult.div(1000).pow(0.4));
-				ins_gen = ins_gen.mul(mult);
-				return ins_gen;
-			}
-			
-			function gettraninsnum(num)
-			{
-				let gen = player.ins[0];
-				
-				let mult = N(1.75).pow(player.insupg[5]);
-				if(mult.gte(1000)) mult = N(1000).mul(mult.div(1000).pow(0.4));
-				
-				if(num == 1) gen = gen.mul(mult);
-				
-				mult = N(1.75).pow(player.insupg[1]);
-				if(mult.gte(1000)) mult = N(1000).mul(mult.div(1000).pow(0.4));
-				
-				if(num == 2) gen = gen.mul(mult);
-				
-				mult = N(1.75).pow(player.insupg[3]);
-				if(mult.gte(1000)) mult = N(1000).mul(mult.div(1000).pow(0.4));
-				
-				if(num == 3) gen = gen.mul(mult);
-				
-				if(gen.gte(1e12)) gen = N(1e12).mul(gen.div(1e12).pow(0.025));
-				
-				return gen;
-			}
-			
-			function tranins(num)
-			{
-				let gen = gettraninsnum(num);
-				player.ins[num] = player.ins[num].add(gen);
-				player.ins[0] = N(0);
-			}
-			
-			function addins0()
-			{
-				let ins_gen = getins0gen();
-				if(player.unlock_ins) player.ins[0] = player.ins[0].add(ins_gen);
-			}
-			
-			function buyinsupg(num)
-			{
-				let cost = insupgcostb[num].mul(insupgcostx[num].pow(player.insupg[num]));
-				if(num >= 0 && num <= 1) 
-				{
-					if(player.ins[1].gte(cost))
-					{
-						player.ins[1] = player.ins[1].sub(cost);
-						player.insupg[num] = player.insupg[num].add(1);
-					}
-				}
-				if(num >= 2 && num <= 3) 
-				{
-					if(player.ins[2].gte(cost))
-					{
-						player.ins[2] = player.ins[2].sub(cost);
-						player.insupg[num] = player.insupg[num].add(1);
-					}
-				}
-				if(num >= 4 && num <= 5) 
-				{
-					if(player.ins[3].gte(cost))
-					{
-						player.ins[3] = player.ins[3].sub(cost);
-						player.insupg[num] = player.insupg[num].add(1);
-					}
-				}
-			}
-			
-			function automation()
-			{
-				if(player.PL1upg[0])
-				{
-					for(let i = 0;i < 8;i++)
-					{
-						if(player.autobuyjd[i]) buymaxjd(i + 1);
-					}
-				}
-				if(player.PL1upg[4])
-				{
-					if(player.autoboost) buymaxboost();
-				}
-				if(player.sliceupg[0])
-				{
-					if(player.autoboost2) buymaxboost2();
-				}
-				
-				if(player.slice.gte(1e64))
-				{
-					player.sliceupg_rep[0] = player.slice.log(sliceupgcost[0]).floor();
-					player.sliceupg_rep[1] = player.slice.log(sliceupgcost[1]).floor();
-					player.sliceupg_rep[2] = player.slice.log(sliceupgcost[2]).floor();
-					player.sliceupg_rep[3] = player.slice.log(sliceupgcost[3]).floor();
-				}
-			}
-			
-			function produce()
-			{
-				updatePLinfoget();
-				
-				let jdprice = getjdprice();
-				let jdx = getjdx();
-				let jdunlock = [N(1), N(2), N(3), N(4), N(5), N(6), N(7), N(8)];
-				for(let i = 7;i >= 1;i--)
-				{
-					if(player.boost.gte(jdunlock[i]))
-					{
-						player.jdnum[i - 1] = player.jdnum[i - 1].add(player.jdnum[i].mul(jdx[i]).div(10));
-					}
-				}
-				if(player.boost.gte(jdunlock[0]))
-				{
-					player.data = player.data.add(player.jdnum[0].mul(jdx[0]).div(10));
-				}
-				
-				if(player.PL1upg[7])
-				{
-					let slice_gen = N(0.05);
-					if(!player.slice.gte(1e7)) slice_gen = slice_gen.mul(player.slice.div(600).root(1.25).max(1));
-					else slice_gen = slice_gen.mul(player.slice.div(1e7).pow(0.8).mul(1e7).div(600).root(1.25).max(1));
-					
-					//mul
-					if(player.boost.gte(67)) slice_gen = slice_gen.mul(player.PL1info.add(1).log(2).root(1.5));
-					if(player.boost.gte(100)) slice_gen = slice_gen.mul(player.slice.log(2).pow(1.15));
-					if(player.boost2.gte(30)) slice_gen = slice_gen.mul((player.insupg[1].add(player.insupg[3]).add(player.insupg[5])).pow(2));
-					slice_gen = slice_gen.mul(N(1.5).pow(player.sliceupg_rep[0]));
-					//pow
-					if(player.unlock_ins)
-					{
-						slice_gen = slice_gen.pow(N(1).add(player.insupg[2].mul(0.05)));
-					}
-					if(slice_gen.gte(5e8)) slice_gen = N(5e8).mul(slice_gen.div(5e8).pow(0.75));
-					if(slice_gen.gte(1e200)) slice_gen = N(1e200).mul(N(10).pow(slice_gen.div(1e200).log10().pow(0.75)));
-					player.slice = player.slice.add(slice_gen);
-				}
-				
-				automation();
-			}
-			
-			function GUI()
-			{
-				let page_has_spage = [2, 0, 3, 3, 1];
-				
-				if(page == 1) document.getElementById('page1').style.display = 'block';
-				else document.getElementById('page1').style.display = 'none';
-				if(page == 2) document.getElementById('page2').style.display = 'block';
-				else document.getElementById('page2').style.display = 'none';
-				if(page == 3) document.getElementById('page3').style.display = 'block';
-				else document.getElementById('page3').style.display = 'none';
-				if(page == 4) document.getElementById('page4').style.display = 'block';
-				else document.getElementById('page4').style.display = 'none';
-				if(page == 5) document.getElementById('page5').style.display = 'block';
-				else document.getElementById('page5').style.display = 'none';
-				
-				if(page_has_spage[page - 1] >= 1)
-				{
-					if(subpage == 1) document.getElementById('spage1_' + page).style.display = 'block';
-					else document.getElementById('spage1_' + page).style.display = 'none';
-				}
-				if(page_has_spage[page - 1] >= 2)
-				{
-					if(subpage == 2) document.getElementById('spage2_' + page).style.display = 'block';
-					else document.getElementById('spage2_' + page).style.display = 'none';
-				}
-				if(page_has_spage[page - 1] >= 3)
-				{
-					if(subpage == 3) document.getElementById('spage3_' + page).style.display = 'block';
-					else document.getElementById('spage3_' + page).style.display = 'none';
-				}
-				if(page_has_spage[page - 1] >= 4)
-				{
-					if(subpage == 4) document.getElementById('spage4_' + page).style.display = 'block';
-					else document.getElementById('spage4_' + page).style.display = 'none';
-				}
-				
-				if(player.PL1unlock) document.getElementById('PL1pbt').style.display = 'inline-block';
-				else document.getElementById('PL1pbt').style.display = 'none';
-				if(player.PL2unlock) document.getElementById('PL2pbt').style.display = 'inline-block';
-				else document.getElementById('PL2pbt').style.display = 'none';
-				
-				if(player.PL1upg[7]) document.getElementById('spagebt2_4').style.display = 'inline-block';
-				else document.getElementById('spagebt2_4').style.display = 'none';
-				
-				if(player.PL2unlock) document.getElementById('spagebt2_1').style.display = 'inline-block';
-				else document.getElementById('spagebt2_1').style.display = 'none';
-				
-				document.getElementById('PL1infoget').innerHTML = notation(PL1infoget);
-				document.getElementById('PL2infoget').innerHTML = notation(PL2infoget);
-				
-				document.getElementById('data').innerHTML = notation(player.data);
-				document.getElementById('PL1info').innerHTML = notation(player.PL1info);
-				document.getElementById('PL2info').innerHTML = notation(player.PL2info);
-				document.getElementById('PL2tms').innerHTML = notation(player.PL2tms);
-				
-				document.getElementById('slice').innerHTML = notation(player.slice);
-				document.getElementById('slice_effect').innerHTML = notation(getsliceeffect());
-				for(let i = 0;i < 3;i++)
-				{
-					sbc[i] += sbct[i];
-					if(sbc[i] < 0) sbc[i] = 0, sbct[i] = ((-sbct[i]) + 1) % 3;
-					else if(sbc[i] > 255) sbc[i] = 255, sbct[i] = ((-sbct[i]) - 1) % 3;
-				}
-				for(let xm = 1;xm < 9;xm++) document.getElementById('slicebt' + xm).style['border-color'] = 'rgb(' + sbc[0] + ',' + sbc[1] + ',' + sbc[2] + ')';
-				document.getElementById('boostnum').innerHTML = notation(player.boost);
-				document.getElementById('boost2num').innerHTML = notation(player.boost2);
-				document.getElementById('unlock_ins').style.display = (player.unlock_ins ? 'block' : 'none');
-				document.getElementById('uunlock_ins').style.display = (!player.unlock_ins ? 'block' : 'none');
-				for(let i = 0;i < 4;i++)
-				{
-					document.getElementById('ins' + i).innerHTML = notation(player.ins[i]);
-				}
-				document.getElementById('ins0gen').innerHTML = notation(getins0gen());
-				let jdx = getjdx();
-				let boostcost = getboostcost();
-				let boost2cost = getboost2cost();
-				let jdcost = getjdprice();
-				let jdunlock = [N(1), N(2), N(3), N(4), N(5), N(6), N(7), N(8)];
-				document.getElementById('boosteffect').innerHTML = getboosteffect(player.boost);
-				document.getElementById('boost2effect').innerHTML = getboost2effect(player.boost2);
-				let beff = '', b2eff = '';
-				for(let i = 0;i < boosteffectnum;i++)
-				{
-					if(player.boost.gte(boosteffectlist[i])) beff = beff + getboosteffect(boosteffectlist[i].sub(1)) + '<br/>';
-				}
-				for(let i = 0;i < boost2effectnum;i++)
-				{
-					if(player.boost2.gte(boost2effectlist[i])) b2eff = b2eff + getboost2effect(boost2effectlist[i].sub(1)) + '<br/>';
-				}
-				document.getElementById('boosteffectlist').innerHTML = beff;
-				document.getElementById('boost2effectlist').innerHTML = b2eff;
-				if(player.autoboost) document.getElementById('autoboostbts').innerHTML = '自动购买：开';
-				else document.getElementById('autoboostbts').innerHTML = '自动购买：关';
-				if(player.autoboost2) document.getElementById('autoboost2bts').innerHTML = '自动购买：开';
-				else document.getElementById('autoboost2bts').innerHTML = '自动购买：关';
-				if(player.PL1upg[4]) document.getElementById('autoboostbt').style.display = 'block';
-				else document.getElementById('autoboostbt').style.display = 'none';
-				if(player.sliceupg[0]) document.getElementById('autoboost2bt').style.display = 'block';
-				else document.getElementById('autoboost2bt').style.display = 'none';
-				for(let i = 0;i < 8;i++)
-				{
-					let scs = getjdscs(i);
-					let scx = getjdscx(i);
-					for(let j = 0;j < 8;j++) document.getElementById('jdscs' + (j + 1)).innerHTML = notation(scs[j]);
-					for(let j = 0;j < 8;j++) document.getElementById('jdscx' + (j + 1)).innerHTML = notation(scx[j]);
-					let jdx = getjdx();
-					let zscolor = ['#ff0000', '#aa2200', '#22aa00', '#00ff00', '#00aa22', '#0022aa', '#0000ff', '#2200aa'];
-					let zstext = ['一阶软上限', '二阶软上限', '三阶软上限', '四阶软上限', '五阶软上限', '六阶软上限', '七阶软上限', '八阶软上限'];
-					document.getElementById('jdzs' + (i + 1)).innerHTML = '';
-					document.getElementById('jdzs' + (i + 1)).style['color'] = '#ffffff';
-					let now_x = N(2).pow(player.buyjd[i]);
-					for(let j = 0;j < 4;j++)
-					{
-						if(now_x.gte(scs[j]))
-						{
-							document.getElementById('jdzs' + (i + 1)).innerHTML = zstext[j];
-							document.getElementById('jdzs' + (i + 1)).style['color'] = zscolor[j];
-							now_x = scs[j].mul(now_x.div(scs[j]).pow(scx[j]));
-						}
-					}
-					let jd_x = getjdx();
-					let jd_xi = jd_x[i];
-					for(let j = 4;j < 8;j++)
-					{
-						if(jd_xi.gte(N(10).pow(scs[j])))
-						{
-							document.getElementById('jdzs' + (i + 1)).innerHTML = zstext[j];
-							document.getElementById('jdzs' + (i + 1)).style['color'] = zscolor[j];
-							jd_xi = (N(10).pow(scs[j])).mul(N(10).pow(jd_xi.log10().div(scs[j]).pow(scx[j])));
-						}
-					}
-					if(player.boost.gte(jdunlock[i]))
-					{
-						document.getElementById('unlockjd' + (i + 1)).style.display = 'block';
-					}
-					else
-					{
-						document.getElementById('unlockjd' + (i + 1)).style.display = 'none';
-					}
-					document.getElementById('jdnum' + (i + 1)).innerHTML = notation(player.jdnum[i]);
-					document.getElementById('jdbuy' + (i + 1)).innerHTML = notation(player.buyjd[i]);
-					document.getElementById('jdx' + (i + 1)).innerHTML = notation(jdx[i]);
-					document.getElementById('jdcost' + (i + 1)).innerHTML = notation(jdcost[i]);
-					if(player.data.gte(jdcost[i])) document.getElementById('jdbuybt' + (i + 1)).style['background-color'] = '#666666';
-					else document.getElementById('jdbuybt' + (i + 1)).style['background-color'] = '#000000';
-					
-					if(player.autobuyjd[i]) document.getElementById('autobuyjds' + (i + 1)).innerHTML = '自动购买：开';
-					else document.getElementById('autobuyjds' + (i + 1)).innerHTML = '自动购买：关';
-					if(player.PL1upg[0]) document.getElementById('autobuyjdbt' + (i + 1)).style.display = 'block';
-					else document.getElementById('autobuyjdbt' + (i + 1)).style.display = 'none';
-				}
-				if(player.PL1upg[7])
-				{
-					for(let i = 0;i < 4;i++)
-					{
-						document.getElementById('sliceupgcost' + (i + 1)).innerHTML = notation(sliceupgcost[i].pow(player.sliceupg_rep[i].add(1)));
-						document.getElementById('sliceupglevel' + (i + 1)).innerHTML = notation(player.sliceupg_rep[i]);
-					}
-					for(let i = 4;i < 8;i++)
-					{
-						if(player.sliceupg[i - 4]) document.getElementById('slicebt' + (i + 1)).style['background-color'] = 'green';
-						else document.getElementById('slicebt' + (i + 1)).style['background-color'] = 'black';
-						document.getElementById('sliceupgcost' + (i + 1)).innerHTML = notation(sliceupgcost[i]);
-					}
-				}
-				document.getElementById('boostcost').innerHTML = notation(boostcost);
-				if(player.data.gte(boostcost))
-				{
-					document.getElementById('boostbt').style['background-color'] = '#666666';
-				}
-				else
-				{
-					document.getElementById('boostbt').style['background-color'] = '#000000';
-				}
-				document.getElementById('boost2cost').innerHTML = notation(boost2cost);
-				if(player.boost.gte(boost2cost))
-				{
-					document.getElementById('boost2bt').style['background-color'] = '#666666';
-				}
-				else
-				{
-					document.getElementById('boost2bt').style['background-color'] = '#000000';
-				}
-				for(let i = 0;i < 8;i++)
-				{
-					if(player.PL1upg[i]) document.getElementById('PL1ug' + (i + 1)).style['background-color'] = 'blue';
-					else if(player.PL1info.gte(PL1upgcost[i])) document.getElementById('PL1ug' + (i + 1)).style['background-color'] = '#666666';
-					else document.getElementById('PL1ug' + (i + 1)).style['background-color'] = '#000000';
-				}
-				document.getElementById('PL1ug3effect').innerHTML = notation(player.boost.add(1).pow(1.5));
-				for(let i = 0;i < 6;i++)
-				{
-					document.getElementById('insupg' + i + 'cost').innerHTML = notation(insupgcostb[i].mul(insupgcostx[i].pow(player.insupg[i])));
-					document.getElementById('insupglevel' + i).innerHTML = notation(player.insupg[i]);
-				}
-			}
-			
-			
-			init();
-			
-			var playerTemp = player;
-			
-			data_input();
-			
-			let playerLen = Object.keys(player).length;
-			console.log(playerLen);
-			
-			const bKeys = Object.keys(playerTemp);
-			
-			bKeys.forEach(key =>
-			{
-				if (!player.hasOwnProperty(key))
-				{
-				  player[key] = playerTemp[key];
-				}
-			});
-			
-			setInterval(produce, 100);
-			setInterval(GUI, 40);
-			setInterval(data_print, 400);
+		}
+	}
+	document.getElementById('boostcost').innerHTML = notation(boostcost);
+	if(player.data.gte(boostcost))
+	{
+		document.getElementById('boostbt').style['background-color'] = '#666666';
+	}
+	else
+	{
+		document.getElementById('boostbt').style['background-color'] = '#000000';
+	}
+	document.getElementById('boost2cost').innerHTML = notation(boost2cost);
+	if(player.boost.gte(boost2cost))
+	{
+		document.getElementById('boost2bt').style['background-color'] = '#666666';
+	}
+	else
+	{
+		document.getElementById('boost2bt').style['background-color'] = '#000000';
+	}
+	document.getElementById('boost3cost').innerHTML = notation(boost3cost);
+	if(player.PL2tms.gte(25)) document.getElementById('boost3bt').style.display = 'block';
+	else document.getElementById('boost3bt').style.display = 'none';
+	if(player.boost2.gte(boost3cost))
+	{
+		document.getElementById('boost3bt').style['background-color'] = '#666666';
+	}
+	else
+	{
+		document.getElementById('boost3bt').style['background-color'] = '#000000';
+	}
+	for(let i = 0;i < 8;i++)
+	{
+		if(player.PL1upg[i]) document.getElementById('PL1ug' + (i + 1)).style['background-color'] = 'blue';
+		else if(player.PL1info.gte(PL1upgcost[i])) document.getElementById('PL1ug' + (i + 1)).style['background-color'] = '#666666';
+		else document.getElementById('PL1ug' + (i + 1)).style['background-color'] = '#000000';
+	}
+	document.getElementById('PL1ug3effect').innerHTML = notation(player.boost.add(1).pow(1.5));
+	for(let i = 0;i < 6;i++)
+	{
+		document.getElementById('insupg' + i + 'cost').innerHTML = notation(insupgcostb[i].mul(insupgcostx[i].pow(player.insupg[i])));
+		document.getElementById('insupglevel' + i).innerHTML = notation(player.insupg[i]);
+	}
+}
+
+
+init();
+
+var playerTemp = player;
+
+data_input();
+
+let playerLen = Object.keys(player).length;
+console.log(playerLen);
+
+const bKeys = Object.keys(playerTemp);
+
+bKeys.forEach(key =>
+{
+	if (!player.hasOwnProperty(key))
+	{
+	  player[key] = playerTemp[key];
+	}
+});
+
+setInterval(produce, 100);
+setInterval(GUI, 40);
+setInterval(data_print, 400);
 		</script>
 	</body>
 </html>
