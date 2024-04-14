@@ -269,6 +269,8 @@
 				
 				<p class="ftsz3">
 					<button class="buymaxjd" onclick="allmaxjd()">全部最大化</button>
+					<button class="buymaxjd" onclick="export_save()">导出存档到剪贴板</button>
+					<button class="buymaxjd" onclick="import_save()">导入存档</button>
 				</p>
 				
 				<p class="ftsz3" id="unlockjd1">
@@ -718,6 +720,30 @@ function data_input()
 	if (!localStorage.QWERTYUIOP2) return;
 	player = JSON.parse(atob(localStorage.QWERTYUIOP2));
 	transformToDecimal(player);
+}
+
+async function jtb(text) {
+  try {
+    await navigator.clipboard.writeText(text);
+    console.log('Text copied to clipboard');
+  } catch (err) {
+    console.error('Failed to copy text: ', err);
+  }
+}
+
+function export_save()
+{
+	jtb(btoa(JSON.stringify(player)));
+}
+
+function import_save()
+{
+	let userInput = prompt("导入：", "输入存档");
+	if (userInput != null && userInput !== "") {
+		player = JSON.parse(atob(userInput));
+		transformToDecimal(player);
+	} else {
+	}
 }
 
 function getjdscs(i)
