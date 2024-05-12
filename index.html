@@ -186,7 +186,7 @@
 			float: center;
 		}
 		
-		.unlock_ins {
+		.unlock_origin {
 			background-color: black;
 			height: 120px;
 			width: 180px;
@@ -195,18 +195,6 @@
 			padding: 8px;
 			text-align: center;
 			font-size: 12px;
-			float: center;
-		}
-		
-		.insupgbt {
-			background-color: black;
-			height: 100px;
-			width: 240px;
-			border: 3px solid blue;
-			color: white;
-			padding: 5px;
-			text-align: center;
-			font-size: 16px;
 			float: center;
 		}
 		
@@ -221,6 +209,18 @@
 			font-size: 14px;
 			float: center;
 		}
+		
+		.entupgbt {
+			background-color: purple;
+			height: 100px;
+			width: 240px;
+			border: 3px solid red;
+			color: white;
+			padding: 5px;
+			text-align: center;
+			font-size: 16px;
+			float: center;
+		}
 		</style>
 	</head>
 
@@ -228,8 +228,6 @@
 		<script type="text/javascript" src="break_eternity.js"></script>
 		
 		<p align="center" class="ftsz3"><span>你有</span><span id="data"></span><span>数据</span></p>
-		
-		<p align="center" class="ftsz2" style="color: red;" id="uni_crowded">你的数据超过了 1.000e65536 导致宇宙变得拥挤。<br/>数据会随着时间减少<br/>达到 1.000e131072 数据后宇宙将坍缩。（待更新）</span> 
 		
 		<p align="center">
 			<button class="pagebt" onclick="chpage(1)">传输节点</button>
@@ -365,7 +363,7 @@
 				<td style="width: 500px; float: center;" id="PL2bt">
 					<span class="ftsz3">你拥有 </span><span class="ftsz4" id="PL2info"></span><span class="ftsz3"> 宇宙信息</span>
 					<br/>
-					<button class="PL2bt" onclick="buyPL2()">宇宙重置：重置之前的所有内容，但获得宇宙信息。<br/>+ <span id="PL2infoget"></span> 宇宙信息。<br/>需要e5500世界信息</button>
+					<button class="PL2bt" onclick="buyPL2()">宇宙重置：重置之前的所有内容，但获得宇宙信息。<br/>+ <span id="PL2infoget"></span> 宇宙信息。<br/>需要e7000世界信息</button>
 				</td>
 			</table>
 		</div>
@@ -396,7 +394,7 @@
 			<p align="center">
 				<button class="spagebt" onclick="chspage(1)">世界升级</button>
 				<button class="spagebt" onclick="chspage(2)" id="spagebt2_4">位面切片</button>
-				<button class="spagebt" onclick="chspage(3)">铭刻</button>
+				<button class="spagebt" onclick="chspage(3)">本源</button>
 			</p>
 			<div id="spage1_4" align="center">
 				<table align="center">
@@ -511,48 +509,29 @@
 				<span class="ftsz3" style="color: red;">位面切片软上限在 1e7、5e8、1e135</span>
 			</div>
 			<div id="spage3_4" align="center">
-				<button class="unlock_ins" onclick="unlock_ins()" id="uunlock_ins">
-					解锁铭刻<br/>
+				<button class="unlock_origin" onclick="unlock_origin()" id="uunlock_origin">
+					解锁本源<br/>
 					价格：1e130世界信息
 				</button>
-				<div id="unlock_ins" align="center">
-					<p class="ftsz3">
-						你拥有<span id="ins0" class="ftsz4"></span>原始铭刻
-						<br/>
-						<button class="insupgbt" onclick="addins0()">获得<span class="ftsz3" id="ins0gen"></span>原始铭刻</button>
-						<br/>
-					</p>
-					<p class="ftsz3">
-						你拥有<span id="ins1" class="ftsz4"></span>α铭刻
-						<br/>
-						<table>
-							<td><button class="insupgbt" onclick="tranins(1)">转化所有原始铭刻</button></td>
-							<td><button class="insupgbt" onclick="buyinsupg(0)">Lv <span id="insupglevel0"></span><br/>传输节点产能^(1+0.008×等级)<br/>价格：<span id="insupg0cost"></span></button></td>
-							<td><button class="insupgbt" onclick="buyinsupg(1)">Lv <span id="insupglevel1"></span><br/>增幅原始和β铭刻获取量×(1.75^等级)<br/>价格：<span id="insupg1cost"></span></button></td>
-						</table>
-						<br/>
-					</p>
-					<p class="ftsz3">
-						你拥有<span id="ins2" class="ftsz4"></span>β铭刻
-						<br/>
-						<table>
-							<td><button class="insupgbt" onclick="tranins(2)">转化所有原始铭刻</button></td>
-							<td><button class="insupgbt" onclick="buyinsupg(2)">Lv <span id="insupglevel2"></span><br/>位面切片获取量^(1+0.05×等级)<br/>价格：<span id="insupg2cost"></span></button></td>
-							<td><button class="insupgbt" onclick="buyinsupg(3)">Lv <span id="insupglevel3"></span><br/>增幅原始和γ铭刻获取量×(1.75^等级)<br/>价格：<span id="insupg3cost"></span></button></td>
-						</table>
-						<br/>
-					</p>
-					<p class="ftsz3">
-						你拥有<span id="ins3" class="ftsz4"></span>γ铭刻
-						<br/>
-						<table>
-							<td><button class="insupgbt" onclick="tranins(3)">转化所有原始铭刻</button></td>
-							<td><button class="insupgbt" onclick="buyinsupg(4)">Lv <span id="insupglevel4"></span><br/>节点1~4阶软上限推迟^(1+0.1×等级)<br/>价格：<span id="insupg4cost"></span></button></td>
-							<td><button class="insupgbt" onclick="buyinsupg(5)">Lv <span id="insupglevel5"></span><br/>增幅原始和α铭刻获取量×(1.75^等级)<br/>价格：<span id="insupg5cost"></span></button></td>
-						</table>
-					</p>
-					<span class="ftsz3" style="color: red;">增幅铭刻获取量的升级的软上限在 1000 倍</span><br/>
-					<span class="ftsz3">铭刻转化量软上限在 1.000e12</span><br/>
+				<div id="unlock_origin" align="center">
+					<p align="center" class="ftsz4">你有 <span id="origin_data"></span> 本源数据</p>
+					<p align="center" class="ftsz2" style="color: lightblue;"><span id="origin_effect"></span></p>
+					<button class="PL1bt" onclick="buyoriginupg(1)" id="originupg1">
+						本源数据获取速度+1<br>等级：<span id="originupglevel1"></span>/100.0<br>价格：<span id="originupgcost1"></span>
+					</button>
+					<button class="PL1bt" onclick="buyoriginupg(2)" id="originupg2">
+						本源数据获取速度+3<br>等级：<span id="originupglevel2"></span>/100.0<br>价格：<span id="originupgcost2"></span>
+					</button>
+					<button class="PL1bt" onclick="buyoriginupg(3)" id="originupg3">
+						本源数据获取速度×1.5<br>等级：<span id="originupglevel3"></span>/30.00<br>价格：<span id="originupgcost3"></span>
+					</button>
+					<br>
+					<button class="PL1bt" onclick="buyoriginupg(4)" id="originupg4">
+						本源数据获取速度×2.5<br>等级：<span id="originupglevel4"></span>/30.00<br>价格：<span id="originupgcost4"></span>
+					</button>
+					<button class="PL1bt" onclick="buyoriginupg(5)" id="originupg5">
+						本源数据获取速度×5<br>等级：<span id="originupglevel5"></span><br>价格：<span id="originupgcost5"></span>
+					</button>
 				</div>
 			</div>
 		</div>
@@ -568,17 +547,18 @@
 				<table align="center">
 					<td><button class="PL2mlstbt" id="PL2mlst0">1宇宙重置<br/>永久自动位面切片升级</button></td>
 					<td><button class="PL2mlstbt" id="PL2mlst1">2宇宙重置<br/>重置时世界升级全部处于已购买状态</button></td>
-					<td><button class="PL2mlstbt" id="PL2mlst2">4宇宙重置<br/>重置时位面切片一次性升级全部处于已购买状态</button></td>
-					<td><button class="PL2mlstbt" id="PL2mlst3">7宇宙重置<br/>世界重置将不重置任何东西，宇宙重置不重置铭刻相关内容</button></td>
+					<td><button class="PL2mlstbt" id="PL2mlst2">4宇宙重置<br/>重置时位面切片一次性升级全部处于已购买状态，自动化本源</button></td>
+					<td><button class="PL2mlstbt" id="PL2mlst3">7宇宙重置<br/>世界重置将不重置任何东西</button></td>
 					<tr>
 					<td><button class="PL2mlstbt" id="PL2mlst4">10宇宙重置<br/>10跃迁及以上的折算弱化25%</button></td>
 					<td><button class="PL2mlstbt" id="PL2mlst5">15宇宙重置<br/>取消位面切片在 5.000e8 的软上限</button></td>
 					<td><button class="PL2mlstbt" id="PL2mlst6">25宇宙重置<br/>解锁三重跃迁</button></td>
-					<td><button class="PL2mlstbt" id="PL2mlst7">35宇宙重置+5小时后<br/>你可以自动购买三重跃迁，三重跃迁将不重置任何东西</button></td>
+					<td><button class="PL2mlstbt" id="PL2mlst7">35宇宙重置<br/>解锁熵</button></td>
 				</table>
 			</div>
 			<div id="spage2_5">
-				<p align="center"><span class="ftsz3">5小时后更新</span></p>
+				<div id="ent_page" align="center">
+				</div>
 			</div>
 		</div>
 		
@@ -624,9 +604,9 @@ function init()
 		slice: N(0),
 		sliceupg_rep: [N(0), N(0), N(0), N(0)],
 		sliceupg: [false, false, false, false],
-		ins: [N(0), N(0), N(0), N(0)],
-		insupg: [N(0), N(0), N(0), N(0), N(0), N(0)],
-		unlock_ins: false,
+		unlock_origin: false,
+		origin_data: N(0),
+		origin_upg: [N(0), N(0), N(0), N(0), N(0)],
 		
 		//universe
 		PL2info: N(0),
@@ -637,6 +617,8 @@ function init()
 		star: N(0),
 		dimension: N(0),
 		boost3: N(0),
+		entropy: N(0),
+		ent_upg: [N(0), N(0), N(0), N(0)],
 		
 		//chaos
 		
@@ -712,13 +694,13 @@ function transformToDecimal(object)
 
 function data_print()
 {
-	localStorage.QWERTYUIOP2 = btoa(JSON.stringify(player));
+	localStorage.IDRgamesave = btoa(JSON.stringify(player));
 }
 
 function data_input()
 {
-	if (!localStorage.QWERTYUIOP2) return;
-	player = JSON.parse(atob(localStorage.QWERTYUIOP2));
+	if (!localStorage.IDRgamesave) return;
+	player = JSON.parse(atob(localStorage.IDRgamesave));
 	transformToDecimal(player);
 }
 
@@ -750,11 +732,11 @@ function getjdscs(i)
 {
 	let base = [N(1024), N(1e10), N(1e50), N('e400'), N(1e9), N(1e100), N('e40000'), N('ee50')];
 	if(player.boost.gte(55)) base[2] = base[2].pow(1.5);
+	if(player.boost.gte(315)) base[3] = base[3].pow(1.25);
 	if(player.PL1upg[6]) for(let j = 0;j < 2;j++) base[j] = base[j].pow(1.5);
 	if(player.sliceupg[2]) for(let j = 0;j < 3;j++) base[j] = base[j].pow(1.5);
-	if(player.unlock_ins) for(let j = 0;j < 4;j++) base[j] = base[j].pow(N(1).add(player.insupg[4].mul(0.1)));
 	//delete
-	if(player.boost3.gte(3)) base[0] = N(1e309);
+	if(player.boost3.gte(3)) base[0] = N(Infinity);
 	return base;
 }
 
@@ -766,6 +748,7 @@ function getjdscx(i)
 	if(player.boost.gte(21)) base[1] = base[1].mul(N(1).div(player.boost.add(1).root(15)));
 	if(player.boost2.gte(2)) base[0] = base[0].mul(N(1).div(player.boost.add(1).root(5)));
 	if(player.boost2.gte(48)) for(let j = 0;j < 3;j++) base[j] = base[j].mul(N(1).div(player.boost2.root(10)));
+	if(player.boost2.gte(119)) for(let j = 1;j < 4;j++) base[j] = base[j].mul(0.3);
 	if(player.PL1upg[1]) base[0] = base[0].mul(0.6);
 	if(player.PL1upg[5]) base[0] = base[0].mul(0.5);
 	if(player.PL1upg[5]) base[1] = base[1].mul(0.6);
@@ -813,10 +796,16 @@ function getjdx()
 		if(player.boost.gte(52)) base[i] = base[i].mul(player.boost.pow(2));
 		if(player.PL1upg[2]) base[i] = base[i].mul(player.boost.add(1).pow(1.5));
 		if(player.PL1upg[7]) base[i] = base[i].mul(getsliceeffect());
+		if(player.origin_data.gte(1e5)) base[i] = base[i].mul(player.origin_data.div(100).sub(1000).max(1).pow(20));
 		//pow
 		if(player.boost.gte(65)) base[i] = base[i].pow(N(1).add(player.boost.root(10).div(15)));
+		if(player.boost3.gte(4))
+		{
+			let power = player.PL2info.add(1).log10().div(40).add(1);
+			if(power.gte(1.1)) power = N(1.1).mul(power.div(1.1).pow(0.4));
+			base[i] = base[i].pow(power);
+		}
 		if(player.PL1upg[7]) base[i] = base[i].pow(N(1).add(player.sliceupg_rep[0].mul(0.005)));
-		if(player.unlock_ins) base[i] = base[i].pow(N(1).add(player.insupg[0].mul(0.008)));
 		
 		for(let j = 4;j < 8;j++)
 		{
@@ -909,8 +898,8 @@ function getboost3cost()
 
 var boosteffectlist = [N(1), N(2), N(3), N(4), N(5), N(6), N(7), N(8)
 , N(9), N(15), N(16), N(20), N(21), N(52), N(55), N(65)
-, N(67), N(95), N(100)];
-var boosteffectnum = 19;
+, N(67), N(95), N(120), N(315)];
+var boosteffectnum = 20;
 
 function getboosteffect(b)
 {
@@ -986,16 +975,20 @@ function getboosteffect(b)
 	{
 		return '在95跃迁，位面切片增幅指数增加0.2。';
 	}
-	else if(!b.gte(100))
+	else if(!b.gte(120))
 	{
-		return '在100跃迁，位面切片数量增幅67跃迁的效果。当前：×' + notation(player.slice.log(2).pow(1.15));
+		return '在120跃迁，本源数据产能×5。';
+	}
+	else if(!b.gte(315))
+	{
+		return '在315跃迁，节点四阶软上限延迟1.25次方出现。';
 	}
 	else return '';
 }
 
-var boost2effectlist = [N(1), N(2), N(3), N(5), N(10), N(11), N(12), N(30)
-, N(48), N(90)];
-var boost2effectnum = 10;
+var boost2effectlist = [N(1), N(2), N(3), N(5), N(10), N(11), N(12), N(25)
+, N(34), N(48), N(90), N(119)];
+var boost2effectnum = 12;
 
 function getboost2effect(b)
 {
@@ -1027,9 +1020,13 @@ function getboost2effect(b)
 	{
 		return '在12二重跃迁，世界信息增幅节点产能。当前：×' + notation(player.PL1info.add(1).mul(0.5).pow(0.25));
 	}
-	else if(!b.gte(30))
+	else if(!b.gte(25))
 	{
-		return '在30二重跃迁，铭刻升级2,4,6增幅位面切片产能。当前：×' + notation((player.insupg[1].add(player.insupg[3]).add(player.insupg[5])).pow(2));
+		return '在25二重跃迁，位面切片产能×5000。';
+	}
+	else if(!b.gte(34))
+	{
+		return '在34二重跃迁，位面切片数量增幅本源数据获取。当前：×' + notation(N(1).add(player.slice.log(2).div(30)));
 	}
 	else if(!b.gte(48))
 	{
@@ -1039,11 +1036,15 @@ function getboost2effect(b)
 	{
 		return '在90二重跃迁，二重跃迁弱化10跃迁及以上折算。当前：×' + notation(N(1).div(player.boost2.add(2).root(11)));
 	}
+	else if(!b.gte(119))
+	{
+		return '在119二重跃迁，节点二至四阶软上限弱化70%。';
+	}
 	else return '';
 }
 
-var boost3effectlist = [N(1), N(2), N(3)];
-var boost3effectnum = 3;
+var boost3effectlist = [N(1), N(2), N(3), N(4)];
+var boost3effectnum = 4;
 
 function getboost3effect(b)
 {
@@ -1058,6 +1059,10 @@ function getboost3effect(b)
 	else if(!b.gte(3))
 	{
 		return '在3三重跃迁，移除节点一阶软上限。';
+	}
+	else if(!b.gte(4))
+	{
+		return '在4三重跃迁，宇宙信息以指数增幅节点产能。当前：^' + notation(player.PL2info.add(1).log10().div(40).add(1));
 	}
 	else return '';
 }
@@ -1098,9 +1103,9 @@ function PL2reset()
 	player.slice = N(0);
 	player.sliceupg = [true, false, false, true];
 	player.sliceupg_rep = [N(0), N(0), N(0), N(0)];
-	player.ins = [N(0), N(0), N(0), N(0)];
-	player.insupg = [N(0), N(0), N(0), N(0), N(0), N(0)];
-	player.unlock_ins = false;
+	player.unlock_origin = false;
+	player.origin_data = N(0);
+	player.origin_upg = [N(0), N(0), N(0), N(0), N(0)];
 	player.boost3 = N(0);
 }
 
@@ -1190,9 +1195,9 @@ function updatePLinfoget()
 	if(player.boost2.gte(10)) PL1infoget = PL1infoget.mul(player.boost.add(1).mul(1.5).pow(0.75));
 	PL1infoget = PL1infoget.floor();
 	
-	if(player.PL1info.gte('e5500'))
+	if(player.PL1info.gte('e7000'))
 	{
-		PL2infoget = player.PL1info.root(2750).div(100);
+		PL2infoget = player.PL1info.root(3500).div(100);
 	}
 	else PL2infoget = N(0);
 	
@@ -1211,18 +1216,15 @@ function buyPL1()
 
 function buyPL2()
 {
-	if(player.PL1info.gte('e5500'))
+	if(player.PL1info.gte('e7000'))
 	{
-		let inso = player.ins;
-		let insuo = player.insupg;
 		PL2reset();
 		player.PL2info = player.PL2info.add(PL2infoget);
 		player.PL2unlock = true;
 		player.PL2tms = player.PL2tms.add(1);
 		
 		if(player.PL2tms.gte(2)) player.PL1upg = [true, true, true, true, true, true, true, true];
-		if(player.PL2tms.gte(4)) player.sliceupg = [true, true, true, true];
-		if(player.PL2tms.gte(7)) {player.ins = inso; player.insupg = insuo; player.unlock_ins = true;}
+		if(player.PL2tms.gte(4)) player.sliceupg = [true, true, true, true], player.unlock_origin = true;
 	}
 }
 
@@ -1270,102 +1272,52 @@ function buysliceupg(num)
 	}
 }
 
-function unlock_ins()
+function unlock_origin()
 {
-	if(player.PL1info.gte(1e130) && !player.unlock_ins)
+	if(player.PL1info.gte(1e130) && !player.unlock_origin)
 	{
 		player.PL1info = player.PL1info.sub(1e130);
-		player.unlock_ins = true;
+		player.unlock_origin = true;
 	}
 }
 
-function getins0gen()
+function getorigineffect()
 {
-	let ins_gen = N(1);
-	ins_gen = ins_gen.add(player.ins[0].pow(0.25));
-	let mult = N(1.75).pow(player.insupg[1]);
-	if(mult.gte(1000)) mult = N(1000).mul(mult.div(1000).pow(0.4));
-	ins_gen = ins_gen.mul(mult);
+	let e = '';
+	if(player.origin_data.gte(100)) e = e + "位面切片获取速度×" + notation(player.origin_data.sub(100).max(1).pow(1.15).div(100).max(1)) + "<br>";
+	if(player.origin_data.gte(100000)) e = e + "传输节点产能×" + notation(player.origin_data.div(100).sub(1000).max(1).pow(20)) + "<br>";
+	if(player.origin_data.gte(5e12)) e = e + "本源数据获取速度×" + notation(player.origin_data.div(1.25e12).log(4).max(1)) + "<br>";
 	
-	mult = N(1.75).pow(player.insupg[3]);
-	if(mult.gte(1000)) mult = N(1000).mul(mult.div(1000).pow(0.4));
-	ins_gen = ins_gen.mul(mult);
+	if(!player.origin_data.gte(100)) e = e + "到达 100 本源数据解锁本源第一效果<br>";
+	else if(!player.origin_data.gte(100000)) e = e + "到达 1.000e5 本源数据解锁本源第二效果<br>";
+	else if(!player.origin_data.gte(5e12)) e = e + "到达 5.000e12 本源数据解锁本源第三效果<br>";
 	
-	mult = N(1.75).pow(player.insupg[5]);
-	if(mult.gte(1000)) mult = N(1000).mul(mult.div(1000).pow(0.4));
-	ins_gen = ins_gen.mul(mult);
-	return ins_gen;
+	return e;
 }
 
-function gettraninsnum(num)
+function getoriginupgcost(num)
 {
-	let gen = player.ins[0];
-	
-	let mult = N(1.75).pow(player.insupg[5]);
-	if(mult.gte(1000)) mult = N(1000).mul(mult.div(1000).pow(0.4));
-	
-	if(num == 1) gen = gen.mul(mult);
-	
-	mult = N(1.75).pow(player.insupg[1]);
-	if(mult.gte(1000)) mult = N(1000).mul(mult.div(1000).pow(0.4));
-	
-	if(num == 2) gen = gen.mul(mult);
-	
-	mult = N(1.75).pow(player.insupg[3]);
-	if(mult.gte(1000)) mult = N(1000).mul(mult.div(1000).pow(0.4));
-	
-	if(num == 3) gen = gen.mul(mult);
-	
-	if(gen.gte(1e12)) gen = N(1e12).mul(gen.div(1e12).pow(0.025));
-	
-	return gen;
+	let base = [N(1), N(10), N(100), N(1e4), N(1e6)];
+	let basex = [N(1.15), N(1.35), N(8), N(20), N(30)];
+	if(num == 0) return base[0].mul(basex[0].pow(player.origin_upg[0])).sub(1);
+	else return base[num].mul(basex[num].pow(player.origin_upg[num]));
 }
 
-function tranins(num)
+function buyoriginupg(num)
 {
-	let gen = gettraninsnum(num);
-	player.ins[num] = player.ins[num].add(gen);
-	player.ins[0] = N(0);
-}
-
-function addins0()
-{
-	let ins_gen = getins0gen();
-	if(player.unlock_ins) player.ins[0] = player.ins[0].add(ins_gen);
-}
-
-function buyinsupg(num)
-{
-	let cost = insupgcostb[num].mul(insupgcostx[num].pow(player.insupg[num]));
-	if(num >= 0 && num <= 1) 
+	num = num - 1;
+	let cap = [N(100), N(100), N(30), N(30)];
+	if(num != 4 && player.origin_upg[num].gte(cap[num])) return;
+	if(player.origin_data.gte(getoriginupgcost(num)))
 	{
-		if(player.ins[1].gte(cost))
-		{
-			player.ins[1] = player.ins[1].sub(cost);
-			player.insupg[num] = player.insupg[num].add(1);
-		}
-	}
-	if(num >= 2 && num <= 3) 
-	{
-		if(player.ins[2].gte(cost))
-		{
-			player.ins[2] = player.ins[2].sub(cost);
-			player.insupg[num] = player.insupg[num].add(1);
-		}
-	}
-	if(num >= 4 && num <= 5) 
-	{
-		if(player.ins[3].gte(cost))
-		{
-			player.ins[3] = player.ins[3].sub(cost);
-			player.insupg[num] = player.insupg[num].add(1);
-		}
+		player.origin_data = player.origin_data.sub(getoriginupgcost(num));
+		player.origin_upg[num] = player.origin_upg[num].add(1);
 	}
 }
 
 function getdimcost()
 {
-	let cost = (N(10).pow(N(2).pow(player.dimension)));
+	let cost = (N(10).pow(N(2).pow(player.dimension))).div(10);
 	return cost;
 }
 
@@ -1459,6 +1411,16 @@ function automation()
 		player.sliceupg_rep[3] = player.slice.log(sliceupgcost[3]).floor();
 		for(let i = 0;i <= 3;i++) if(player.sliceupg_rep[i].gte(200)) player.sliceupg_rep[i] = N(200);
 	}
+	
+	if(player.PL2tms.gte(4))
+	{
+		let base = [N(1), N(10), N(100), N(1e4), N(1e6)];
+		let basex = [N(1.15), N(1.35), N(8), N(20), N(30)];
+		player.origin_upg[0] = player.origin_upg[0].max(player.origin_data.add(1).div(base[0]).log(basex[0]).floor().add(1));
+		for(let i = 1;i < 5;i++) player.origin_upg[i] = player.origin_upg[i].max(player.origin_data.div(base[i]).log(basex[i]).floor().add(1));
+		let cap = [N(100), N(100), N(30), N(30)];
+		for(let i = 0;i < 4;i++) player.origin_upg[i] = player.origin_upg[i].min(cap[i]);
+	}
 }
 
 function produce()
@@ -1478,10 +1440,6 @@ function produce()
 	if(player.boost.gte(jdunlock[0]))
 	{
 		player.data = player.data.add(player.jdnum[0].mul(jdx[0]).div(10));
-		if(player.data.gte('e65536'))
-		{
-			player.data = N(10).pow(player.data.log10().mul(9).add(65536).div(10));
-		}
 	}
 	if(player.PL2unlock)
 	{
@@ -1501,18 +1459,30 @@ function produce()
 		
 		//mul
 		if(player.boost.gte(67)) slice_gen = slice_gen.mul(player.PL1info.add(10).log(2).root(1.5));
-		if(player.boost.gte(100)) slice_gen = slice_gen.mul(player.slice.log(2).pow(1.15));
-		if(player.boost2.gte(30)) slice_gen = slice_gen.mul((player.insupg[1].add(player.insupg[3]).add(player.insupg[5])).pow(2));
+		if(player.boost2.gte(25)) slice_gen = slice_gen.mul(5000);
 		slice_gen = slice_gen.mul(N(1.5).pow(player.sliceupg_rep[0]));
+		if(player.origin_data.gte(100)) slice_gen = slice_gen.mul(player.origin_data.sub(100).max(1).pow(1.15).div(100).max(1));
 		//pow
-		if(player.unlock_ins)
-		{
-			slice_gen = slice_gen.pow(N(1).add(player.insupg[2].mul(0.05)));
-		}
+		
 		if(slice_gen.gte(5e8) && !player.PL2tms.gte(15)) slice_gen = N(5e8).mul(slice_gen.div(5e8).pow(0.75));
 		if(slice_gen.gte(1e130)) slice_gen = N(1e130).mul(N(10).pow(slice_gen.div(1e130).log10().pow(0.5)));
 		player.slice = player.slice.add(slice_gen);
 	}
+	
+	if(player.unlock_origin)
+	{
+		let odg = N(0);
+		odg = odg.add(player.origin_upg[0].mul(0.1));
+		odg = odg.add(player.origin_upg[1].mul(3));
+		odg = odg.mul(N(1.5).pow(player.origin_upg[2]));
+		odg = odg.mul(N(2.5).pow(player.origin_upg[3]));
+		odg = odg.mul(N(5).pow(player.origin_upg[4]));
+		if(player.boost.gte(120)) odg = odg.mul(5);
+		if(player.boost2.gte(34)) odg = odg.mul(N(1).add(player.slice.log(2).div(30)));
+		if(player.origin_data.gte(5e12)) odg = odg.mul(player.origin_data.div(1.25e12).log(4).max(1));
+		player.origin_data = player.origin_data.add(odg.div(10));
+	}
+	
 	
 	automation();
 }
@@ -1589,15 +1559,11 @@ function GUI()
 	document.getElementById('boostnum').innerHTML = notation(player.boost);
 	document.getElementById('boost2num').innerHTML = notation(player.boost2);
 	document.getElementById('boost3num').innerHTML = notation(player.boost3);
-	document.getElementById('unlock_ins').style.display = (player.unlock_ins ? 'block' : 'none');
-	document.getElementById('uunlock_ins').style.display = (!player.unlock_ins ? 'block' : 'none');
-	for(let i = 0;i < 4;i++)
-	{
-		document.getElementById('ins' + i).innerHTML = notation(player.ins[i]);
-	}
-	document.getElementById('ins0gen').innerHTML = notation(getins0gen());
-	if(player.data.gte('e65536')) document.getElementById('uni_crowded').style.display = 'block';
-	else document.getElementById('uni_crowded').style.display = 'none';
+	document.getElementById('unlock_origin').style.display = (player.unlock_origin ? 'block' : 'none');
+	document.getElementById('uunlock_origin').style.display = (!player.unlock_origin ? 'block' : 'none');
+	document.getElementById('origin_data').innerHTML = notation(player.origin_data);
+	document.getElementById('origin_effect').innerHTML = getorigineffect();
+	
 	document.getElementById('dim').innerHTML = notation(player.dimension);
 	document.getElementById('dimcost').innerHTML = notation(getdimcost());
 	document.getElementById('star').innerHTML = notation(player.star);
@@ -1798,10 +1764,14 @@ function GUI()
 		else document.getElementById('PL1ug' + (i + 1)).style['background-color'] = '#000000';
 	}
 	document.getElementById('PL1ug3effect').innerHTML = notation(player.boost.add(1).pow(1.5));
-	for(let i = 0;i < 6;i++)
+	for(let i = 0;i < 5;i++)
 	{
-		document.getElementById('insupg' + i + 'cost').innerHTML = notation(insupgcostb[i].mul(insupgcostx[i].pow(player.insupg[i])));
-		document.getElementById('insupglevel' + i).innerHTML = notation(player.insupg[i]);
+		let cap = [N(100), N(100), N(30), N(30)];
+		if(i != 4 && player.origin_upg[i].gte(cap[i])) document.getElementById('originupg' + (i + 1)).style['background-color'] = 'blue';
+		else if(player.origin_data.gte(getoriginupgcost(i))) document.getElementById('originupg' + (i + 1)).style['background-color'] = '#666666';
+		else document.getElementById('originupg' + (i + 1)).style['background-color'] = 'black';
+		document.getElementById('originupgcost' + (i + 1)).innerHTML = notation(getoriginupgcost(i));
+		document.getElementById('originupglevel' + (i + 1)).innerHTML = notation(player.origin_upg[i]);
 	}
 }
 
