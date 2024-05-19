@@ -210,11 +210,11 @@
 			float: center;
 		}
 		
-		.entupgbt {
-			background-color: purple;
+		.gnbt {
+			background-color: black;
 			height: 100px;
-			width: 240px;
-			border: 3px solid red;
+			width: 400px;
+			border: 3px solid gold;
 			color: white;
 			padding: 5px;
 			text-align: center;
@@ -250,9 +250,12 @@
 					<td>
 						<button class="autoboost" id="autoboost2bt" onclick="chautoboost2()"><span id="autoboost2bts"></span></button>
 					</td>
+					<td>
+						<button class="autoboost" id="autoboost3bt" onclick="chautoboost3()"><span id="autoboost3bts"></span></button>
+					</td>
 					<tr>
 					<td>
-						<button class="boostbt" id="boostbt" onclick="buyboost()">跃迁<span id="boostnum"></span>
+						<button class="boostbt" id="boostbt" onclick="buyboost()"><span id="boostscaling"></span>跃迁<span id="boostnum"></span>
 						<br/>重置数据和传输节点，但提升跃迁。<span id="boosteffect"></span><br/>成本：<span id="boostcost"></span>数据</button>
 					</td>
 					<td>
@@ -317,7 +320,8 @@
 					<button class="boostbt" id="dimbt" onclick="buydim()">维度<span id="dim"></span><br/>提升星辰节点指数^x，并给予1星辰<br/>价格：<span id="dimcost"></span>宇宙信息</button>
 				</p>
 				<p class="ftsz2">
-					<span>你拥有</span><span id="star"></span><span>星辰，它们以log10(x+10)^0.5将节点升级效果 × </span><span id="stareffect"></span><br/>
+					<span>你拥有</span><span id="star"></span><span>星辰</span><br>
+					<span style="color: lightblue;" id="stareffect"></span><br>
 				</p>
 				<p class="ftsz3" align="left"><span id="snzs1">折算</span>
 				    <span>1号星辰节点 # 等级 </span><span id="snbuy1"></span><span> # </span><span id="snnum1"></span><span> × </span><span id="snx1"></span>
@@ -386,7 +390,8 @@
 					<span>八阶软上限：开始于倍数 × e</span><span id="jdscs8"></span><span> 双指数弱化 × <span id="jdscx8"></span><br/>
 				</p>
 			</div>
-			<div id="spage2_3" align="center"><span class="ftsz2" id="boosteffectlist"></span></div>
+			<div id="spage2_3" align="center"><span class="ftsz2" style="color: red;">超过10跃迁之后，跃迁将超级折算！当前强度：^</span><span class="ftsz2" id="boostscalingeffect" style="color: red;"></span><br>
+												<span class="ftsz2" id="boosteffectlist"></span></div>
 			<div id="spage3_3" align="center"><span class="ftsz2" id="boost2effectlist"></span></div>
 			<div id="spage4_3" align="center"><span class="ftsz2" id="boost3effectlist"></span></div>
 		</div>
@@ -421,7 +426,7 @@
 					</td>
 					<td>
 						<button class="PL1bt" onclick="buyPL1ug(4)" id="PL1ug4">
-							10个及以后跃迁的折算弱化50%。
+							跃迁超级折算弱化50%。
 							<br/>
 							成本：40世界信息
 						</button>
@@ -522,10 +527,10 @@
 					<button class="PL1bt" onclick="buyoriginupg(2)" id="originupg2">
 						本源数据获取速度+3<br>等级：<span id="originupglevel2"></span>/100.0<br>价格：<span id="originupgcost2"></span>
 					</button>
+					<br>
 					<button class="PL1bt" onclick="buyoriginupg(3)" id="originupg3">
 						本源数据获取速度×1.5<br>等级：<span id="originupglevel3"></span>/30.00<br>价格：<span id="originupgcost3"></span>
 					</button>
-					<br>
 					<button class="PL1bt" onclick="buyoriginupg(4)" id="originupg4">
 						本源数据获取速度×2.5<br>等级：<span id="originupglevel4"></span>/30.00<br>价格：<span id="originupgcost4"></span>
 					</button>
@@ -538,7 +543,10 @@
 		<div id="page5">
 			<p align="center">
 				<button class="spagebt" onclick="chspage(1)">多宇宙</button>
-				<button class="spagebt" onclick="chspage(2)">坍缩</button>
+				<button class="spagebt" onclick="chspage(2)" id="spagebt2_5">熵</button>
+				<button class="spagebt" onclick="chspage(3)">升级</button>
+				<button class="spagebt" onclick="chspage(4)" id="spagebt4_5"
+				style="box-shadow: 0 0 4px #ff0,0 0 2px #ff0,0 0 8px #ff0,0 0 12px #ff0;">神星</button>
 			</p>
 			<div id="spage1_5">
 				<p class="ftsz3" align="center">
@@ -550,15 +558,86 @@
 					<td><button class="PL2mlstbt" id="PL2mlst2">4宇宙重置<br/>重置时位面切片一次性升级全部处于已购买状态，自动化本源</button></td>
 					<td><button class="PL2mlstbt" id="PL2mlst3">7宇宙重置<br/>世界重置将不重置任何东西</button></td>
 					<tr>
-					<td><button class="PL2mlstbt" id="PL2mlst4">10宇宙重置<br/>10跃迁及以上的折算弱化25%</button></td>
+					<td><button class="PL2mlstbt" id="PL2mlst4">10宇宙重置<br/>跃迁超级折算弱化25%</button></td>
 					<td><button class="PL2mlstbt" id="PL2mlst5">15宇宙重置<br/>取消位面切片在 5.000e8 的软上限</button></td>
 					<td><button class="PL2mlstbt" id="PL2mlst6">25宇宙重置<br/>解锁三重跃迁</button></td>
 					<td><button class="PL2mlstbt" id="PL2mlst7">35宇宙重置<br/>解锁熵</button></td>
 				</table>
 			</div>
-			<div id="spage2_5">
-				<div id="ent_page" align="center">
-				</div>
+			<div id="spage2_5" align="center">
+				<button class="PL2bt" style="width: 800px; height: 120px" onclick="openentropy()" id="openentropy">
+					开始/结束收集熵<br>
+					你将进行宇宙重置，并使传输节点的指数^0.9。
+				</button>
+				<table align="center" class="ftsz2">
+					<td style="width: 400px; height: 200px;">
+						<span>你有 </span><span id="ent0"></span><span> 熵_I</span><br>
+						<span>熵_I的获取基于世界信息</span><br>
+						<span style="color: lightblue;" id="entropyeffect0"></span>
+					</td>
+					<td style="width: 400px; height: 200px;">
+						<span>你有 </span><span id="ent1"></span><span> 熵_II</span><br>
+						<span>熵_II的获取基于跃迁数量</span><br>
+						<span style="color: lightblue;" id="entropyeffect1"></span>
+					</td>
+					<tr>
+					<td style="width: 400px; height: 200px;">
+						<span>你有 </span><span id="ent2"></span><span> 熵_III</span><br>
+						<span>熵_III的获取基于位面切片</span><br>
+						<span style="color: lightblue;" id="entropyeffect2"></span>
+					</td>
+					<td style="width: 400px; height: 200px;">
+						<span>你有 </span><span id="ent3"></span><span> 熵_IV</span><br>
+						<span>熵_IV的获取基于数据</span><br>
+						<span style="color: lightblue;" id="entropyeffect3"></span>
+					</td>
+				</table>
+			</div>
+			<div id="spage3_5" align="center">
+				<table align="center" class="ftsz2">
+					<td><button class="PL2bt" onclick="buyPL2upg(1)" id="PL2upg1">
+						每秒获得1000%重置时可获得数量的世界信息<br>
+						价格：1e12宇宙信息
+					</button></td>
+					<td><button class="PL2bt" onclick="buyPL2upg(2)" id="PL2upg2">
+						自动购买三重跃迁，三重跃迁不重置任何东西<br>
+						价格：1e13宇宙信息
+					</button></td>
+					<td><button class="PL2bt" onclick="buyPL2upg(3)" id="PL2upg3">
+						自动获得0.1%重置时可获得数量的宇宙信息，解锁神星<br>
+						价格：1e32宇宙信息
+					</button></td>
+					<td><button class="PL2bt" onclick="buyPL2upg(4)" id="PL2upg4">
+						解锁混沌重置<br>
+						价格：1e10000宇宙信息
+					</button></td>
+				</table>
+			</div>
+			<div id="spage4_5" align="center">	
+				<p class="ftsz3"><span>你拥有 </span><span style="color: gold;" id="godstar"></span><span> 神星</span></p>
+				<span class="ftsz2" style="color: lightblue;" id="godstareffect"></span>
+				<br>
+				<table>
+					<td><button class="gnbt" style="border-color: white;" onclick="unlockgn(1)" id="unlockgn1">需求：1e1.000e6数据</button>
+					<button class="gnbt" style="border-color: white;" onclick="buygn(1)" id="gnbt1">一重神子 ~ <span id="gn1"></span><br>×<span id="gnx1"></span><br>价格: <span id="gnc1"></span>宇宙信息</button></td>
+					<td><button class="gnbt" style="border-color: red;" onclick="unlockgn(2)" id="unlockgn2">需求：1e2.000e6数据</button>
+					<button class="gnbt" style="border-color: red;" onclick="buygn(2)" id="gnbt2">二重神子 ~ <span id="gn2"></span><br>×<span id="gnx2"></span><br>价格: <span id="gnc2"></span>宇宙信息</button></td>
+					<tr>
+					<td><button class="gnbt" style="border-color: orange;" onclick="unlockgn(3)" id="unlockgn3">需求：1e3.000e6数据</button>
+					<button class="gnbt" style="border-color: orange;" onclick="buygn(3)" id="gnbt3">三重神子 ~ <span id="gn3"></span><br>×<span id="gnx3"></span><br>价格: <span id="gnc3"></span>宇宙信息</button></td>
+					<td><button class="gnbt" style="border-color: yellow;" onclick="unlockgn(4)" id="unlockgn4">需求：1e4.000e6数据</button>
+					<button class="gnbt" style="border-color: yellow;" onclick="buygn(4)" id="gnbt4">四重神子 ~ <span id="gn4"></span><br>×<span id="gnx4"></span><br>价格: <span id="gnc4"></span>宇宙信息</button></td>
+					<tr>
+					<td><button class="gnbt" style="border-color: green;" onclick="unlockgn(5)" id="unlockgn5">需求：1e5.000e6数据</button>
+					<button class="gnbt" style="border-color: green;" onclick="buygn(5)" id="gnbt5">五重神子 ~ <span id="gn5"></span><br>×<span id="gnx5"></span><br>价格: <span id="gnc5"></span>宇宙信息</button></td>
+					<td><button class="gnbt" style="border-color: blue;" onclick="unlockgn(6)" id="unlockgn6">需求：1e6.000e6数据</button>
+					<button class="gnbt" style="border-color: blue;" onclick="buygn(6)" id="gnbt6">六重神子 ~ <span id="gn6"></span><br>×<span id="gnx6"></span><br>价格: <span id="gnc6"></span>宇宙信息</button></td>
+					<tr>
+					<td><button class="gnbt" style="border-color: purple;" onclick="unlockgn(7)" id="unlockgn7">需求：1e7.000e6数据</button>
+					<button class="gnbt" style="border-color: purple;" onclick="buygn(7)" id="gnbt7">七重神子 ~ <span id="gn7"></span><br>×<span id="gnx7"></span><br>价格: <span id="gnc7"></span>宇宙信息</button></td>
+					<td><button class="gnbt" style="border-color: gold;" onclick="unlockgn(8)" id="unlockgn8">需求：1e8.000e6数据</button>
+					<button class="gnbt" style="border-color: gold;" onclick="buygn(8)" id="gnbt8">八重神子 ~ <span id="gn8"></span><br>×<span id="gnx8"></span><br>价格: <span id="gnc8"></span>宇宙信息</button></td>
+				</table>
 			</div>
 		</div>
 		
@@ -617,11 +696,16 @@ function init()
 		star: N(0),
 		dimension: N(0),
 		boost3: N(0),
-		entropy: N(0),
-		ent_upg: [N(0), N(0), N(0), N(0)],
+		autoboost3: false,
+		entropy: [N(0), N(0), N(0), N(0)],
+		openentropy: false,
+		PL2upg: [false, false, false, false],
+		godstar: N(0),
+		godnode: [N(0), N(0), N(0), N(0), N(0), N(0), N(0), N(0)],
+		buygn: [N(0), N(0), N(0), N(0), N(0), N(0), N(0), N(0)],
+		gnunlock: [false, false, false, false, false, false, false, false],
 		
 		//chaos
-		
 		//void
 		
 		//theorem
@@ -633,6 +717,7 @@ function init()
 }
 
 var PL1upgcost = [N(1), N(2), N(6), N(40), N(2500), N(10000), N(30000), N(50000)];
+var PL2upgcost = [N(1e12), N(1e13), N(1e32), N('e10000')];
 var sliceupgcost = [N(5), N(6), N(7), N(8), N(300), N(15000), N(1e10), N(1e111)];
 var insupgcostb = [N(300), N(50), N(300), N(50), N(300), N(50)];
 var insupgcostx = [N(100), N(6), N(100), N(6), N(100), N(6)];
@@ -677,9 +762,9 @@ function notation(number)
 	if (power1 < 2) return number.toFixed(2);
 	if (power1 < 3) return number.toFixed(1);
 	if (power1 < 6) return number.toFixed(0);
-	if (power1 < 100000000) return base1.toFixed(3) + "e" + power1;
-	if (power2 < 100000000) return "e" + base2.toFixed(3) + "e" + power2;
-	if (power3 < 100000000) return "ee" + base3.toFixed(3) + "e" + power3;
+	if (power1 < 1000000) return base1.toFixed(3) + "e" + power1;
+	if (power2 < 1000000) return "e" + base2.toFixed(3) + "e" + power2;
+	if (power3 < 1000000) return "ee" + base3.toFixed(3) + "e" + power3;
 	return number.mag.toFixed(0) + "f" + number.layer.toFixed(0);
 }
 
@@ -730,11 +815,13 @@ function import_save()
 
 function getjdscs(i)
 {
-	let base = [N(1024), N(1e10), N(1e50), N('e400'), N(1e9), N(1e100), N('e40000'), N('ee50')];
+	let base = [N(1024), N(1e10), N(1e50), N('e400'), N(180000), N(1e100), N('e40000'), N('ee50')];
 	if(player.boost.gte(55)) base[2] = base[2].pow(1.5);
 	if(player.boost.gte(315)) base[3] = base[3].pow(1.25);
+	if(player.boost2.gte(250)) base[3] = base[3].pow(2);
 	if(player.PL1upg[6]) for(let j = 0;j < 2;j++) base[j] = base[j].pow(1.5);
 	if(player.sliceupg[2]) for(let j = 0;j < 3;j++) base[j] = base[j].pow(1.5);
+	if(player.godstar.gte(3e6)) base[4] = base[4].pow(N(1).add(player.godstar.div(3e6).add(1).log10().add(10).log10().log10().min(0.02)));
 	//delete
 	if(player.boost3.gte(3)) base[0] = N(Infinity);
 	return base;
@@ -742,7 +829,7 @@ function getjdscs(i)
 
 function getjdscx(i)
 {
-	let base = [N(1), N(4), N(99), N(999), N(1), N(39), N(999), N(999999)];
+	let base = [N(1), N(4), N(99), N(999), N(1 / 9), N(39), N(999), N(999999)];
 	if(player.boost.gte(15)) base[0] = base[0].mul(0.75);
 	if(player.boost.gte(20)) base[0] = base[0].mul(0.4);
 	if(player.boost.gte(21)) base[1] = base[1].mul(N(1).div(player.boost.add(1).root(15)));
@@ -794,24 +881,32 @@ function getjdx()
 		if(player.boost2.gte(12)) base[i] = base[i].mul(player.PL1info.add(1).mul(0.5).pow(0.25));
 		if(player.boost.gte(9) && !player.boost.gte(52)) base[i] = base[i].mul(player.boost);
 		if(player.boost.gte(52)) base[i] = base[i].mul(player.boost.pow(2));
+		if(player.boost3.gte(8)) base[i] = base[i].mul(N(2).pow(player.boost.pow(1.35)).min('e5000'));
+		if(player.boost3.gte(9)) base[i] = base[i].mul(player.PL2info.add(1).pow(45));
 		if(player.PL1upg[2]) base[i] = base[i].mul(player.boost.add(1).pow(1.5));
 		if(player.PL1upg[7]) base[i] = base[i].mul(getsliceeffect());
 		if(player.origin_data.gte(1e5)) base[i] = base[i].mul(player.origin_data.div(100).sub(1000).max(1).pow(20));
+		if(player.entropy[2].gte(1)) base[i] = base[i].mul(N(100).pow(player.entropy[2].add(3).pow(4)).min('e8192'));
+		if(player.PL2upg[2]) base[i] = base[i].mul(N(10).pow(player.godstar.mul(60).root(1.8).min(N(2000).add(player.godstar.root(2.1))).min(N(10000).add(player.godstar.root(4)))));
 		//pow
 		if(player.boost.gte(65)) base[i] = base[i].pow(N(1).add(player.boost.root(10).div(15)));
 		if(player.boost3.gte(4))
 		{
 			let power = player.PL2info.add(1).log10().div(40).add(1);
 			if(power.gte(1.1)) power = N(1.1).mul(power.div(1.1).pow(0.4));
-			base[i] = base[i].pow(power);
+			base[i] = base[i].pow(power.min(1.3));
 		}
 		if(player.PL1upg[7]) base[i] = base[i].pow(N(1).add(player.sliceupg_rep[0].mul(0.005)));
-		
+		//dil
+		if(player.openentropy)
+		{
+			base[i] = N(10).pow(base[i].log10().pow(0.9)).max(1);
+		}
 		for(let j = 4;j < 8;j++)
 		{
 			if(base[i].gte(N(10).pow(scs[j])))
 			{
-				base[i] = (N(10).pow(scs[j])).mul(N(10).pow(base[i].log10().div(scs[j]).pow(scx[j])));
+				base[i] = (N(10).pow(scs[j])).mul(N(10).pow(base[i].log10().sub(scs[j]).pow(scx[j])));
 			}
 		}
 	}
@@ -867,6 +962,7 @@ function getboostzs1x()
 	if(player.boost3.gte(1)) base = base.mul(0.7);
 	if(player.PL1upg[3]) base = base.mul(0.5);
 	if(player.PL2tms.gte(10)) base = base.mul(0.75);
+	if(player.entropy[0].gte(1.75)) base = base.mul(N(1).div(player.entropy[0].root(2)));
 	base = base.add(1);
 	return base;
 }
@@ -898,8 +994,8 @@ function getboost3cost()
 
 var boosteffectlist = [N(1), N(2), N(3), N(4), N(5), N(6), N(7), N(8)
 , N(9), N(15), N(16), N(20), N(21), N(52), N(55), N(65)
-, N(67), N(95), N(120), N(315)];
-var boosteffectnum = 20;
+, N(67), N(95), N(120), N(315), N(888)];
+var boosteffectnum = 21;
 
 function getboosteffect(b)
 {
@@ -945,7 +1041,7 @@ function getboosteffect(b)
 	}
 	else if(!b.gte(16))
 	{
-		return '在16跃迁，使10跃迁及以上的折算弱化50%。';
+		return '在16跃迁，使跃迁超级折算弱化50%。';
 	}
 	else if(!b.gte(20))
 	{
@@ -983,12 +1079,16 @@ function getboosteffect(b)
 	{
 		return '在315跃迁，节点四阶软上限延迟1.25次方出现。';
 	}
+	else if(!b.gte(888))
+	{
+		return '在888跃迁，位面切片增幅指数×1.125';
+	}
 	else return '';
 }
 
 var boost2effectlist = [N(1), N(2), N(3), N(5), N(10), N(11), N(12), N(25)
-, N(34), N(48), N(90), N(119)];
-var boost2effectnum = 12;
+, N(34), N(48), N(90), N(119), N(250)];
+var boost2effectnum = 13;
 
 function getboost2effect(b)
 {
@@ -1006,7 +1106,7 @@ function getboost2effect(b)
 	}
 	else if(!b.gte(5))
 	{
-		return '在5二重跃迁，使10跃迁及以上的折算弱化50%。';
+		return '在5二重跃迁，使跃迁超级折算弱化50%。';
 	}
 	else if(!b.gte(10))
 	{
@@ -1014,7 +1114,7 @@ function getboost2effect(b)
 	}
 	else if(!b.gte(11))
 	{
-		return '在11二重跃迁，使10跃迁及以上的折算弱化10%。';
+		return '在11二重跃迁，使跃迁超级折算弱化10%。';
 	}
 	else if(!b.gte(12))
 	{
@@ -1034,23 +1134,27 @@ function getboost2effect(b)
 	}
 	else if(!b.gte(90))
 	{
-		return '在90二重跃迁，二重跃迁弱化10跃迁及以上折算。当前：×' + notation(N(1).div(player.boost2.add(2).root(11)));
+		return '在90二重跃迁，二重跃迁弱化跃迁超级折算。当前：×' + notation(N(1).div(player.boost2.add(2).root(11)));
 	}
 	else if(!b.gte(119))
 	{
 		return '在119二重跃迁，节点二至四阶软上限弱化70%。';
 	}
+	else if(!b.gte(250))
+	{
+		return '在250二重跃迁，节点四阶软上限延迟2次方出现。';
+	}
 	else return '';
 }
 
-var boost3effectlist = [N(1), N(2), N(3), N(4)];
-var boost3effectnum = 4;
+var boost3effectlist = [N(1), N(2), N(3), N(4), N(8), N(9)];
+var boost3effectnum = 6;
 
 function getboost3effect(b)
 {
 	if(!b.gte(1))
 	{
-		return '在1三重跃迁，10跃迁及以上的折算弱化30%。';
+		return '在1三重跃迁，跃迁超级折算弱化30%。';
 	}
 	else if(!b.gte(2))
 	{
@@ -1062,7 +1166,15 @@ function getboost3effect(b)
 	}
 	else if(!b.gte(4))
 	{
-		return '在4三重跃迁，宇宙信息以指数增幅节点产能。当前：^' + notation(player.PL2info.add(1).log10().div(40).add(1));
+		return '在4三重跃迁，宇宙信息以指数增幅节点产能。当前：^' + notation(player.PL2info.add(1).log10().div(40).add(1).min(1.3));
+	}
+	else if(!b.gte(8))
+	{
+		return '在8三重跃迁，跃迁倍增节点产能。当前：×' + notation(N(2).pow(player.boost.pow(1.35)).min('e5000'));
+	}
+	else if(!b.gte(9))
+	{
+		return '在9三重跃迁，宇宙信息倍增节点产能。当前：×' + notation(player.PL2info.add(1).pow(45));
 	}
 	else return '';
 }
@@ -1166,8 +1278,17 @@ function buyboost3()
 	let cost = getboost3cost();
 	if(player.boost2.gte(cost))
 	{
-		boost3reset();
+		if(!player.PL2upg[0]) boost3reset();
 		player.boost3 = player.boost3.add(N(1));
+	}
+}
+
+function buymaxboost3()
+{
+	let ans = player.boost2.sqrt().sub(7).floor();
+	if(ans.gte(player.boost3))
+	{
+		player.boost3 = ans;
 	}
 }
 
@@ -1179,6 +1300,11 @@ function chautoboost()
 function chautoboost2()
 {
 	if(player.sliceupg[0]) player.autoboost2 = !player.autoboost2;
+}
+
+function chautoboost3()
+{
+	if(player.PL2upg[0]) player.autoboost3 = !player.autoboost3;
 }
 
 var PL1infoget = N(0), PL2infoget = N(0);
@@ -1241,8 +1367,14 @@ function buyPL1ug(i)
 function getsliceeffect()
 {
 	let p = N(0.5);
+	//add
 	if(player.PL1upg[7]) p = p.add(player.sliceupg_rep[1].mul(0.05));
 	if(player.boost.gte(95)) p = p.add(0.2);
+	if(player.origin_data.gte(1e45)) p = p.add(player.origin_data.div(1e40).max(1).log10().div(10));
+	//mult
+	if(player.star.gte(1e70)) p = p.mul(player.star.add(10).div(1e70).max(1).root(7).min(3.5));
+	if(player.boost.gte(888)) p = p.mul(1.125);
+	//pow
 	
 	let effect = player.slice.pow(p).max(1);
 	return effect;
@@ -1287,10 +1419,12 @@ function getorigineffect()
 	if(player.origin_data.gte(100)) e = e + "位面切片获取速度×" + notation(player.origin_data.sub(100).max(1).pow(1.15).div(100).max(1)) + "<br>";
 	if(player.origin_data.gte(100000)) e = e + "传输节点产能×" + notation(player.origin_data.div(100).sub(1000).max(1).pow(20)) + "<br>";
 	if(player.origin_data.gte(5e12)) e = e + "本源数据获取速度×" + notation(player.origin_data.div(1.25e12).log(4).max(1)) + "<br>";
+	if(player.origin_data.gte(1e45)) e = e + '位面切片效果指数+' + notation(player.origin_data.div(1e40).max(1).log10().div(10)) + '<br>';
 	
 	if(!player.origin_data.gte(100)) e = e + "到达 100 本源数据解锁本源第一效果<br>";
 	else if(!player.origin_data.gte(100000)) e = e + "到达 1.000e5 本源数据解锁本源第二效果<br>";
 	else if(!player.origin_data.gte(5e12)) e = e + "到达 5.000e12 本源数据解锁本源第三效果<br>";
+	else if(!player.origin_data.gte(1e45)) e = e + '到达 1.000e45 本源数据解锁本源第四效果<br>';
 	
 	return e;
 }
@@ -1329,6 +1463,17 @@ function buydim()
 		player.dimension = player.dimension.add(1);
 		player.star = player.star.add(1);
 	}
+}
+
+function getstareffect()
+{
+	let e = '';
+	e = e + "节点升级效果×" + notation(player.star.add(10).log10().pow(0.5)) + "<br>";
+	if(player.star.gte(1e50)) e = e + '位面切片获取速度×' + notation(player.star.add(10).log10().pow(1.75)) + '<br>';
+	if(player.star.gte(1e70)) e = e + '位面切片增幅指数×' + notation(player.star.add(10).div(1e70).max(1).root(7).min(3.5)) + '<br>';
+	if(!player.star.gte(1e50)) e = e + '到达 1.000e50 星辰解锁星辰第二效果' + '<br>';
+	if(!player.star.gte(1e70)) e = e + '到达 1.000e70 星辰解锁星辰第三效果' + '<br>';
+	return e;
 }
 
 function getsnscs()
@@ -1372,6 +1517,7 @@ function getsnx()
 	{
 		snx[i] = snx[i].mul(N(2).pow(player.buysn[i])).pow(player.dimension);
 		//mult
+		if(player.entropy[1].gte(1.4)) snx[i] = snx[i].mul(N(100).pow(player.entropy[1]));
 		//pow
 		//sc
 		for(let j = 0;j < 4;j++)
@@ -1383,6 +1529,134 @@ function getsnx()
 		}
 	}
 	return snx;
+}
+
+function openentropy()
+{
+	PL2reset();
+	if(player.PL1info.gte('e7000'))
+	{
+		player.PL2info = player.PL2info.add(PL2infoget);
+		player.PL2unlock = true;
+		player.PL2tms = player.PL2tms.add(1);
+	}
+	if(player.PL2tms.gte(2)) player.PL1upg = [true, true, true, true, true, true, true, true];
+	if(player.PL2tms.gte(4)) player.sliceupg = [true, true, true, true], player.unlock_origin = true;
+	player.openentropy = !player.openentropy;
+}
+
+function getentropy()
+{
+	if(player.openentropy)
+	{
+		player.entropy[0] = player.entropy[0].max(player.PL1info.add(1).log10().div(100).sub(25).pow(0.5)).min(5);
+		player.entropy[1] = player.entropy[1].max(player.boost.add(1).log(N(10).mul(
+			player.entropy[2].gte(1.014) ? N(1).sub(player.entropy[2].mul(0.1)) : 1)).div(2)).min(5);
+		player.entropy[2] = player.entropy[2].max(player.slice.add(1).log10().sub(3).div(140)).min(5);
+		player.entropy[3] = player.entropy[3].max(player.data.add(1).log(N(10).mul(
+			player.entropy[1].gte(1.5) ? N(1).sub(player.entropy[1].mul(0.18)) : 1)).add(1).log(N(10).mul(
+			player.entropy[1].gte(1.5) ? N(1).sub(player.entropy[1].mul(0.18)) : 1)).pow(0.5).div(2)).min(5);
+	}
+}
+
+function getentropyeffect(i)
+{
+	let e = '';
+	if(i == 0)
+	{
+		if(player.entropy[0].gte(1.75)) e = e + '跃迁超级折算强度×' + notation(N(1).div(player.entropy[0].root(2))) + '<br>';
+		if(!player.entropy[0].gte(1.75)) e = e + '到达 1.75 熵_I解锁熵_I第一效果<br>';
+		return e;
+	}
+	if(i == 1)
+	{
+		if(player.entropy[1].gte(1.4)) e = e + '星辰节点产能×' + notation(N(100).pow(player.entropy[1])) + '<br>';
+		if(player.entropy[1].gte(1.5)) e = e + '熵_IV获取公式中的对数×' + notation(N(1).sub(player.entropy[1].mul(0.1))) + '<br>';
+		if(!player.entropy[1].gte(1.4)) e = e + '到达 1.40 熵_II解锁熵_II第一效果<br>';
+		if(!player.entropy[1].gte(1.5)) e = e + '到达 1.50 熵_II解锁熵_II第二效果<br>';
+		return e;
+	}
+	if(i == 2)
+	{
+		if(player.entropy[2].gte(1)) e = e + '传输节点产能×' + notation(N(100).pow(player.entropy[2].add(3).pow(4)).min('e8192')) + '<br>';
+		if(player.entropy[2].gte(1.014)) e = e + '熵_II获取公式中的对数×' + notation(N(1).sub(player.entropy[2].mul(0.18))) + '<br>';
+		if(!player.entropy[2].gte(1)) e = e + '到达 1.00 熵_III解锁熵_III第一效果<br>';
+		if(!player.entropy[2].gte(1.014)) e = e + '到达 1.014 熵_III解锁熵_III第二效果<br>';
+		return e;
+	}
+	if(i == 3)
+	{
+		if(player.entropy[3].gte(1)) e = e + '本源数据获取速度×' + notation(N(1000).pow(player.entropy[3].pow(1.25))) + '<br>';
+		if(player.entropy[3].gte(1.062)) e = e + '位面切片在 1.000e135 的软上限强度×' + notation(N(1).sub(player.entropy[3].mul(0.16)).max(0.2)) + '<br>';
+		if(!player.entropy[3].gte(1)) e = e + '到达 1.00 熵_IV解锁熵_IV第一效果<br>';
+		if(!player.entropy[3].gte(1.062)) e = e + '到达 1.062 熵_IV解锁熵_IV第二效果<br>';
+		return e;
+	}
+}
+
+function buyPL2upg(i)
+{
+	i = i - 1;
+	if(player.PL2info.gte(PL2upgcost[i]) && !player.PL2upg[i])
+	{
+		player.PL2info = player.PL2info.sub(PL2upgcost[i]);
+		player.PL2upg[i] = true;
+	}
+}
+
+function getgodstareffect()
+{
+	let e = '';
+	e = e + '传输节点产能×' + notation(N(10).pow(player.godstar.mul(60).root(1.8).min(N(2000).add(player.godstar.root(2.1))).min(N(10000).add(player.godstar.root(4))))) + '<br>';
+	if(player.godstar.gte(3e6)) e = e + '节点五阶折算延迟^' + notation(N(1).add(player.godstar.div(3e6).add(1).log10().add(10).log10().log10().min(0.02))) + '<br>';
+	if(!player.godstar.gte(3e6)) e = e + '到达 3.000e6 神星解锁神星第二效果<br>';
+	return e;
+}
+
+function unlockgn(num)
+{
+	num = num - 1;
+	let cost = [N('e1e6'), N('e2e6'), N('e3e6'), N('e4e6'), N('e5e6'), N('e6e6'), N('e7e6'), N('e8e6')];
+	if(player.data.gte(cost[num]))
+	{
+		player.data = player.data.sub(cost[num]);
+		player.gnunlock[num] = true;
+	}
+}
+
+function getgnx()
+{
+	let base = [N(1), N(1), N(1), N(1), N(1), N(1), N(1), N(1)];
+	for(let i = 0;i < 8;i++)
+	{
+		base[i] = base[i].mul(N(3).pow(player.buygn[i]));
+	}
+	return base;
+}
+
+function getgnc()
+{
+	let x = [N(100), N(10000), N(1e6), N(1e8), N(1e10), N(1e12), N(1e14), N(1e16)];
+	let base = [N(1e35), N(1e100), N(1e100), N(1e100), N(1e100), N(1e100), N(1e100), N(1e100)];
+	let basex = [N(100), N(10000), N(1e6), N(1e8), N(1e10), N(1e12), N(1e14), N(1e16)];
+	for(let i = 0;i < 8;i++)
+	{
+		x[i] = (base[i].mul(basex[i].pow(player.buygn[i])));
+	}
+	return x;
+}
+
+function buygn(num)
+{
+	num = num - 1;
+	let c = getgnc();
+	c = c[num];
+	if(player.PL2info.gte(c))
+	{
+		player.PL2info = player.PL2info.sub(c);
+		player.buygn[num] = player.buygn[num].add(1);
+		player.godnode[num] = player.godnode[num].add(1);
+	}
 }
 
 function automation()
@@ -1402,6 +1676,10 @@ function automation()
 	{
 		if(player.autoboost2) buymaxboost2();
 	}
+	if(player.PL2upg[0])
+	{
+		if(player.autoboost3) buymaxboost3();
+	}
 	
 	if(player.slice.gte(1e64) || player.PL2tms.gte(1))
 	{
@@ -1420,6 +1698,16 @@ function automation()
 		for(let i = 1;i < 5;i++) player.origin_upg[i] = player.origin_upg[i].max(player.origin_data.div(base[i]).log(basex[i]).floor().add(1));
 		let cap = [N(100), N(100), N(30), N(30)];
 		for(let i = 0;i < 4;i++) player.origin_upg[i] = player.origin_upg[i].min(cap[i]);
+	}
+	
+	if(player.PL2upg[0])
+	{
+		player.PL1info = player.PL1info.add(PL1infoget);
+	}
+	if(player.PL2upg[2])
+	{
+		updatePLinfoget();
+		player.PL2info = player.PL2info.add(PL2infoget.div(10000));
 	}
 }
 
@@ -1450,6 +1738,15 @@ function produce()
 		}
 		player.star = player.star.add(player.star_node[0].mul(snx[0]).div(10));
 	}
+	if(player.PL2upg[2])
+	{
+		let gnx = getgnx();
+		for(let i = 7;i >= 1;i--)
+		{
+			player.godnode[i - 1] = player.godnode[i - 1].add(player.godnode[i].mul(gnx[i]).div(10));
+		}
+		player.godstar = player.godstar.add(player.godnode[0].mul(gnx[0]).div(10));
+	}
 	
 	if(player.PL1upg[7])
 	{
@@ -1462,10 +1759,11 @@ function produce()
 		if(player.boost2.gte(25)) slice_gen = slice_gen.mul(5000);
 		slice_gen = slice_gen.mul(N(1.5).pow(player.sliceupg_rep[0]));
 		if(player.origin_data.gte(100)) slice_gen = slice_gen.mul(player.origin_data.sub(100).max(1).pow(1.15).div(100).max(1));
+		if(player.star.gte(1e50)) slice_gen = slice_gen.mul(player.star.add(10).log10().pow(1.75));
 		//pow
 		
 		if(slice_gen.gte(5e8) && !player.PL2tms.gte(15)) slice_gen = N(5e8).mul(slice_gen.div(5e8).pow(0.75));
-		if(slice_gen.gte(1e130)) slice_gen = N(1e130).mul(N(10).pow(slice_gen.div(1e130).log10().pow(0.5)));
+		if(slice_gen.gte(1e130)) slice_gen = N(1e130).mul(N(10).pow(slice_gen.div(1e130).log10().pow(N(1).div(N(2).mul(player.entropy[3].gte(1.062) ? N(1).sub(player.entropy[3].mul(0.16)).max(0.2) : 1)))));
 		player.slice = player.slice.add(slice_gen);
 	}
 	
@@ -1480,16 +1778,18 @@ function produce()
 		if(player.boost.gte(120)) odg = odg.mul(5);
 		if(player.boost2.gte(34)) odg = odg.mul(N(1).add(player.slice.log(2).div(30)));
 		if(player.origin_data.gte(5e12)) odg = odg.mul(player.origin_data.div(1.25e12).log(4).max(1));
+		if(player.entropy[3].gte(1)) odg = odg.mul(N(1000).pow(player.entropy[3].pow(1.25)));
 		player.origin_data = player.origin_data.add(odg.div(10));
 	}
 	
+	getentropy();
 	
 	automation();
 }
 
 function GUI()
 {
-	let page_has_spage = [2, 0, 4, 3, 2];
+	let page_has_spage = [2, 0, 4, 3, 4];
 	
 	if(page == 1) document.getElementById('page1').style.display = 'block';
 	else document.getElementById('page1').style.display = 'none';
@@ -1539,6 +1839,12 @@ function GUI()
 	if(player.PL2tms.gte(25)) document.getElementById('spagebt4_3').style.display = 'inline-block';
 	else document.getElementById('spagebt4_3').style.display = 'none';
 	
+	if(player.PL2tms.gte(35)) document.getElementById('spagebt2_5').style.display = 'inline-block';
+	else document.getElementById('spagebt2_5').style.display = 'none';
+	
+	if(player.PL2upg[2]) document.getElementById('spagebt4_5').style.display = 'inline-block';
+	else document.getElementById('spagebt4_5').style.display = 'none';
+	
 	document.getElementById('PL1infoget').innerHTML = notation(PL1infoget);
 	document.getElementById('PL2infoget').innerHTML = notation(PL2infoget);
 	
@@ -1559,6 +1865,9 @@ function GUI()
 	document.getElementById('boostnum').innerHTML = notation(player.boost);
 	document.getElementById('boost2num').innerHTML = notation(player.boost2);
 	document.getElementById('boost3num').innerHTML = notation(player.boost3);
+	if(player.boost.gte(10)) document.getElementById('boostscaling').innerHTML = '超级折算|';
+	else document.getElementById('boostscaling').innerHTML = '';
+	document.getElementById('boostscalingeffect').innerHTML = notation(getboostzs1x());
 	document.getElementById('unlock_origin').style.display = (player.unlock_origin ? 'block' : 'none');
 	document.getElementById('uunlock_origin').style.display = (!player.unlock_origin ? 'block' : 'none');
 	document.getElementById('origin_data').innerHTML = notation(player.origin_data);
@@ -1567,7 +1876,9 @@ function GUI()
 	document.getElementById('dim').innerHTML = notation(player.dimension);
 	document.getElementById('dimcost').innerHTML = notation(getdimcost());
 	document.getElementById('star').innerHTML = notation(player.star);
-	document.getElementById('stareffect').innerHTML = notation(player.star.add(10).log10().pow(0.5));
+	document.getElementById('godstar').innerHTML = notation(player.godstar);
+	document.getElementById('stareffect').innerHTML = getstareffect();
+	document.getElementById('godstareffect').innerHTML = getgodstareffect();
 	if(player.PL2info.gte(getdimcost()))
 	{
 		document.getElementById('dimbt').style['background-color'] = '#666666';
@@ -1623,10 +1934,14 @@ function GUI()
 	else document.getElementById('autoboostbts').innerHTML = '自动购买：关';
 	if(player.autoboost2) document.getElementById('autoboost2bts').innerHTML = '自动购买：开';
 	else document.getElementById('autoboost2bts').innerHTML = '自动购买：关';
+	if(player.autoboost3) document.getElementById('autoboost3bts').innerHTML = '自动购买：开';
+	else document.getElementById('autoboost3bts').innerHTML = '自动购买：关';
 	if(player.PL1upg[4]) document.getElementById('autoboostbt').style.display = 'block';
 	else document.getElementById('autoboostbt').style.display = 'none';
 	if(player.sliceupg[0]) document.getElementById('autoboost2bt').style.display = 'block';
 	else document.getElementById('autoboost2bt').style.display = 'none';
+	if(player.PL2upg[0]) document.getElementById('autoboost3bt').style.display = 'block';
+	else document.getElementById('autoboost3bt').style.display = 'none';
 	for(let i = 0;i < 8;i++)
 	{
 		let scs = getjdscs(i);
@@ -1728,6 +2043,19 @@ function GUI()
 			}
 		}
 	}
+	if(player.PL2upg[2])
+	{
+		for(let i = 0;i < 8;i++)
+		{
+			let gnx = getgnx();
+			let gnc = getgnc();
+			if(!player.gnunlock[i]) document.getElementById('unlockgn' + (i + 1)).style.display = 'block', document.getElementById('gnbt' + (i + 1)).style.display = 'none';
+			else document.getElementById('unlockgn' + (i + 1)).style.display = 'none', document.getElementById('gnbt' + (i + 1)).style.display = 'block';
+			document.getElementById('gn' + (i + 1)).innerHTML = notation(player.godnode[i]);
+			document.getElementById('gnx' + (i + 1)).innerHTML = notation(gnx[i]);
+			document.getElementById('gnc' + (i + 1)).innerHTML = notation(gnc[i]);
+		}
+	}
 	document.getElementById('boostcost').innerHTML = notation(boostcost);
 	if(player.data.gte(boostcost))
 	{
@@ -1773,6 +2101,19 @@ function GUI()
 		document.getElementById('originupgcost' + (i + 1)).innerHTML = notation(getoriginupgcost(i));
 		document.getElementById('originupglevel' + (i + 1)).innerHTML = notation(player.origin_upg[i]);
 	}
+	if(player.openentropy) document.getElementById('openentropy').style['background-color'] = 'red';
+	else document.getElementById('openentropy').style['background-color'] = 'black';
+	for(let i = 0;i < 4;i++)
+	{
+		document.getElementById('ent' + i).innerHTML = notation(player.entropy[i]);
+		document.getElementById('entropyeffect' + i).innerHTML = getentropyeffect(i);
+	}
+	for(let i = 0;i < 4;i++)
+	{
+		if(player.PL2upg[i]) document.getElementById('PL2upg' + (i + 1)).style['background-color'] = 'purple';
+		else if(player.PL2info.gte(PL2upgcost[i])) document.getElementById('PL2upg' + (i + 1)).style['background-color'] = '#666666';
+		else document.getElementById('PL2upg' + (i + 1)).style['background-color'] = '#000000';
+	}
 }
 
 
@@ -1794,6 +2135,8 @@ bKeys.forEach(key =>
 	  player[key] = playerTemp[key];
 	}
 });
+
+if('mag' in player.entropy) player.entropy = [N(0), N(0), N(0), N(0)];
 
 setInterval(produce, 100);
 setInterval(GUI, 40);
