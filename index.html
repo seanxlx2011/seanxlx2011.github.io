@@ -1162,11 +1162,12 @@ function buyjd(num)
 
 function buymaxjd(num)
 {
+	let jdunlock = [N(1), N(2), N(3), N(4), N(5), N(6), N(7), N(8)];
 	num = num - 1;
 	let base = [N(10), N(1000), N(1e5), N(1e7), N(1e9), N(1e11), N(1e13), N(1e15)];
 	let basex = [N(10), N(100), N(1000), N(1e4), N(1e5), N(1e6), N(1e7), N(1e8)];
 	let cost = getjdprice();
-	if(player.data.gte(cost[num]))
+	if(player.data.gte(cost[num]) && player.boost.gte(jdunlock[num]))
 	{
 		let ans = player.data.div(base[num]).log(basex[num]).floor().add(1);
 		if(!player.PL1upg[0]) player.data = player.data.sub(cost[num]);
@@ -2262,6 +2263,14 @@ function build_chalui()
 		else document.getElementById('chalpara' + i).style['background-color'] = 'darkred';
 		document.getElementById('chalpara' + i).innerHTML = getchalparatext(i);
 	}
+	for(let i = 0;i < getchallayerunlock();i++)
+	{
+		document.getElementById('challayer' + i).style.display = 'block';
+	}
+	for(let i = getchallayerunlock();i < challayernum;i++)
+	{
+		document.getElementById('challayer' + i).style.display = 'none';
+	}
 	if(player.openchal) document.getElementById('openchal').style['background-color'] = 'red';
 	else document.getElementById('openchal').style['background-color'] = 'black';
 }
@@ -2274,7 +2283,7 @@ function dis_chalui()
 	for(let i = 0;i < challayernum;i++)
 	{
 		ui = ui + '<td style="width: 50px;"><span class="ftsz2">阶层' + (i + 1) + '</td>';
-		ui = ui + '<td align="center"><table>';
+		ui = ui + '<td align="center" id="challayer + ' + i + '"><table>';
 		for(let j = 0;j < challayerhaspara[i];j++)
 		{
 			ui = ui + '<td><button class="chalpara" id="chalpara' + nowparaid + '" onclick="changechalpara(' + nowparaid +')"></button></td>';
