@@ -224,6 +224,18 @@
 			float: center;
 		}
 		
+		.PL3bt {
+			background-color: gold;
+			height: 150px;
+			width: 200px;
+			border: 3px solid white;
+			color: white;
+			padding: 10px;
+			text-align: center;
+			font-size: 14px;
+			float: center;
+		}
+		
 		.slicebt {
 			background-color: black;
 			height: 150px;
@@ -353,52 +365,71 @@
 					<button class="buymaxjd" onclick="allmaxjd()">全部最大化</button>
 					<button class="buymaxjd" onclick="export_save()">导出存档到剪贴板</button>
 					<button class="buymaxjd" onclick="import_save()">导入存档</button>
+					<button class="buymaxjd" onclick="window.open('https://0i00000000a7.github.io/IDR-savebank/', '_blank');">访问存档银行</button>
 				</p>
 				
-				<p class="ftsz2" align="center">
-					<span>节点升级效果：每级×</span><span id="buyjdeffect"></span>
-				</p>
+				<div id="algor">
+					<p class="ftsz2" align="center">
+						<button class="buymaxjd" onclick="hidenode()">隐藏/显示传输节点界面</button><br>
+					</p>
+					<p class="ftsz2" align="center">
+						<span>你有 </span><span id="algornum"></span><span> 算法， </span><span id="algordata"></span><span> 算法数据。</span>
+						<br>
+						<span>算法数据使你获得了 +</span><span class="ftsz3" id="algoreffect"></span><span> 免费传输节点等级<br></span>
+						<table align="center">
+						<td><button class="boostbt" id="algorbt" onclick="buyalgor()">购买算法<br>价格：<span id="algorcost"></span>世界信息</button></td>
+						<td><button class="boostbt" id="algorrebuy1bt" onclick="buyalgorrebuy(1)">真空衰变<span id="algorrebuy1"></span><br>使节点购买倍数^<span id="algorrebuy1effect"></span><br>价格：<span id="algorrebuy1cost"></span>世界信息</button></td>
+						<td><button class="boostbt" id="algorrebuy2bt" onclick="buyalgorrebuy(2)">宇宙折叠<span id="algorrebuy2"></span><br>使算法数据指数+<span id="algorrebuy2effect"></span><br>价格：<span id="algorrebuy2cost"></span>世界信息</button></td>
+						</table>
+					</p>
+				</div>
 				
-				<p class="ftsz3" id="unlockjd1">
-					<span id="jdzs1">折算</span><span>1号传输节点 # 等级 </span><span id="jdbuy1"></span><span> # </span><span id="jdnum1"></span><span> × </span><span id="jdx1"></span>
-					<button class="autobuybt" onclick="chautobuyjd(1)" id="autobuyjdbt1"><span id="autobuyjds1"></span></button>
-					<button class="buyjd" onclick="buyjd(1)" id="jdbuybt1">花费<span id="jdcost1"></span>数据升级</button>
-				</p>
-				<p class="ftsz3" id="unlockjd2">
-					<span id="jdzs2">折算</span><span>2号传输节点 # 等级 </span><span id="jdbuy2"></span><span> # </span><span id="jdnum2"></span><span> × </span><span id="jdx2"></span>
-					<button class="autobuybt" onclick="chautobuyjd(2)" id="autobuyjdbt2"><span id="autobuyjds2"></span></button>
-					<button class="buyjd" onclick="buyjd(2)" id="jdbuybt2">花费<span id="jdcost2"></span>数据升级</button>
-				</p>
-				<p class="ftsz3" id="unlockjd3">
-					<span id="jdzs3">折算</span><span>3号传输节点 # 等级 </span><span id="jdbuy3"></span><span> # </span><span id="jdnum3"></span><span> × </span><span id="jdx3"></span>
-					<button class="autobuybt" onclick="chautobuyjd(3)" id="autobuyjdbt3"><span id="autobuyjds3"></span></button>
-					<button class="buyjd" onclick="buyjd(3)" id="jdbuybt3">花费<span id="jdcost3"></span>数据升级</button>
-				</p>
-				<p class="ftsz3" id="unlockjd4">
-					<span id="jdzs4">折算</span><span>4号传输节点 # 等级 </span><span id="jdbuy4"></span><span> # </span><span id="jdnum4"></span><span> × </span><span id="jdx4"></span>
-					<button class="autobuybt" onclick="chautobuyjd(4)" id="autobuyjdbt4"><span id="autobuyjds4"></span></button>
-					<button class="buyjd" onclick="buyjd(4)" id="jdbuybt4">花费<span id="jdcost4"></span>数据升级</button>
-				</p>
-				<p class="ftsz3" id="unlockjd5">
-					<span id="jdzs5">折算</span><span>5号传输节点 # 等级 </span><span id="jdbuy5"></span><span> # </span><span id="jdnum5"></span><span> × </span><span id="jdx5"></span>
-					<button class="autobuybt" onclick="chautobuyjd(5)" id="autobuyjdbt5"><span id="autobuyjds5"></span></button>
-					<button class="buyjd" onclick="buyjd(5)" id="jdbuybt5">花费<span id="jdcost5"></span>数据升级</button>
-				</p>
-				<p class="ftsz3" id="unlockjd6">
-					<span id="jdzs6">折算</span><span>6号传输节点 # 等级 </span><span id="jdbuy6"></span><span> # </span><span id="jdnum6"></span><span> × </span><span id="jdx6"></span>
-					<button class="autobuybt" onclick="chautobuyjd(6)" id="autobuyjdbt6"><span id="autobuyjds6"></span></button>
-					<button class="buyjd" onclick="buyjd(6)" id="jdbuybt6">花费<span id="jdcost6"></span>数据升级</button>
-				</p>
-				<p class="ftsz3" id="unlockjd7">
-					<span id="jdzs7">折算</span><span>7号传输节点 # 等级 </span><span id="jdbuy7"></span><span> # </span><span id="jdnum7"></span><span> × </span><span id="jdx7"></span>
-					<button class="autobuybt" onclick="chautobuyjd(7)" id="autobuyjdbt7"><span id="autobuyjds7"></span></button>
-					<button class="buyjd" onclick="buyjd(7)" id="jdbuybt7">花费<span id="jdcost7"></span>数据升级</button>
-				</p>
-				<p class="ftsz3" id="unlockjd8">
-					<span id="jdzs8">折算</span><span>8号传输节点 # 等级 </span><span id="jdbuy8"></span><span> # </span><span id="jdnum8"></span><span> × </span><span id="jdx8"></span>
-					<button class="autobuybt" onclick="chautobuyjd(8)" id="autobuyjdbt8"><span id="autobuyjds8"></span></button>
-					<button class="buyjd" onclick="buyjd(8)" id="jdbuybt8">花费<span id="jdcost8"></span>数据升级</button>
-				</p>
+				<div id="normal_node">
+					<p class="ftsz2" align="center">
+						<span>节点升级效果：每级×</span><span id="buyjdeffect"></span>
+					</p>
+					
+					<p class="ftsz3" id="unlockjd1">
+						<span id="jdzs1">折算</span><span>1号传输节点 # 等级 </span><span id="jdbuy1"></span><span> # </span><span id="jdnum1"></span><span> × </span><span id="jdx1"></span>
+						<button class="autobuybt" onclick="chautobuyjd(1)" id="autobuyjdbt1"><span id="autobuyjds1"></span></button>
+						<button class="buyjd" onclick="buyjd(1)" id="jdbuybt1">花费<span id="jdcost1"></span>数据升级</button>
+					</p>
+					<p class="ftsz3" id="unlockjd2">
+						<span id="jdzs2">折算</span><span>2号传输节点 # 等级 </span><span id="jdbuy2"></span><span> # </span><span id="jdnum2"></span><span> × </span><span id="jdx2"></span>
+						<button class="autobuybt" onclick="chautobuyjd(2)" id="autobuyjdbt2"><span id="autobuyjds2"></span></button>
+						<button class="buyjd" onclick="buyjd(2)" id="jdbuybt2">花费<span id="jdcost2"></span>数据升级</button>
+					</p>
+					<p class="ftsz3" id="unlockjd3">
+						<span id="jdzs3">折算</span><span>3号传输节点 # 等级 </span><span id="jdbuy3"></span><span> # </span><span id="jdnum3"></span><span> × </span><span id="jdx3"></span>
+						<button class="autobuybt" onclick="chautobuyjd(3)" id="autobuyjdbt3"><span id="autobuyjds3"></span></button>
+						<button class="buyjd" onclick="buyjd(3)" id="jdbuybt3">花费<span id="jdcost3"></span>数据升级</button>
+					</p>
+					<p class="ftsz3" id="unlockjd4">
+						<span id="jdzs4">折算</span><span>4号传输节点 # 等级 </span><span id="jdbuy4"></span><span> # </span><span id="jdnum4"></span><span> × </span><span id="jdx4"></span>
+						<button class="autobuybt" onclick="chautobuyjd(4)" id="autobuyjdbt4"><span id="autobuyjds4"></span></button>
+						<button class="buyjd" onclick="buyjd(4)" id="jdbuybt4">花费<span id="jdcost4"></span>数据升级</button>
+					</p>
+					<p class="ftsz3" id="unlockjd5">
+						<span id="jdzs5">折算</span><span>5号传输节点 # 等级 </span><span id="jdbuy5"></span><span> # </span><span id="jdnum5"></span><span> × </span><span id="jdx5"></span>
+						<button class="autobuybt" onclick="chautobuyjd(5)" id="autobuyjdbt5"><span id="autobuyjds5"></span></button>
+						<button class="buyjd" onclick="buyjd(5)" id="jdbuybt5">花费<span id="jdcost5"></span>数据升级</button>
+					</p>
+					<p class="ftsz3" id="unlockjd6">
+						<span id="jdzs6">折算</span><span>6号传输节点 # 等级 </span><span id="jdbuy6"></span><span> # </span><span id="jdnum6"></span><span> × </span><span id="jdx6"></span>
+						<button class="autobuybt" onclick="chautobuyjd(6)" id="autobuyjdbt6"><span id="autobuyjds6"></span></button>
+						<button class="buyjd" onclick="buyjd(6)" id="jdbuybt6">花费<span id="jdcost6"></span>数据升级</button>
+					</p>
+					<p class="ftsz3" id="unlockjd7">
+						<span id="jdzs7">折算</span><span>7号传输节点 # 等级 </span><span id="jdbuy7"></span><span> # </span><span id="jdnum7"></span><span> × </span><span id="jdx7"></span>
+						<button class="autobuybt" onclick="chautobuyjd(7)" id="autobuyjdbt7"><span id="autobuyjds7"></span></button>
+						<button class="buyjd" onclick="buyjd(7)" id="jdbuybt7">花费<span id="jdcost7"></span>数据升级</button>
+					</p>
+					<p class="ftsz3" id="unlockjd8">
+						<span id="jdzs8">折算</span><span>8号传输节点 # 等级 </span><span id="jdbuy8"></span><span> # </span><span id="jdnum8"></span><span> × </span><span id="jdx8"></span>
+						<button class="autobuybt" onclick="chautobuyjd(8)" id="autobuyjdbt8"><span id="autobuyjds8"></span></button>
+						<button class="buyjd" onclick="buyjd(8)" id="jdbuybt8">花费<span id="jdcost8"></span>数据升级</button>
+					</p>
+				</div>
 			</div>
 			<div id="spage2_1" align="center">
 				<p align="center">
@@ -463,6 +494,12 @@
 						<br/>
 						<button class="PL2bt" onclick="buyPL2()">宇宙重置：重置之前的所有内容，但获得宇宙信息。<br/>+ <span id="PL2infoget"></span> 宇宙信息。<br/>需要e7000世界信息</button>
 					</td>
+					<tr>
+					<td style="width: 500px; float: center;" id="PL3bt">
+						<span class="ftsz3">你拥有 </span><span class="ftsz4" id="PL3info"></span><span class="ftsz3"> 混沌信息</span>
+						<br/>
+						<button class="PL3bt" onclick="buyPL3()">混沌重置：重置之前的所有内容，但获得混沌信息。<br/>+ <span id="PL3infoget"></span> 混沌信息。<br/>需要e10000宇宙信息</button>
+					</td>
 				</table>
 			</div>
 			<div id="spage2_2" align="center">
@@ -470,7 +507,7 @@
 				<br><span style="color: lightblue;" id="chalcompeffect"></span>
 				<br><span>当前参数复杂度：</span><span id="chalcompnow"></span>
 				<br><br>说明<br>你可以自由调整挑战参数，需要上一个层级的参数被选择，才能选择下一个层级。
-				<br>每个挑战参数都会在不同方面削弱游戏。
+				<br>任何挑战参数都会对游戏内容加以更改，使游戏变得更难的参数增加复杂度，反之亦然。
 				<br>在挑战中进行宇宙重置以完成挑战，完成的挑战的复杂度越高，就能获得越多的奖励。
 				<br></p>
 				<button class="chalpara" style="height: 50px" onclick="resetchalpara()">重置挑战参数</button>
@@ -715,7 +752,7 @@
 						价格：1e32宇宙信息
 					</button></td>
 					<td><button class="PL2bt" onclick="buyPL2upg(4)" id="PL2upg4">
-						解锁永久升级<br>
+						解锁永久升级（在节点选项卡内）<br>
 						价格：1e75宇宙信息
 					</button></td>
 				</table>
@@ -865,10 +902,18 @@ function init()
 		gnunlock: [false, false, false, false, false, false, false, false],
 		permupg: [],
 		chalcomp: N(0),
+		chalcomp_temp: N(0),
 		openchal: false,
 		chalpara: [false],
+		algor: N(0),
+		algordata: N(0),
+		hidenode: false,
+		algorrebuy: [N(0), N(0)],
 		
 		//chaos
+		PL3info: N(0),
+		PL3unlock: false,
+		PL3tms: N(0),
 		
 		//void
 		
@@ -976,18 +1021,20 @@ function import_save()
 	if (userInput != null && userInput !== "") {
 		player = JSON.parse(atob(userInput));
 		transformToDecimal(player);
+		location.reload();
 	} else {
 	}
 }
 
 function getjdscs(i)
 {
-	let base = [N(1024), N(1e10), N(1e50), N('e400'), N(180000), N(1e6), N('e40000'), N('ee50')];
+	let base = [N(1024), N(1e10), N(1e50), N('e400'), N(180000), N(1e7), N(2e8), N(1e9)];
 	if(player.boost.gte(55)) base[2] = base[2].pow(1.5);
 	if(player.boost.gte(315)) base[3] = base[3].pow(1.25);
 	if(player.boost2.gte(250)) base[3] = base[3].pow(2);
 	if(player.PL1upg[6]) for(let j = 0;j < 2;j++) base[j] = base[j].pow(1.5);
 	if(player.sliceupg[2]) for(let j = 0;j < 3;j++) base[j] = base[j].pow(1.5);
+	if(player.permupg.includes(15)) base[4] = base[4].mul(1.1);
 	if(player.godstar.gte(3e6)) base[4] = base[4].pow(N(1).add(player.godstar.div(3e6).add(1).log10().add(10).log10().log10().min(0.025)));
 	//delete
 	if(player.boost3.gte(3)) base[0] = N(Infinity);
@@ -998,7 +1045,7 @@ function getjdscs(i)
 
 function getjdscx(i)
 {
-	let base = [N(1), N(4), N(99), N(999), N(1 / 9), N(1), N(999), N(999999)];
+	let base = [N(1), N(4), N(99), N(999), N(1 / 9), N(1 / 6), N(1 / 3), N('e10000')];
 	if(player.boost.gte(15)) base[0] = base[0].mul(0.75);
 	if(player.boost.gte(20)) base[0] = base[0].mul(0.4);
 	if(player.boost.gte(21)) base[1] = base[1].mul(N(1).div(player.boost.add(1).root(15)));
@@ -1010,6 +1057,8 @@ function getjdscx(i)
 	if(player.PL1upg[5]) base[1] = base[1].mul(0.6);
 	if(player.PL1upg[5]) base[2] = base[2].mul(0.6);
 	if(player.permupg.includes(1)) base[4] = base[4].mul(0.8);
+	if(player.boost2.gte(470)) base[3] = base[3].mul(0.7);
+	if(player.permupg.includes(28)) base[3] = base[3].mul(0.5);
 	for(let i = 0;i < 8;i++) base[i] = N(1).div(base[i].add(1));
 	return base;
 }
@@ -1026,9 +1075,15 @@ function getjdprice()
 function getbuyjdeffect()
 {
 	let base = N(2);
-	if(player.PL2unlock) base = base.mul(player.star.add(10).log10().pow(0.5));
-	if(player.permupg.includes(2)) base = base.mul(player.PL2info.log10().mul(1.5).root(1.75).max(1));
+	//mul
+	if(player.PL2unlock && !player.permupg.includes(17)) base = base.mul(player.star.add(10).log10().pow(0.5));
+	else if(player.PL2unlock && player.permupg.includes(17)) base = base.mul(player.star.add(2).log(2));
+	if(player.permupg.includes(2)) base = base.mul(player.PL2info.add(1).log10().mul(1.5).root(1.75).max(1));
 	if(player.godstar.gte(1e21)) base = base.mul(player.godstar.div(1e15).sub(999999).root(5).max(1).min(30000));
+	if(player.permupg.includes(21)) base = base.mul(player.dimension.add(2).div(2).root(1.2));
+	//pow
+	if(player.permupg.includes(29)) base = base.pow(N(1).add(player.algorrebuy[1].mul(0.1)));
+	//dil
 	return base;
 }
 
@@ -1039,7 +1094,7 @@ function getjdx()
 	{
 		let scs = getjdscs(i);
 		let scx = getjdscx(i);
-		base[i] = base[i].mul(getbuyjdeffect().pow(player.buyjd[i]));
+		base[i] = base[i].mul(getbuyjdeffect().pow(player.buyjd[i].add(player.permupg.includes(24) ? getalgoreffect() : 0)));
 		for(let j = 0;j < 4;j++)
 		{
 			if(base[i].gte(scs[j]))
@@ -1072,12 +1127,15 @@ function getjdx()
 		if(player.permupg.includes(8)) base[i] = base[i].pow(player.PL2info.add(1).log10().add(10).log10().root(4).min(1.4));
 		if(player.PL2upg[2] && player.permupg.includes(11)) base[i] = base[i].pow(player.godstar.add(10).log10().add(10).log10().root(3));
 		if(player.permupg.includes(12)) base[i] = base[i].pow(player.star.add(10).log10().add(10).log10().root(6));
+		if(player.chalcomp.gte(1.5)) base[i] = base[i].pow(N(1).add(player.chalcomp.log(1.5).root(7).log(2)));
 		//dil
 		if(player.openentropy)
 		{
 			base[i] = N(10).pow(base[i].log10().pow(0.9)).max(1);
 		}
 		if(player.openchal && player.chalpara.includes(0)) base[i] = N(10).pow(base[i].log10().pow(0.4)).max(1);
+		if(player.openchal && player.chalpara.includes(4)) base[i] = N(10).pow(base[i].log10().pow(1.7)).max(1);
+		if(player.openchal && player.chalpara.includes(5)) base[i] = N(10).pow(base[i].log10().pow(1.3)).max(1);
 		for(let j = 4;j < 8;j++)
 		{
 			if(base[i].gte(N(10).pow(scs[j])))
@@ -1160,6 +1218,7 @@ function getboost2cost()
 	let base = player.boost2.mul(4).add(16);
 	if(player.PL1upg[7]) base = base.sub(player.sliceupg_rep[2]);
 	if(player.boost3.gte(2)) base = base.sub(player.boost3.add(1).mul(2).pow(1.25));
+	if(player.permupg.includes(16)) base = base.sub(player.godstar.add(1).log10().min(10000));
 	return base;
 }
 
@@ -1264,8 +1323,8 @@ function getboosteffect(b)
 }
 
 var boost2effectlist = [N(1), N(2), N(3), N(5), N(10), N(11), N(12), N(25)
-, N(34), N(48), N(90), N(119), N(250), N(370)];
-var boost2effectnum = 14;
+, N(34), N(48), N(90), N(119), N(250), N(370), N(470)];
+var boost2effectnum = 15;
 
 function getboost2effect(b)
 {
@@ -1324,6 +1383,10 @@ function getboost2effect(b)
 	else if(!b.gte(370))
 	{
 		return '在370二重跃迁，90二重跃迁的效果公式变得更好。';
+	}
+	else if(!b.gte(470))
+	{
+		return '在470二重跃迁，节点四阶软上限弱化30%。';
 	}
 	else return '';
 }
@@ -1455,6 +1518,7 @@ function buymaxboost2()
 	let cost_sub = N(0);
 	if(player.PL1upg[7]) cost_sub = cost_sub.add(player.sliceupg_rep[2]);
 	if(player.boost3.gte(2)) cost_sub = cost_sub.add(player.boost3.add(1).mul(2).pow(1.25));
+	if(player.permupg.includes(16)) cost_sub = cost_sub.add(player.godstar.add(1).log10().min(10000));
 	let ans = player.boost.add(cost_sub).sub(16).div(4).floor().add(1);
 	if(ans.gte(player.boost2))
 	{
@@ -1496,7 +1560,7 @@ function chautoboost3()
 	if(player.PL2upg[1]) player.autoboost3 = !player.autoboost3;
 }
 
-var PL1infoget = N(0), PL2infoget = N(0);
+var PL1infoget = N(0), PL2infoget = N(0), PL3infoget = N(0);
 function updatePLinfoget()
 {
 	if(player.data.gte(1e80))
@@ -1507,19 +1571,35 @@ function updatePLinfoget()
 	}
 	else PL1infoget = N(0);
 	
+	//mul
 	if(player.boost2.gte(10)) PL1infoget = PL1infoget.mul(player.boost.add(1).mul(1.5).pow(0.75));
 	if(player.permupg.includes(0)) PL1infoget = PL1infoget.mul(getsliceeffect().pow(0.4));
-	if(player.origin_data.gte(1e90) && !(player.openchal && player.chalpara.includes(2))) PL1infoget = PL1infoget.mul(player.origin_data.div(1e80).pow(540));
+	if(player.origin_data.gte(1e90) && !(player.openchal && player.chalpara.includes(2))) PL1infoget = PL1infoget.mul(player.origin_data.div(1e80).pow(540).min('e220000'));
+	//pow
+	if(player.permupg.includes(22) && player.openentropy) PL1infoget = PL1infoget.mul(player.PL1info.add(1).pow(5).min('e35000'));
+	if(player.permupg.includes(23)) PL1infoget = PL1infoget.pow(1.02);
+	//dil
 	if(player.openchal && player.chalpara.includes(3)) PL1infoget = N(10).pow(PL1infoget.add(10).log10().pow(0.4)).max(1);
+	if(player.openchal && player.chalpara.includes(5)) PL1infoget = N(10).pow(PL1infoget.log10().pow(1.3)).max(1);
+	if(player.openchal && player.chalpara.includes(6)) PL1infoget = N(10).pow(PL1infoget.log10().pow(1.7)).max(1);
 	PL1infoget = PL1infoget.floor();
 	
 	if(player.PL1info.gte('e7000'))
 	{
-		PL2infoget = player.PL1info.root(3500).div(100);
+		if(player.permupg.includes(26)) PL2infoget = player.PL1info.root(3300).div(132.19);
+		else PL2infoget = player.PL1info.root(3500).div(100);
 	}
 	else PL2infoget = N(0);
 	
 	PL2infoget = PL2infoget.floor();
+	
+	if(player.PL2info.gte('e10000'))
+	{
+		PL3infoget = player.PL2info.log10().root(4).div(5).sub(1);
+	}
+	else PL3infoget = N(0);
+	
+	PL3infoget = PL3infoget.floor();
 }
 
 function buyPL1()
@@ -1543,6 +1623,14 @@ function buyPL2()
 		
 		if(player.PL2tms.gte(2)) player.PL1upg = [true, true, true, true, true, true, true, true];
 		if(player.PL2tms.gte(4)) player.sliceupg = [true, true, true, true], player.unlock_origin = true;
+	}
+}
+
+function buyPL3()
+{
+	if(player.PL2info.gte('e10000'))
+	{
+		alert('恭喜你已达到该版本终局。');
 	}
 }
 
@@ -1617,7 +1705,7 @@ function getorigineffect()
 	if(player.origin_data.gte(5e12)) e = e + "本源数据获取速度×" + notation(player.origin_data.div(1.25e12).log(4).max(1)) + "<br>";
 	if(player.origin_data.gte(1e45)) e = e + '位面切片效果指数+' + notation(player.origin_data.div(1e40).max(1).log10().div(10)) + '<br>';
 	if(player.origin_data.gte(1e56)) e = e + '位面切片效果指数×' + notation(player.origin_data.log10().sub(55).root(2).max(1).min(2)) + ', 本源第一效果公式中的指数+' + notation(player.origin_data.log10().sub(55).root(3).sub(1).max(0)) + '<br>';
-	if(player.origin_data.gte(1e90)) e = e + '世界信息获取×' + notation(player.origin_data.div(1e80).pow(540)) + '<br>';
+	if(player.origin_data.gte(1e90)) e = e + '世界信息获取×' + notation(player.origin_data.div(1e80).pow(540).min('e220000')) + '<br>';
 	
 	if(!player.origin_data.gte(100)) e = e + "到达 100 本源数据解锁本源第一效果<br>";
 	else if(!player.origin_data.gte(100000)) e = e + "到达 1.000e5 本源数据解锁本源第二效果<br>";
@@ -1676,7 +1764,8 @@ function buydim()
 function getstareffect()
 {
 	let e = '';
-	e = e + "节点升级效果×" + notation(player.star.add(10).log10().pow(0.5)) + "<br>";
+	if(!player.permupg.includes(17)) e = e + "节点升级效果×" + notation(player.star.add(10).log10().pow(0.5)) + "<br>";
+	else e = e + '节点升级效果×' + notation(player.star.add(2).log(2)) + '<br>';
 	if(player.star.gte(1e50)) e = e + '位面切片获取速度×' + notation(player.permupg.includes(6) ? player.star.add(1).root(4.5) : player.star.add(10).log10().pow(1.75)) + '<br>';
 	if(player.star.gte(1e70)) e = e + '位面切片增幅指数×' + notation(player.star.add(10).div(1e70).max(1).root(7).min(3.5)) + '<br>';
 	if(!player.star.gte(1e50)) e = e + '到达 1.000e50 星辰解锁星辰第二效果' + '<br>';
@@ -1710,9 +1799,24 @@ function buysn(num)
 	let cost = getsncost(num);
 	if(player.star.gte(cost))
 	{
-		player.star = player.star.sub(cost);
+		if(!player.permupg.includes(27))player.star = player.star.sub(cost);
 		player.buysn[num] = player.buysn[num].add(1);
 		player.star_node[num] = player.star_node[num].add(1);
+	}
+}
+
+function buymaxsn()
+{
+	let base = [N(1), N(1e4), N(1e8), N(1e12), N(1e16), N(1e20), N(1e24), N(1e28)];
+	let basex = [N(100), N(10000), N(1e6), N(1e10), N(1e16), N(1e25), N(1e36), N(1e50)];
+	for(let i = 0;i < 8;i++)
+	{
+		let ans = player.star.div(base[i]).log(basex[i]).floor().add(1);
+		if(ans.gte(player.buysn[i]))
+		{
+			player.star_node[i] = player.star_node[i].add(ans.sub(player.buysn[i]));
+			player.buysn[i] = ans;
+		}
 	}
 }
 
@@ -1818,11 +1922,13 @@ function getgodstareffect()
 	if(!player.permupg.includes(11)) e = e + '传输节点产能×' + notation(N(10).pow(player.godstar.mul(60).root(1.8).min(N(2000).add(player.godstar.root(2.1))).min(N(10000).add(player.godstar.root(4))).min(N(20000).add(player.godstar.log10().mul(45))))) + '<br>';
 	else e = e + '传输节点产能^' + notation(player.godstar.add(10).log10().add(10).log10().root(3)) + '<br>';
 	if(player.godstar.gte(3e6)) e = e + '节点五阶软上限指数延迟^' + notation(N(1).add(player.godstar.div(3e6).add(1).log10().add(10).log10().log10().min(0.025))) + '<br>';
-	if(player.godstar.gte(1e13)) e = e + '本源数据获取速度×' + notation(player.godstar.div(1e9).sub(9999).root(1.25).max(1)) + '<br>';
+	if(player.godstar.gte(1e13)) e = e + '本源数据获取速度×' + notation(player.godstar.div(1e9).sub(9999).root(1.25).max(1).min('e1800')) + '<br>';
 	if(player.godstar.gte(1e21)) e = e + '传输节点升级效果×' + notation(player.godstar.div(1e15).sub(999999).root(5).max(1).min(30000)) + '<br>';
+	if(player.godstar.gte(1e140)) e = e + '位面切片获取速度×' + notation(player.godstar.div(1e120).root(4).div(100).sub(999).min(1e50)) + '<br>';
 	if(!player.godstar.gte(3e6)) e = e + '到达 3.000e6 神星解锁神星第二效果<br>';
 	else if(!player.godstar.gte(1e13)) e = e + '到达 1.000e13 神星解锁神星第三效果<br>';
 	else if(!player.godstar.gte(1e21)) e = e + '到达 1.000e21 神星解锁神星第四效果<br>';
+	else if(!player.godstar.gte(1e140)) e = e + '到达 1.000e140 神星解锁神星第五效果<br>';
 	return e;
 }
 
@@ -1852,7 +1958,7 @@ function getgnx()
 function getgnc()
 {
 	let x = [N(100), N(10000), N(1e6), N(1e8), N(1e10), N(1e12), N(1e14), N(1e16)];
-	let base = [N(1e35), N(1e70), N(1e110), N('ee10'), N('ee10'), N('ee10'), N('ee10'), N('ee10')];
+	let base = [N(1e35), N(1e70), N(1e110), N(1e170), N(1e210), N(1e240), N(1e300), N('e370')];
 	let basex = [N(100), N(10000), N(1e6), N(1e8), N(1e10), N(1e12), N(1e14), N(1e16)];
 	for(let i = 0;i < 8;i++)
 	{
@@ -1878,8 +1984,9 @@ function buymaxgn()
 {
 	for(let i = 0;i < 8;i++)
 	{
+		if(!player.gnunlock[i]) continue;
 		let x = [N(100), N(10000), N(1e6), N(1e8), N(1e10), N(1e12), N(1e14), N(1e16)];
-		let base = [N(1e35), N(1e70), N(1e110), N('ee10'), N('ee10'), N('ee10'), N('ee10'), N('ee10')];
+		let base = [N(1e35), N(1e70), N(1e110), N(1e170), N(1e210), N(1e240), N(1e300), N('e370')];
 		let basex = [N(100), N(10000), N(1e6), N(1e8), N(1e10), N(1e12), N(1e14), N(1e16)];
 		let ans = player.PL2info.div(base[i]).log(basex[i]).floor().add(1);
 		if(ans.gte(player.buygn[i]))
@@ -1895,7 +2002,7 @@ function getpermupgeffect(num)
 {
 	if(num == 0) return '位面切片效果增幅世界信息。当前：×' + notation(getsliceeffect().pow(0.4));
 	else if(num == 1) return '节点五阶软上限弱化20%。';
-	else if(num == 2) return '宇宙信息增幅节点升级效果。当前：×' + notation(player.PL2info.log10().mul(1.5).root(1.75).max(1));
+	else if(num == 2) return '宇宙信息增幅节点升级效果。当前：×' + notation(player.PL2info.add(1).log10().mul(1.5).root(1.75).max(1));
 	else if(num == 3) return '跃迁超级折算弱化25%。';
 	else if(num == 4) return '宇宙信息增幅神子产能。当前：×' + notation(player.PL2info.div(1e40).log10().max(1));
 	else if(num == 5) return '维度折算弱化30%。';
@@ -1907,17 +2014,34 @@ function getpermupgeffect(num)
 	else if(num == 11) return '神星第一效果改为对指数加成。当前：^' + notation(player.godstar.add(10).log10().add(10).log10().root(3));
 	else if(num == 12) return '星辰增幅传输节点。当前：^' + notation(player.star.add(10).log10().add(10).log10().root(6));
 	else if(num == 13) return '每个三重跃迁使神子×1.1。当前：×' + notation(N(1.1).pow(player.boost3));
-	else if(num == 14) return '解锁挑战。(coming soon...)';
-	else return '404 Error';
+	else if(num == 14) return '解锁挑战。(在层级选项卡内)';
+	else if(num == 15) return '节点五阶软上限延迟1.1次方出现。';
+	else if(num == 16) return '神星减少二重跃迁成本。当前：-' + notation(player.godstar.add(1).log10().min(10000));
+	else if(num == 17) return '重写星辰第一效果的公式。当前：×' + notation(player.star.add(2).log(2).div(player.star.add(10).log10().pow(0.5)));
+	else if(num == 18) return '被动获得宇宙信息的比率×100。';
+	else if(num == 19) return '解锁阶层4挑战参数。';
+	else if(num == 20) return '阶层4挑战参数的复杂度权重增加0.2';
+	else if(num == 21) return '维度倍增传输节点升级效果。当前：×' + notation(player.dimension.add(2).div(2).root(1.2));
+	else if(num == 22) return '收集熵时世界信息获取量^6，但上限在×1e35000。';
+	else if(num == 23) return '世界信息获取量^1.02。';
+	else if(num == 24) return '解锁算法。(在传输节点子选项卡内)';
+	else if(num == 25) return '算法底数+1。';
+	else if(num == 26) return '宇宙信息获取公式变得更好。';
+	else if(num == 27) return '你自动购买星辰节点和神子，它们不消耗任何东西。';
+	else if(num == 28) return '节点四阶软上限弱化50%。';
+	else if(num == 29) return '解锁两个新的算法可购买。解锁混沌重置。';
+	else return '无效升级';
 }
 
-var permupgnum = 15;
+var permupgnum = 30;
 var permupgcost = [N(1e75), N(1e78), N(1e19), N(1e82), N(1e85), N(3e23), N(1e88), N(4.5e25), N(5e95), N(1e40)
-, N(1e42), N(1e124), N(2e46), N(1e50), N(1e150)];
+, N(1e42), N(1e124), N(2e46), N(1e50), N(1e150), N(1e70), N(1e190), N(1e92), N(1e240), N(1e127)
+, N(1e255), N(4.65), N(1e270), N(7), N(1e146), N(1e162), N('1.797e308'), N('e400'), N('e3680'), N('e5300')];
 var permupgcosttype = [0, 0, 1, 0, 0, 1, 0, 1, 0, 1
-, 1, 0, 1, 1, 0];
-var permupgcosttypename = ['宇宙信息', '神星'];
-var permupgcosttypeinternal = ['PL2info', 'godstar'];
+, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1
+, 0, 2, 0, 2, 1, 1, 0, 0, 0, 0];
+var permupgcosttypename = ['宇宙信息', '神星', '挑战复杂度纪录'];
+var permupgcosttypeinternal = ['PL2info', 'godstar', 'chalcomp_temp'];
 
 function buypermupg(num)
 {
@@ -1927,6 +2051,12 @@ function buypermupg(num)
 		player[permupgcosttypeinternal[permupgcosttype[num]]] = player[permupgcosttypeinternal[permupgcosttype[num]]].sub(permupgcost[num]);
 		player.permupg.push(num);
 	}
+}
+
+function permupgcanblock(num)
+{
+	if(num >= 15 && !player.permupg.includes(14)) return false;
+	return true;
 }
 
 var mouseenterpermupg = -1;
@@ -1945,10 +2075,14 @@ function build_permupgui()
 	
 	for(let i = 0;i < permupgnum;i++)
 	{
+		if(permupgcanblock(i)) document.getElementById('permupg' + i).style.display = 'block';
+		else document.getElementById('permupg' + i).style.display = 'none';
+		
 		if(player.permupg.includes(i))
 		{
 			if(permupgcosttype[i] == 0) document.getElementById('permupg' + i).style['background-color'] = 'purple';
 			else if(permupgcosttype[i] == 1) document.getElementById('permupg' + i).style['background-color'] = 'orange';
+			else if(permupgcosttype[i] == 2) document.getElementById('permupg' + i).style['background-color'] = 'red';
 		}
 		else if(player[permupgcosttypeinternal[permupgcosttype[i]]].gte(permupgcost[i]))
 		{
@@ -1984,11 +2118,16 @@ function dis_permupgui()
 function getchallayerunlock()
 {
 	let base = N(3);
+	if(player.permupg.includes(19))
+	{
+		base = N(4);
+	}
 	return base;
 }
 
-var chalparanum = 4;
-var challayerhaspara = [1, 2, 1];
+var chalparanum = 7;
+var challayernum = 4;
+var challayerhaspara = [1, 2, 1, 3];
 
 function canchangechalpara(num)
 {
@@ -2033,6 +2172,9 @@ function getchalparatext(num)
 	else if(num == 1) return '位面切片失去效果';
 	else if(num == 2) return '本源数据失去效果';
 	else if(num == 3) return '世界信息获取量指数^0.4';
+	else if(num == 4) return '节点产能指数^1.7';
+	else if(num == 5) return '节点产能与世界信息获取量指数^1.3';
+	else if(num == 6) return '世界信息获取量指数^1.7';
 	else return '暂时没有这个参数';
 }
 
@@ -2086,8 +2228,9 @@ function openchal()
 function getchalparacomp()
 {
 	let base = N(1);
-	let qz = [N(1), N(1), N(1.5)];
+	let qz = [N(1), N(1), N(1.5), N(-1)];
 	let nowid = 0;
+	if(player.permupg.includes(20)) qz[3] = qz[3].add(0.2);
 	for(let i = 0;i < getchallayerunlock();i++)
 	{
 		let lbase = N(1);
@@ -2099,6 +2242,14 @@ function getchalparacomp()
 		base = base.mul(lbase.pow(qz[i]));
 	}
 	return base;
+}
+
+function getchalcompeffect()
+{
+	let e = '';
+	if(player.chalcomp.gte(1.5)) e = e + '传输节点^' + notation(N(1).add(player.chalcomp.log(1.5).root(7).log(2))) + '<br>';
+	if(!player.chalcomp.gte(1.5)) e = e + '到达 1.5 复杂度纪录解锁挑战第一效果<br>';
+	return e;
 }
 
 
@@ -2120,19 +2271,64 @@ function dis_chalui()
 	let ui = '';
 	ui = ui + '<table>';
 	let nowparaid = 0;
-	for(let i = 0;i < getchallayerunlock();i++)
+	for(let i = 0;i < challayernum;i++)
 	{
 		ui = ui + '<td style="width: 50px;"><span class="ftsz2">阶层' + (i + 1) + '</td>';
-		ui = ui + '<td align="center">';
+		ui = ui + '<td align="center"><table>';
 		for(let j = 0;j < challayerhaspara[i];j++)
 		{
-			ui = ui + '<button class="chalpara" id="chalpara' + nowparaid + '" onclick="changechalpara(' + nowparaid +')"></button>';
+			ui = ui + '<td><button class="chalpara" id="chalpara' + nowparaid + '" onclick="changechalpara(' + nowparaid +')"></button></td>';
 			console.log(nowparaid);
 			nowparaid++;
 		}
-		ui = ui + '<tr>';
+		ui = ui + '</table></td><tr>';
 	}
 	document.getElementById('challenge_detail').innerHTML = ui;
+}
+
+function getalgoreffect()
+{
+	let power = N(1);
+	if(player.permupg.includes(29)) power = power.add(player.algorrebuy[1].mul(0.02));
+	let freelevel = player.algordata.pow(power);
+	return freelevel;
+}
+
+function getalgorcost()
+{
+	return N('e1e6').mul(N('e2e4').pow(N(2).pow(player.algor).sub(1)));
+}
+
+function getalgorbase()
+{
+	let base = N(2);
+	if(player.permupg.includes(25)) base = base.add(1);
+	return base;
+}
+
+function buyalgor()
+{
+	if(player.PL1info.gte(getalgorcost()))
+	{
+		player.PL1info = player.PL1info.sub(getalgorcost());
+		player.algor = player.algor.add(1);
+	}
+}
+
+function getalgorrebuycost(num)
+{
+	if(num == 0) return N('e1.7e7').mul(N('e4e5').pow(N(2.5).pow(player.algorrebuy[0]).sub(1)));
+	else return N('e1.8e7').mul(N('e1e6').pow(N(6).pow(player.algorrebuy[1]).sub(1)));
+}
+
+function buyalgorrebuy(num)
+{
+	num = num - 1;
+	if(player.PL1info.gte(getalgorrebuycost(num)))
+	{
+		player.PL1info = player.PL1info.sub(getalgorrebuycost(num));
+		player.algorrebuy[num] = player.algorrebuy[num].add(1);
+	}
 }
 
 function automation()
@@ -2176,6 +2372,12 @@ function automation()
 		for(let i = 0;i < 4;i++) player.origin_upg[i] = player.origin_upg[i].min(cap[i]);
 	}
 	
+	if(player.permupg.includes(27))
+	{
+		buymaxgn();
+		buymaxsn();
+	}
+	
 	if(player.PL2upg[0])
 	{
 		player.PL1info = player.PL1info.add(PL1infoget);
@@ -2183,7 +2385,7 @@ function automation()
 	if(player.PL2upg[2])
 	{
 		updatePLinfoget();
-		player.PL2info = player.PL2info.add(PL2infoget.div(10000));
+		player.PL2info = player.PL2info.add(PL2infoget.div(player.permupg.includes(18) ? 100 : 10000));
 	}
 }
 
@@ -2236,6 +2438,7 @@ function produce()
 		slice_gen = slice_gen.mul(N(1.5).pow(player.sliceupg_rep[0]));
 		if(player.origin_data.gte(100) && !(player.openchal && player.chalpara.includes(2))) slice_gen = slice_gen.mul(player.origin_data.sub(100).max(1).pow(1.15).div(100).max(1));
 		if(player.star.gte(1e50)) slice_gen = slice_gen.mul(player.permupg.includes(6) ? player.star.add(1).root(4.5) : player.star.add(10).log10().pow(1.75));
+		if(player.godstar.gte(1e140)) slice_gen = slice_gen.mul(player.godstar.div(1e120).root(4).div(100).sub(999).min(1e50));
 		//pow
 		
 		if(slice_gen.gte(5e8) && !player.PL2tms.gte(15)) slice_gen = N(5e8).mul(slice_gen.div(5e8).pow(0.75));
@@ -2255,9 +2458,16 @@ function produce()
 		if(player.boost2.gte(34)) odg = odg.mul(N(1).add(player.slice.log(2).div(30)));
 		if(player.origin_data.gte(5e12) && !(player.openchal && player.chalpara.includes(2))) odg = odg.mul(player.origin_data.div(1.25e12).log(4).max(1));
 		if(player.entropy[3].gte(1)) odg = odg.mul(N(1000).pow(player.entropy[3].pow(1.25)));
-		if(player.godstar.gte(1e13)) odg = odg.mul(player.godstar.div(1e9).sub(9999).root(1.25).max(1));
+		if(player.godstar.gte(1e13)) odg = odg.mul(player.godstar.div(1e9).sub(9999).root(1.25).max(1).min('e1800'));
 		if(player.permupg.includes(7)) odg = odg.mul(player.PL1info.pow(25).add(1.05).log(1.05).pow(1.15));
 		player.origin_data = player.origin_data.add(odg.div(10));
+	}
+	
+	if(player.permupg.includes(24))
+	{
+		let adg = N(0);
+		adg = adg.add(getalgorbase().pow(player.algor).sub(1));
+		player.algordata = player.algordata.add(adg);
 	}
 	
 	getentropy();
@@ -2294,12 +2504,17 @@ function update_ach()
 	if(!player.ach.includes(24) && player.PL2upg[2]){othershine = true; player.ach.push(24);}
 	if(!player.ach.includes(25) && player.PL2upg[3]){othershine = true; player.ach.push(25);}
 	if(!player.ach.includes(26) && getbuyjdeffect().gte(1e7)){othershine = true; player.ach.push(26);}
-	if(!player.ach.includes(27) && false){othershine = true; player.ach.push(27);}
-	if(!player.ach.includes(28) && false){othershine = true; player.ach.push(28);}
+	if(!player.ach.includes(27) && player.chalcomp.gte(1)){othershine = true; player.ach.push(27);}
+	if(!player.ach.includes(28) && player.algorrebuy[0].gte(1)){othershine = true; player.ach.push(28);}
 	if(!player.ach.includes(29) && player.PL2info.gte('e10000')){othershine = true; player.ach.push(29);}
 }
 
 var othershine = false;
+
+function hidenode()
+{
+	player.hidenode = !player.hidenode;
+}
 
 function GUI()
 {
@@ -2338,6 +2553,8 @@ function GUI()
 	document.getElementById('PL7pbt').style.display = 'none';
 	if(player.sliceupg[3]) document.getElementById('PL2bt').style.display = 'block';
 	else document.getElementById('PL2bt').style.display = 'none';
+	if(player.permupg.includes(29)) document.getElementById('PL3bt').style.display = 'block';
+	else document.getElementById('PL3bt').style.display = 'none';
 	
 	if(player.PL1upg[7]) document.getElementById('spagebt2_4').style.display = 'inline-block';
 	else document.getElementById('spagebt2_4').style.display = 'none';
@@ -2362,11 +2579,14 @@ function GUI()
 	
 	document.getElementById('PL1infoget').innerHTML = notation(PL1infoget);
 	document.getElementById('PL2infoget').innerHTML = notation(PL2infoget);
+	document.getElementById('PL3infoget').innerHTML = notation(PL3infoget);
 	
 	document.getElementById('data').innerHTML = notation(player.data);
 	document.getElementById('PL1info').innerHTML = notation(player.PL1info);
 	document.getElementById('PL2info').innerHTML = notation(player.PL2info);
+	document.getElementById('PL3info').innerHTML = notation(player.PL3info);
 	document.getElementById('PL2tms').innerHTML = notation(player.PL2tms);
+	//document.getElementById('PL3tms').innerHTML = notation(player.PL3tms);
 	
 	document.getElementById('slice').innerHTML = notation(player.slice);
 	document.getElementById('slice_effect').innerHTML = notation(getsliceeffect());
@@ -2421,6 +2641,7 @@ function GUI()
 	}
 	document.getElementById('chalcompmax').innerHTML = notation(player.chalcomp);
 	document.getElementById('chalcompnow').innerHTML = notation(getchalparacomp());
+	document.getElementById('chalcompeffect').innerHTML = getchalcompeffect();
 	
 	let jdx = getjdx();
 	let boostcost = getboostcost();
@@ -2501,7 +2722,7 @@ function GUI()
 			document.getElementById('unlockjd' + (i + 1)).style.display = 'none';
 		}
 		document.getElementById('jdnum' + (i + 1)).innerHTML = notation(player.jdnum[i]);
-		document.getElementById('jdbuy' + (i + 1)).innerHTML = notation(player.buyjd[i]);
+		document.getElementById('jdbuy' + (i + 1)).innerHTML = notation(player.buyjd[i].add(player.permupg.includes(24) ? getalgoreffect() : 0));
 		document.getElementById('jdx' + (i + 1)).innerHTML = notation(jdx[i]);
 		document.getElementById('jdcost' + (i + 1)).innerHTML = notation(jdcost[i]);
 		if(player.data.gte(jdcost[i])) document.getElementById('jdbuybt' + (i + 1)).style['background-color'] = '#666666';
@@ -2641,6 +2862,61 @@ function GUI()
 			if(player.ach.includes(i)) document.getElementById('ach' + i).style['background-color'] = 'green';
 			else document.getElementById('ach' + i).style['background-color'] = 'darkred';
 		}
+	}
+	player.chalcomp_temp = player.chalcomp;
+	if(!player.permupg.includes(24) || !player.hidenode) document.getElementById('normal_node').style.display = 'block';
+	else if(player.permupg.includes(24) && player.hidenode) document.getElementById('normal_node').style.display = 'none';
+	if(player.permupg.includes(24))
+	{
+		document.getElementById('algor').style.display = 'block';
+		document.getElementById('algornum').innerHTML = notation(player.algor);
+		document.getElementById('algordata').innerHTML = notation(player.algordata);
+		document.getElementById('algoreffect').innerHTML = notation(getalgoreffect());
+		document.getElementById('algorcost').innerHTML = notation(getalgorcost());
+		if(player.PL1info.gte(getalgorcost()))
+		{
+			document.getElementById('algorbt').style['background-color'] = '#666666';
+		}
+		else
+		{
+			document.getElementById('algorbt').style['background-color'] = 'black';
+		}
+		if(player.permupg.includes(29))
+		{
+			document.getElementById('algorrebuy1bt').style.display = 'block';
+			document.getElementById('algorrebuy2bt').style.display = 'block';
+			document.getElementById('algorrebuy1cost').innerHTML = notation(getalgorrebuycost(0));
+			document.getElementById('algorrebuy2cost').innerHTML = notation(getalgorrebuycost(1));
+			document.getElementById('algorrebuy1effect').innerHTML = notation(N(1).add(player.algorrebuy[0].mul(0.1)));
+			document.getElementById('algorrebuy2effect').innerHTML = notation(N(1).add(player.algorrebuy[1].mul(0.02)));
+			document.getElementById('algorrebuy1').innerHTML = notation(player.algorrebuy[0]);
+			document.getElementById('algorrebuy2').innerHTML = notation(player.algorrebuy[1]);
+			if(player.PL1info.gte(getalgorrebuycost(0)))
+			{
+				document.getElementById('algorrebuy1bt').style['background-color'] = '#666666';
+			}
+			else
+			{
+				document.getElementById('algorrebuy1bt').style['background-color'] = 'black';
+			}
+			if(player.PL1info.gte(getalgorrebuycost(1)))
+			{
+				document.getElementById('algorrebuy2bt').style['background-color'] = '#666666';
+			}
+			else
+			{
+				document.getElementById('algorrebuy2bt').style['background-color'] = 'black';
+			}
+		}
+		else
+		{
+			document.getElementById('algorrebuy1bt').style.display = 'none';
+			document.getElementById('algorrebuy2bt').style.display = 'none';
+		}
+	}
+	else
+	{
+		document.getElementById('algor').style.display = 'none';
 	}
 }
 
