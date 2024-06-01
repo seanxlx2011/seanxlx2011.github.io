@@ -786,6 +786,16 @@
 			</div>
 		</div>
 		<div id="page6">
+			<p align="center">
+				<button class="spagebt" onclick="chspage(1)">混沌效果</button>
+			</p>
+			<div id="spage1_6">
+				<p class="ftsz3" align="center">
+					<span>你进行了 </span><span style="color: gold;" id="PL3tms"></span><span> 次混沌重置</span><br>
+					<span>你总共有 </span><span style="color: gold;" id="PL3infottl"></span><span> 混沌信息</span><br>
+					<span class="ftsz2" style="color: lightblue;" id="PL3infoeffect"></span>
+				</p>
+			</div>
 		</div>
 		<div id="page7">
 		</div>
@@ -823,7 +833,7 @@
 					<td><div class="button-wrapper"><button class="ach" id="ach18">18<br>免费赠送 II</button><div class="hover-box">查看世界界面</div></div></td>
 					<td><div class="button-wrapper"><button class="ach" id="ach19">19<br>伸出新长的枝娅</button><div class="hover-box">达到1.000e7000世界信息</div></div></td>
 					<tr>
-					<td><div class="button-wrapper"><button class="ach" id="ach20">20<br>进度离你而去</button><div class="hover-box">宇宙重置(本行成就暂时不能达成)</div></div></td>
+					<td><div class="button-wrapper"><button class="ach" id="ach20">20<br>进度离你而去</button><div class="hover-box">宇宙重置</div></div></td>
 					<td><div class="button-wrapper"><button class="ach" id="ach21">21<br>无限 II</button><div class="hover-box">达到1.797e308宇宙信息</div></div></td>
 					<td><div class="button-wrapper"><button class="ach" id="ach22">22<br>继续叠加</button><div class="hover-box">达到1三重跃迁</div></div></td>
 					<td><div class="button-wrapper"><button class="ach" id="ach23">23<br>强干扰</button><div class="hover-box">收集熵</div></div></td>
@@ -833,6 +843,9 @@
 					<td><div class="button-wrapper"><button class="ach" id="ach27">27<br>更强的干扰</button><div class="hover-box">完成1次挑战</div></div></td>
 					<td><div class="button-wrapper"><button class="ach" id="ach28">28<br>末日</button><div class="hover-box">触发真空衰变</div></div></td>
 					<td><div class="button-wrapper"><button class="ach" id="ach29">29<br>那冬去春又来</button><div class="hover-box">达到1.000e10000宇宙信息</div></div></td>
+					<tr>
+					<td><div class="button-wrapper"><button class="ach" id="ach30">30<br>生于混沌</button><div class="hover-box">混沌重置</div></div></td>
+					<td><div class="button-wrapper"><button class="ach" id="ach31">31<br>无限 III</button><div class="hover-box">达到1.797e308混沌信息</div></div></td>
 				</table>
 			</div>
 		</div>
@@ -912,6 +925,7 @@ function init()
 		
 		//chaos
 		PL3info: N(0),
+		PL3infottl: N(0),
 		PL3unlock: false,
 		PL3tms: N(0),
 		
@@ -1128,6 +1142,7 @@ function getjdx()
 		if(player.PL2upg[2] && player.permupg.includes(11)) base[i] = base[i].pow(player.godstar.add(10).log10().add(10).log10().root(3));
 		if(player.permupg.includes(12)) base[i] = base[i].pow(player.star.add(10).log10().add(10).log10().root(6));
 		if(player.chalcomp.gte(1.5)) base[i] = base[i].pow(N(1).add(player.chalcomp.log(1.5).root(7).log(2)));
+		if(player.PL3unlock) base[i] = base[i].pow(player.PL3infottl.add(10).log10().root(2));
 		//dil
 		if(player.openentropy)
 		{
@@ -1474,6 +1489,30 @@ function PL2reset()
 	player.boost3 = N(0);
 }
 
+function PL3reset()
+{
+	PL2reset();
+	player.PL2info = N(0);
+	player.PL2tms = N(0);
+	player.PL1upg = [false, false, false, false, false, false, false, false];
+	player.sliceupg = [false, false, false, true];
+	player.PL2upg = [false, false, false, true];
+	player.star = N(0);
+	player.star_node = [N(0), N(0), N(0), N(0), N(0), N(0), N(0), N(0)];
+	player.buysn = [N(0), N(0), N(0), N(0), N(0), N(0), N(0), N(0)];
+	player.dimension = N(0);
+	player.entropy = [N(0), N(0), N(0), N(0)];
+	player.godstar = N(0);
+	player.godnode = [N(0), N(0), N(0), N(0), N(0), N(0), N(0), N(0)];
+	player.buygn = [N(0), N(0), N(0), N(0), N(0), N(0), N(0), N(0)];
+	player.unlockgn = [false, false, false, false, false, false, false, false];
+	for(let i = 0;i < 29;i++) player.permupg = player.permupg.filter(item => item !== i);
+	player.algor = N(0);
+	player.algordata = N(0);
+	player.algorrebuy = [N(0), N(0)];
+	player.hidenode = false;
+}
+
 function buyboost()
 {
 	let cost = getboostcost();
@@ -1618,9 +1657,11 @@ function buyPL2()
 	if(player.PL1info.gte('e7000'))
 	{
 		PL2reset();
+		let gettms = N(1);
+		if(player.permupg.includes(30)) gettms = gettms.mul(5);
 		player.PL2info = player.PL2info.add(PL2infoget);
 		player.PL2unlock = true;
-		player.PL2tms = player.PL2tms.add(1);
+		player.PL2tms = player.PL2tms.add(gettms);
 		
 		if(player.PL2tms.gte(2)) player.PL1upg = [true, true, true, true, true, true, true, true];
 		if(player.PL2tms.gte(4)) player.sliceupg = [true, true, true, true], player.unlock_origin = true;
@@ -1631,7 +1672,11 @@ function buyPL3()
 {
 	if(player.PL2info.gte('e10000'))
 	{
-		alert('恭喜你已达到该版本终局。');
+		PL3reset();
+		player.PL3info = player.PL3info.add(PL3infoget);
+		player.PL3infottl = player.PL3infottl.add(PL3infoget);
+		player.PL3unlock = true;
+		player.PL3tms = player.PL3tms.add(1);
 	}
 }
 
@@ -2031,18 +2076,21 @@ function getpermupgeffect(num)
 	else if(num == 27) return '你自动购买星辰节点和神子，它们不消耗任何东西。';
 	else if(num == 28) return '节点四阶软上限弱化50%。';
 	else if(num == 29) return '解锁两个新的算法可购买。解锁混沌重置。';
+	else if(num == 30) return '获得5倍宇宙重置次数。';
 	else return '无效升级';
 }
 
-var permupgnum = 30;
+var permupgnum = 31;
 var permupgcost = [N(1e75), N(1e78), N(1e19), N(1e82), N(1e85), N(3e23), N(1e88), N(4.5e25), N(5e95), N(1e40)
 , N(1e42), N(1e124), N(2e46), N(1e50), N(1e150), N(1e70), N(1e190), N(1e92), N(1e240), N(1e127)
-, N(1e255), N(4.65), N(1e270), N(7), N(1e146), N(1e162), N('1.797e308'), N('e400'), N('e3680'), N('e5300')];
+, N(1e255), N(4.65), N(1e270), N(7), N(1e146), N(1e162), N('1.797e308'), N('e400'), N('e3680'), N('e5300')
+, N(1)];
 var permupgcosttype = [0, 0, 1, 0, 0, 1, 0, 1, 0, 1
 , 1, 0, 1, 1, 0, 1, 0, 1, 0, 1
-, 0, 2, 0, 2, 1, 1, 0, 0, 0, 0];
-var permupgcosttypename = ['宇宙信息', '神星', '挑战复杂度纪录'];
-var permupgcosttypeinternal = ['PL2info', 'godstar', 'chalcomp_temp'];
+, 0, 2, 0, 2, 1, 1, 0, 0, 0, 0
+, 3];
+var permupgcosttypename = ['宇宙信息', '神星', '挑战复杂度纪录', '混沌信息'];
+var permupgcosttypeinternal = ['PL2info', 'godstar', 'chalcomp_temp', 'PL3info'];
 
 function buypermupg(num)
 {
@@ -2056,7 +2104,9 @@ function buypermupg(num)
 
 function permupgcanblock(num)
 {
-	if(num >= 15 && !player.permupg.includes(14)) return false;
+	if(num >= 15 && num < 29 && !player.permupg.includes(14)) return false;
+	if(num == 29 && (!player.permupg.includes(14) && !player.PL3unlock)) return false;
+	if(num >= 30 && !player.PL3unlock) return false;
 	return true;
 }
 
@@ -2118,7 +2168,11 @@ function dis_permupgui()
 
 function getchallayerunlock()
 {
-	let base = N(3);
+	let base = N(0);
+	if(player.permupg.includes(14))
+	{
+		base = N(3);
+	}
 	if(player.permupg.includes(19))
 	{
 		base = N(4);
@@ -2283,7 +2337,7 @@ function dis_chalui()
 	for(let i = 0;i < challayernum;i++)
 	{
 		ui = ui + '<td style="width: 50px;"><span class="ftsz2">阶层' + (i + 1) + '</td>';
-		ui = ui + '<td align="center" id="challayer + ' + i + '"><table>';
+		ui = ui + '<td align="center" id="challayer' + i + '"><table>';
 		for(let j = 0;j < challayerhaspara[i];j++)
 		{
 			ui = ui + '<td><button class="chalpara" id="chalpara' + nowparaid + '" onclick="changechalpara(' + nowparaid +')"></button></td>';
@@ -2338,6 +2392,13 @@ function buyalgorrebuy(num)
 		player.PL1info = player.PL1info.sub(getalgorrebuycost(num));
 		player.algorrebuy[num] = player.algorrebuy[num].add(1);
 	}
+}
+
+function getPL3infoeffect()
+{
+	let e = '';
+	e = e + '传输节点产能^' + notation(player.PL3infottl.add(10).log10().root(2));
+	return e;
 }
 
 function automation()
@@ -2529,7 +2590,7 @@ function GUI()
 {
 	update_ach();
 	
-	let page_has_spage = [3, 2, 4, 3, 4, 0, 0, 0, 0, 0, 1];
+	let page_has_spage = [3, 2, 4, 3, 4, 1, 0, 0, 0, 0, 1];
 	let max_page_has_spage = 4;
 	
 	for(let i = 1;i <= 11;i++)
@@ -2555,7 +2616,8 @@ function GUI()
 	else document.getElementById('PL1pbt').style.display = 'none';
 	if(player.PL2unlock) document.getElementById('PL2pbt').style.display = 'inline-block';
 	else document.getElementById('PL2pbt').style.display = 'none';
-	document.getElementById('PL3pbt').style.display = 'none';
+	if(player.PL3unlock) document.getElementById('PL3pbt').style.display = 'inline-block';
+	else document.getElementById('PL3pbt').style.display = 'none';
 	document.getElementById('PL4pbt').style.display = 'none';
 	document.getElementById('PL5pbt').style.display = 'none';
 	document.getElementById('PL6pbt').style.display = 'none';
@@ -2594,8 +2656,10 @@ function GUI()
 	document.getElementById('PL1info').innerHTML = notation(player.PL1info);
 	document.getElementById('PL2info').innerHTML = notation(player.PL2info);
 	document.getElementById('PL3info').innerHTML = notation(player.PL3info);
+	document.getElementById('PL3infottl').innerHTML = notation(player.PL3infottl);
+	document.getElementById('PL3infoeffect').innerHTML = getPL3infoeffect();
 	document.getElementById('PL2tms').innerHTML = notation(player.PL2tms);
-	//document.getElementById('PL3tms').innerHTML = notation(player.PL3tms);
+	document.getElementById('PL3tms').innerHTML = notation(player.PL3tms);
 	
 	document.getElementById('slice').innerHTML = notation(player.slice);
 	document.getElementById('slice_effect').innerHTML = notation(getsliceeffect());
