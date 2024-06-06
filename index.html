@@ -305,6 +305,26 @@
 			float: center;
 			color: white;
 		}
+		
+		.spill {
+			text-shadow: 1px 1px 3px white, -1px -1px 3px white, 0 0 24px white
+		}
+		
+		.reaction {
+			height: 30px;
+			width: 100%;
+			color: white;
+			background: linear-gradient(to right, blue 0%, blue 50%, orange 50%, orange 100%);
+			float: center;
+		}
+		
+		.reactbar {
+			height: 100%;
+			width: 19%;
+			color: white;
+			background: white;
+			float: right;
+		}
 		</style>
 	</head>
 
@@ -376,6 +396,7 @@
 						<span>你有 </span><span id="algornum"></span><span> 算法， </span><span id="algordata"></span><span> 算法数据。</span>
 						<br>
 						<span>算法数据使你获得了 +</span><span class="ftsz3" id="algoreffect"></span><span> 免费传输节点等级<br></span>
+						<span class="ftsz3 spill" id="algordataspill"></span>
 						<table align="center">
 						<td><button class="boostbt" id="algorbt" onclick="buyalgor()">购买算法<br>价格：<span id="algorcost"></span>世界信息</button></td>
 						<td><button class="boostbt" id="algorrebuy1bt" onclick="buyalgorrebuy(1)">真空衰变<span id="algorrebuy1"></span><br>使节点购买倍数^<span id="algorrebuy1effect"></span><br>价格：<span id="algorrebuy1cost"></span>世界信息</button></td>
@@ -788,6 +809,7 @@
 		<div id="page6">
 			<p align="center">
 				<button class="spagebt" onclick="chspage(1)">混沌效果</button>
+				<button class="spagebt" onclick="chspage(2)" id="spagebt2_6">反应堆</button>
 			</p>
 			<div id="spage1_6">
 				<p class="ftsz3" align="center">
@@ -795,6 +817,21 @@
 					<span>你总共有 </span><span style="color: gold;" id="PL3infottl"></span><span> 混沌信息</span><br>
 					<span class="ftsz2" style="color: lightblue;" id="PL3infoeffect"></span>
 				</p>
+			</div>
+			<div id="spage2_6" align="center">
+				<p class="ftsz2">你有<span id="chaosshard"></span>混沌碎片，<span id="chaosmass"></span>混沌质量<br></p>
+				<span class="ftsz2" style="color: lightblue;" id="chaosmasseffect"></span>
+				<button class="chalpara" onclick="addacce()">增加反应堆加速度</button>
+				<button class="chalpara" onclick="subacce()">减少反应堆加速度</button>
+				<br>
+				<p class="ftsz2">反应堆加速度：<span id="reactpara0"></span>/<span id="reactparalim0"></span></p>
+				<div class="reaction"><div class="reactbar" id="reactbar0"></div></div>
+				<p class="ftsz2">反应堆热功率：<span id="reactpara1"></span>/<span id="reactparalim1"></span></p>
+				<div class="reaction"><div class="reactbar" id="reactbar1"></div></div>
+				<p class="ftsz2" style="color: red;">反应堆温度：<span id="reactpara2"></span>/<span id="reactparalim2"></span>，超限后反应失败。</p>
+				<div class="reaction" style="background: red;"><div class="reactbar" id="reactbar2"></div></div>
+				<p class="ftsz2">反应进度：<span id="reactpara3"></span>/<span id="reactparalim3"></span>，超限后获得混沌碎片</p>
+				<div class="reaction" style="background: orange;"><div class="reactbar" id="reactbar3"></div></div>
 			</div>
 		</div>
 		<div id="page7">
@@ -808,6 +845,7 @@
 		<div id="page11">
 			<p align="center">
 				<button class="spagebt" onclick="chspage(1)">成就</button>
+				<button class="spagebt" onclick="chspage(2)">关于游戏</button>
 			</p>
 			<div id="spage1_11" align="center">
 				<table>
@@ -847,6 +885,22 @@
 					<td><div class="button-wrapper"><button class="ach" id="ach30">30<br>生于混沌</button><div class="hover-box">混沌重置</div></div></td>
 					<td><div class="button-wrapper"><button class="ach" id="ach31">31<br>无限 III</button><div class="hover-box">达到1.797e308混沌信息</div></div></td>
 				</table>
+			</div>
+			<div id="spage2_11" align="center">
+				<p class="ftsz2">
+					<span class="ftsz4">数据增量重制版 - Incremental Data Rewritten</span>
+					<br>
+					<span class="ftsz3">作者：seanxlx<br>当前版本：C1<br></span>
+					<br>
+					<span class="ftsz2">
+						版本更新记录：
+						<br>
+						C1 - 混沌更新<br>
+						增加了混沌层级的部分内容。
+						Endgame: 10~ (看你的耐心) 混沌碎片。
+						<br><br>
+					</span>
+				</p>
 			</div>
 		</div>
 		
@@ -928,6 +982,9 @@ function init()
 		PL3infottl: N(0),
 		PL3unlock: false,
 		PL3tms: N(0),
+		chaosshard: N(0),
+		chaosmass: N(0),
+		reactpara: [N(0), N(0), N(0), N(0)],
 		
 		//void
 		
@@ -965,14 +1022,16 @@ function hard_reset()
 	data_print();
 }
 
-function notation(number)
+function notation(numbe)
 {
-	var string = "";
-	if (number.sign == -1) {
-		string = string + "-";
-		number.sign = 1;
-	}
-	if(number.mag == Infinity) return "Infinity";
+	let fu = false;
+	let sign = numbe.sign;
+	let layer = numbe.layer;
+	let mag = numbe.mag;
+	let number = N(0);
+	number.sign = sign; number.layer = layer; number.mag = mag;
+	if(number.sign == -1) {fu = true; number.sign = 1;}
+	if(number.mag == Infinity) return (number.sign == -1 ? '-' : '') + "Infinity";
 	let power1 = Decimal.floor(Decimal.log10(number));
 	let base1 = number.div(Decimal.pow(10, power1));
 	let power2 = Decimal.floor(Decimal.log10(power1));
@@ -980,17 +1039,17 @@ function notation(number)
 	let power3 = Decimal.floor(Decimal.log10(power2));
 	let base3 = power2.div(Decimal.pow(10, power3));
 	if (number == 0) return "0.000";
-	if (power1 < -3) return base1.mul(10).toFixed(3) + "e" + power1;
-	if (power1 < -2) return number.toFixed(6);
-	if (power1 < -1) return number.toFixed(5);
-	if (power1 < 0) return number.toFixed(4);
-	if (power1 < 1) return number.toFixed(3);
-	if (power1 < 2) return number.toFixed(2);
-	if (power1 < 3) return number.toFixed(1);
-	if (power1 < 6) return number.toFixed(0);
-	if (power1 < 1000000) return base1.toFixed(3) + "e" + power1;
-	if (power2 < 1000000) return "e" + base2.toFixed(3) + "e" + power2;
-	if (power3 < 1000000) return "ee" + base3.toFixed(3) + "e" + power3;
+	if (power1 < -3) return (fu ? '-' : '') + base1.mul(10).toFixed(3) + "e" + power1;
+	if (power1 < -2) return (fu ? '-' : '') + number.toFixed(6);
+	if (power1 < -1) return (fu ? '-' : '') + number.toFixed(5);
+	if (power1 < 0) return (fu ? '-' : '') + number.toFixed(4);
+	if (power1 < 1) return (fu ? '-' : '') + number.toFixed(3);
+	if (power1 < 2) return (fu ? '-' : '') + number.toFixed(2);
+	if (power1 < 3) return (fu ? '-' : '') + number.toFixed(1);
+	if (power1 < 6) return (fu ? '-' : '') + number.toFixed(0);
+	if (power1 < 1000000) return (fu ? '-' : '') + base1.toFixed(3) + "e" + power1;
+	if (power2 < 1000000) return (fu ? '-' : '') + "e" + base2.toFixed(3) + "e" + power2;
+	if (power3 < 1000000) return (fu ? '-' : '') + "ee" + base3.toFixed(3) + "e" + power3;
 	return number.mag.toFixed(0) + "f" + number.layer.toFixed(0);
 }
 
@@ -1042,7 +1101,7 @@ function import_save()
 
 function getjdscs(i)
 {
-	let base = [N(1024), N(1e10), N(1e50), N('e400'), N(180000), N(1e7), N(2e8), N(1e9)];
+	let base = [N(1024), N(1e10), N(1e50), N('e400'), N(180000), N(1e7), N(2e8), N(2e10)];
 	if(player.boost.gte(55)) base[2] = base[2].pow(1.5);
 	if(player.boost.gte(315)) base[3] = base[3].pow(1.25);
 	if(player.boost2.gte(250)) base[3] = base[3].pow(2);
@@ -1051,15 +1110,15 @@ function getjdscs(i)
 	if(player.permupg.includes(15)) base[4] = base[4].mul(1.1);
 	if(player.godstar.gte(3e6)) base[4] = base[4].pow(N(1).add(player.godstar.div(3e6).add(1).log10().add(10).log10().log10().min(0.025)));
 	//delete
-	if(player.boost3.gte(3)) base[0] = N(Infinity);
-	if(player.boost3.gte(12)) base[1] = N(Infinity);
-	if(player.boost3.gte(13)) base[2] = N(Infinity);
+	if(player.boost3.gte(3)) {base[0] = N(Infinity); base[0].layer = Infinity;}
+	if(player.boost3.gte(12)) {base[1] = N(Infinity); base[1].layer = Infinity;}
+	if(player.boost3.gte(13)) {base[2] = N(Infinity); base[2].layer = Infinity;}
 	return base;
 }
 
 function getjdscx(i)
 {
-	let base = [N(1), N(4), N(99), N(999), N(1 / 9), N(1 / 6), N(1 / 3), N('e10000')];
+	let base = [N(1), N(4), N(99), N(999), N(1 / 9), N(1 / 6), N(1 / 3), N(1 / 7)];
 	if(player.boost.gte(15)) base[0] = base[0].mul(0.75);
 	if(player.boost.gte(20)) base[0] = base[0].mul(0.4);
 	if(player.boost.gte(21)) base[1] = base[1].mul(N(1).div(player.boost.add(1).root(15)));
@@ -1073,6 +1132,7 @@ function getjdscx(i)
 	if(player.permupg.includes(1)) base[4] = base[4].mul(0.8);
 	if(player.boost2.gte(470)) base[3] = base[3].mul(0.7);
 	if(player.permupg.includes(28)) base[3] = base[3].mul(0.5);
+	if(player.permupg.includes(40)) base[6] = base[6].mul(0.6);
 	for(let i = 0;i < 8;i++) base[i] = N(1).div(base[i].add(1));
 	return base;
 }
@@ -1129,6 +1189,7 @@ function getjdx()
 		if(player.origin_data.gte(1e5) && !(player.openchal && player.chalpara.includes(2))) base[i] = base[i].mul(player.origin_data.div(100).sub(1000).max(1).pow(20));
 		if(player.entropy[2].gte(1)) base[i] = base[i].mul(N(100).pow(player.entropy[2].add(3).pow(4)).min('e8192'));
 		if(player.PL2upg[2] && !player.permupg.includes(11)) base[i] = base[i].mul(N(10).pow(player.godstar.mul(60).root(1.8).min(N(2000).add(player.godstar.root(2.1))).min(N(10000).add(player.godstar.root(4))).min(N(20000).add(player.godstar.log10().mul(45)))));
+		if(player.PL3infottl.gte(6.666)) base[i] = base[i].mul(player.PL3infottl.pow(100));
 		//pow
 		if(player.boost.gte(65)) base[i] = base[i].pow(N(1).add(player.boost.root(10).div(15)));
 		if(player.boost3.gte(4))
@@ -1505,8 +1566,9 @@ function PL3reset()
 	player.godstar = N(0);
 	player.godnode = [N(0), N(0), N(0), N(0), N(0), N(0), N(0), N(0)];
 	player.buygn = [N(0), N(0), N(0), N(0), N(0), N(0), N(0), N(0)];
-	player.unlockgn = [false, false, false, false, false, false, false, false];
-	for(let i = 0;i < 29;i++) player.permupg = player.permupg.filter(item => item !== i);
+	let keep = [N(29)];
+	if(player.permupg.includes(31)) {keep.push(10);keep.push(13);keep.push(14);keep.push(18);keep.push(21);keep.push(23);keep.push(24);keep.push(27);keep.push(29);}
+	for(let i = 0;i < 30;i++) if(!keep.includes(i)) player.permupg = player.permupg.filter(item => item !== i);
 	player.algor = N(0);
 	player.algordata = N(0);
 	player.algorrebuy = [N(0), N(0)];
@@ -1619,9 +1681,9 @@ function updatePLinfoget()
 	if(player.permupg.includes(22) && player.openentropy) PL1infoget = PL1infoget.mul(player.PL1info.add(1).pow(5).min('e35000'));
 	if(player.permupg.includes(23)) PL1infoget = PL1infoget.pow(1.02);
 	//dil
-	if(player.openchal && player.chalpara.includes(3)) PL1infoget = N(10).pow(PL1infoget.add(10).log10().pow(0.4)).max(1);
-	if(player.openchal && player.chalpara.includes(5)) PL1infoget = N(10).pow(PL1infoget.log10().pow(1.3)).max(1);
-	if(player.openchal && player.chalpara.includes(6)) PL1infoget = N(10).pow(PL1infoget.log10().pow(1.7)).max(1);
+	if(player.openchal && player.chalpara.includes(3)) PL1infoget = N(10).pow(PL1infoget.add(1).log10().pow(0.4)).max(1);
+	if(player.openchal && player.chalpara.includes(5)) PL1infoget = N(10).pow(PL1infoget.add(1).log10().pow(1.3)).max(1);
+	if(player.openchal && player.chalpara.includes(6)) PL1infoget = N(10).pow(PL1infoget.add(1).log10().pow(1.7)).max(1);
 	PL1infoget = PL1infoget.floor();
 	
 	if(player.PL1info.gte('e7000'))
@@ -1677,6 +1739,17 @@ function buyPL3()
 		player.PL3infottl = player.PL3infottl.add(PL3infoget);
 		player.PL3unlock = true;
 		player.PL3tms = player.PL3tms.add(1);
+		
+		if(player.permupg.includes(32))
+		{
+			player.PL2tms = N(35);
+			player.PL1upg = [true, true, true, true, true, true, true, true];
+			player.sliceupg = [true, true, true, true], player.unlock_origin = true;
+		}
+		if(player.permupg.includes(41))
+		{
+			player.PL2upg = [true, true, true, true];
+		}
 	}
 }
 
@@ -1702,6 +1775,8 @@ function getsliceeffect()
 	if(player.boost.gte(888)) p = p.mul(1.125);
 	if(player.origin_data.gte(1e56) && !(player.openchal && player.chalpara.includes(2))) p = p.mul(player.origin_data.log10().sub(55).root(2).max(1).min(2));
 	if(player.permupg.includes(9)) p = p.mul(1.5);
+	if(player.permupg.includes(42)) p = p.mul(player.algordata.add(10).log(10).mul(3).min(1000));
+	if(player.chaosmass.gte(2e8)) p = p.mul(player.chaosmass.div(2).log10().sub(7).mul(50).sub(49));
 	//pow
 	
 	let effect = player.slice.pow(p).max(1);
@@ -1807,6 +1882,19 @@ function buydim()
 	}
 }
 
+function buymaxdim()
+{
+	if(player.PL2info.gte(1))
+	{
+		let ans = player.PL2info.mul(10).log10().log(getdimscalx()).floor().add(1);
+		if(ans.gte(player.dimension))
+		{
+			player.dimension = ans;
+			player.star = player.star.add(ans);
+		}
+	}
+}
+
 function getstareffect()
 {
 	let e = '';
@@ -1853,6 +1941,7 @@ function buysn(num)
 
 function buymaxsn()
 {
+	if(!player.star.gte(0.1)) return;
 	let base = [N(1), N(1e4), N(1e8), N(1e12), N(1e16), N(1e20), N(1e24), N(1e28)];
 	let basex = [N(100), N(10000), N(1e6), N(1e10), N(1e16), N(1e25), N(1e36), N(1e50)];
 	for(let i = 0;i < 8;i++)
@@ -1876,6 +1965,7 @@ function getsnx()
 		snx[i] = snx[i].mul(N(2).pow(player.buysn[i])).pow(player.dimension);
 		//mult
 		if(player.entropy[1].gte(1.4)) snx[i] = snx[i].mul(N(100).pow(player.entropy[1]));
+		if(player.chaosmass.gte(100000)) snx[i] = snx[i].mul(player.chaosmass.sub(99999.99).mul(100).root(2));
 		//pow
 		//sc
 		for(let j = 0;j < 4;j++)
@@ -1905,7 +1995,7 @@ function openentropy()
 
 function getentropy()
 {
-	if(player.openentropy)
+	if(player.openentropy || player.permupg.includes(33))
 	{
 		player.entropy[0] = player.entropy[0].max(player.PL1info.add(1).log10().div(100).sub(25).pow(0.5)).min(5);
 		player.entropy[1] = player.entropy[1].max(player.boost.add(1).log(N(10).mul(
@@ -1995,7 +2085,7 @@ function getgnx()
 	for(let i = 0;i < 8;i++)
 	{
 		base[i] = base[i].mul(N(3).pow(player.buygn[i]));
-		if(player.permupg.includes(4)) base[i] = base[i].mul(player.PL2info.div(1e40).log10().max(1));
+		if(player.permupg.includes(4)) base[i] = base[i].mul(player.PL2info.add(10).div(1e40).log10().max(1));
 		if(player.permupg.includes(13)) base[i] = base[i].mul(N(1.1).pow(player.boost3));
 	}
 	return base;
@@ -2028,6 +2118,7 @@ function buygn(num)
 
 function buymaxgn()
 {
+	if(!player.PL2info.gte(0.1)) return;
 	for(let i = 0;i < 8;i++)
 	{
 		if(!player.gnunlock[i]) continue;
@@ -2043,6 +2134,12 @@ function buymaxgn()
 	}
 }
 
+function getfreepermupg()
+{
+	let e = 0;
+	if(player.PL3unlock) e += player.PL3tms.min(15) * 2;
+	return e;
+}
 
 function getpermupgeffect(num)
 {
@@ -2050,7 +2147,7 @@ function getpermupgeffect(num)
 	else if(num == 1) return '节点五阶软上限弱化20%。';
 	else if(num == 2) return '宇宙信息增幅节点升级效果。当前：×' + notation(player.PL2info.add(1).log10().mul(1.5).root(1.75).max(1));
 	else if(num == 3) return '跃迁超级折算弱化25%。';
-	else if(num == 4) return '宇宙信息增幅神子产能。当前：×' + notation(player.PL2info.div(1e40).log10().max(1));
+	else if(num == 4) return '宇宙信息增幅神子产能。当前：×' + notation(player.PL2info.div(1e40).add(10).log10().max(1));
 	else if(num == 5) return '维度折算弱化30%。';
 	else if(num == 6) return '重写星辰第二效果的公式。当前：×' + notation(player.star.add(1).root(4.5).div(player.star.add(10).log10().pow(1.75)));
 	else if(num == 7) return '世界信息增幅本源数据产能。当前：×' + notation(player.PL1info.pow(25).add(1.05).log(1.05).pow(1.15));
@@ -2077,18 +2174,33 @@ function getpermupgeffect(num)
 	else if(num == 28) return '节点四阶软上限弱化50%。';
 	else if(num == 29) return '解锁两个新的算法可购买。解锁混沌重置。';
 	else if(num == 30) return '获得5倍宇宙重置次数。';
+	else if(num == 31) return '混沌重置后保留永久升级11、14、15、19、22、24、25、28。';
+	else if(num == 32) return '混沌重置后有35次宇宙重置。';
+	else if(num == 33) return '你在任何环境下都能获得熵。';
+	else if(num == 34) return '基于当前游戏进度，可以免费购买永久升级。当前：免费自动购买前' + getfreepermupg() + '个永久升级。';
+	else if(num == 35) return '大幅降低算法价格。';
+	else if(num == 36) return '你自动购买维度和算法，它们不消耗任何东西。';
+	else if(num == 37) return '数据增强算法数据获取。当前：×' + notation(player.data.add(10).log10().add(9).log10().div(2));
+	else if(num == 38) return '你自动购买算法可购买，它们不消耗任何东西。';
+	else if(num == 39) return '每秒自动获得1%重置时可获得的混沌信息。';
+	else if(num == 40) return '节点七阶软上限弱化40%。';
+	else if(num == 41) return '混沌重置后保留宇宙升级。';
+	else if(num == 42) return '算法数据增强位面切片增幅指数。当前：×' + notation(player.algordata.add(10).log(10).mul(3).min(1000));
+	else if(num == 43) return '解锁反应堆。(在混沌选项卡内)';
 	else return '无效升级';
 }
 
-var permupgnum = 31;
+var permupgnum = 44;
 var permupgcost = [N(1e75), N(1e78), N(1e19), N(1e82), N(1e85), N(3e23), N(1e88), N(4.5e25), N(5e95), N(1e40)
 , N(1e42), N(1e124), N(2e46), N(1e50), N(1e150), N(1e70), N(1e190), N(1e92), N(1e240), N(1e127)
 , N(1e255), N(4.65), N(1e270), N(7), N(1e146), N(1e162), N('1.797e308'), N('e400'), N('e3680'), N('e5300')
-, N(1)];
+, N(1), N(1), N(2), N(2), N(3), N(4), N(5), N(6), N(7), N(1e15)
+, N('e70000'), N('e120000'), N('e4.6e6'), N(9.7)];
 var permupgcosttype = [0, 0, 1, 0, 0, 1, 0, 1, 0, 1
 , 1, 0, 1, 1, 0, 1, 0, 1, 0, 1
 , 0, 2, 0, 2, 1, 1, 0, 0, 0, 0
-, 3];
+, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3
+, 0, 1, 0, 2];
 var permupgcosttypename = ['宇宙信息', '神星', '挑战复杂度纪录', '混沌信息'];
 var permupgcosttypeinternal = ['PL2info', 'godstar', 'chalcomp_temp', 'PL3info'];
 
@@ -2134,6 +2246,7 @@ function build_permupgui()
 			if(permupgcosttype[i] == 0) document.getElementById('permupg' + i).style['background-color'] = 'purple';
 			else if(permupgcosttype[i] == 1) document.getElementById('permupg' + i).style['background-color'] = 'orange';
 			else if(permupgcosttype[i] == 2) document.getElementById('permupg' + i).style['background-color'] = 'red';
+			else if(permupgcosttype[i] == 3) document.getElementById('permupg' + i).style['background-color'] = 'gold';
 		}
 		else if(player[permupgcosttypeinternal[permupgcosttype[i]]].gte(permupgcost[i]))
 		{
@@ -2359,7 +2472,8 @@ function getalgoreffect()
 
 function getalgorcost()
 {
-	return N('e1e6').mul(N('e2e4').pow(N(2).pow(player.algor).sub(1)));
+	if(player.permupg.includes(35)) return N('e14000').mul(N('e1e4').pow(N(1.94).pow(player.algor).sub(1)));
+	else return N('e1e6').mul(N('e2e4').pow(N(2).pow(player.algor).sub(1)));
 }
 
 function getalgorbase()
@@ -2378,6 +2492,15 @@ function buyalgor()
 	}
 }
 
+function buymaxalgor()
+{
+	if(!player.PL1info.gte('e14000')) return;
+	let ans = N(0);
+	if(player.permupg.includes(35)) ans = player.PL1info.div('e14000').log('e1e4').log(1.94).floor().add(1);
+	else ans = player.PL1info.div('e1e6').log('e2e4').log(2).floor().add(1);
+	if(ans.gte(player.algor)) player.algor = ans;
+}
+
 function getalgorrebuycost(num)
 {
 	if(num == 0) return N('e1.7e7').mul(N('e4e5').pow(N(2.5).pow(player.algorrebuy[0]).sub(1)));
@@ -2394,10 +2517,57 @@ function buyalgorrebuy(num)
 	}
 }
 
+function buymaxalgorrebuy()
+{
+	if(player.PL1info.gte('e1.7e7'))
+	{
+		let ans = player.PL1info.div('e1.7e7').log('e4e5').log(2.5).floor().add(1);
+		if(ans.gte(player.algorrebuy[0])) player.algorrebuy[0] = ans;;
+	}
+	if(player.PL1info.gte('e1.8e7'))
+	{
+		let ans = player.PL1info.div('e1.8e7').log('e1e6').log(6).floor().add(1);
+		if(ans.gte(player.algorrebuy[1])) player.algorrebuy[1] = ans;
+	}
+}
+
+function getalgordataspillroot(){return player.algordata.log10().div(2).sub(5.5)};
+
 function getPL3infoeffect()
 {
 	let e = '';
-	e = e + '传输节点产能^' + notation(player.PL3infottl.add(10).log10().root(2));
+	e = e + '传输节点产能^' + notation(player.PL3infottl.add(10).log10().root(2)) + '<br>';
+	if(player.PL3infottl.gte(6.666)) e = e + '传输节点产能×' + notation(player.PL3infottl.pow(1000)) + '<br>';
+	if(!player.PL3infottl.gte(6.666)) e = e + '到达 6.666 累计混沌信息解锁混沌第二效果<br>';
+	return e;
+}
+
+function getreactparalim()
+{
+	let base = [N(1), N(10), N(20), N(1000).add(player.chaosshard.pow(2).mul(200))];
+	if(player.chaosshard.gte(7)) base[3] = N(8200).mul(player.chaosshard.sub(5).pow(3));
+	return base;
+}
+
+function addacce()
+{
+	let lim = getreactparalim();
+	player.reactpara[0] = player.reactpara[0].add(lim[0].div(20)).min(lim[0]);
+}
+
+function subacce()
+{
+	let lim = getreactparalim();
+	player.reactpara[0] = player.reactpara[0].sub(lim[0].div(20)).max(0);
+}
+
+function getchaosmasseffect()
+{
+	let e = '';
+	if(player.chaosmass.gte(100000)) e = e + '星辰节点产能×' + notation(player.chaosmass.sub(99999.99).mul(100).root(2)) + '<br>';
+	if(player.chaosmass.gte(2e8)) e = e + '位面切片增幅指数×' + notation(player.chaosmass.div(2).log10().sub(7).mul(50).sub(49)) + '<br>';
+	if(!player.chaosmass.gte(100000)) e = e + '达到 100000 混沌质量解锁混沌质量第一效果<br>';
+	if(!player.chaosmass.gte(2e8)) e = e + '达到 2.000e8 混沌质量解锁混沌质量第二效果<br>';
 	return e;
 }
 
@@ -2448,6 +2618,22 @@ function automation()
 		buymaxsn();
 	}
 	
+	if(player.permupg.includes(34))
+	{
+		for(let i = 0;i < getfreepermupg();i++)
+		{
+			if(!player.permupg.includes(i)) player.permupg.push(i);
+		}
+	}
+	
+	if(player.permupg.includes(36))
+	{
+		buymaxdim();
+		buymaxalgor();
+	}
+	
+	if(player.permupg.includes(38)) buymaxalgorrebuy();
+	
 	if(player.PL2upg[0])
 	{
 		player.PL1info = player.PL1info.add(PL1infoget);
@@ -2456,6 +2642,11 @@ function automation()
 	{
 		updatePLinfoget();
 		player.PL2info = player.PL2info.add(PL2infoget.div(player.permupg.includes(18) ? 100 : 10000));
+	}
+	if(player.permupg.includes(39))
+	{
+		updatePLinfoget();
+		player.PL3info = player.PL3info.add(PL3infoget.div(1000));
 	}
 }
 
@@ -2537,7 +2728,28 @@ function produce()
 	{
 		let adg = N(0);
 		adg = adg.add(getalgorbase().pow(player.algor).sub(1));
+		if(player.permupg.includes(37)) adg = adg.mul(player.data.add(10).log10().add(9).log10().max(2).div(2));
+		if(player.algordata.gte(1e13)) adg = adg.root(getalgordataspillroot());
 		player.algordata = player.algordata.add(adg);
+	}
+	
+	if(player.permupg.includes(43))
+	{
+		let lim = getreactparalim();
+		player.reactpara[1] = player.reactpara[1].add(player.reactpara[0].sub(lim[0].div(2)).div(10)).min(lim[1]).max(0);
+		player.reactpara[2] = player.reactpara[2].add(player.reactpara[1].sub(lim[1].div(2)).div(10)).max(0);
+		player.reactpara[3] = player.reactpara[3].add(player.reactpara[2].pow(player.reactpara[2].gte(1) ? 3 : 1).div(10));
+		if(player.reactpara[2].gte(lim[2]))
+		{
+			player.reactpara = [N(0), N(0), N(0), N(0)];
+		}
+		if(player.reactpara[3].gte(lim[3]))
+		{
+			player.reactpara = [N(0), N(0), N(0), N(0)];
+			player.chaosshard = player.chaosshard.add(1);
+		}
+		
+		player.chaosmass = player.chaosmass.add(N(3).pow(player.chaosshard).sub(1));
 	}
 	
 	getentropy();
@@ -2567,7 +2779,7 @@ function update_ach()
 	if(!player.ach.includes(17) && player.PL1info.gte('e1000')){othershine = true; player.ach.push(17);}
 	if(!player.ach.includes(18) && page == 4){othershine = true; player.ach.push(18);}
 	if(!player.ach.includes(19) && player.PL1info.gte('e7000')){othershine = true; player.ach.push(19);}
-	if(!player.ach.includes(20) && player.PL2tms.gte(1)){othershine = true; player.ach.push(20);}
+	if(!player.ach.includes(20) && player.PL2unlock){othershine = true; player.ach.push(20);}
 	if(!player.ach.includes(21) && player.PL2info.gte('1.797e308')){othershine = true; player.ach.push(21);}
 	if(!player.ach.includes(22) && player.boost3.gte(1)){othershine = true; player.ach.push(22);}
 	if(!player.ach.includes(23) && player.openentropy){othershine = true; player.ach.push(23);}
@@ -2577,6 +2789,8 @@ function update_ach()
 	if(!player.ach.includes(27) && player.chalcomp.gte(1)){othershine = true; player.ach.push(27);}
 	if(!player.ach.includes(28) && player.algorrebuy[0].gte(1)){othershine = true; player.ach.push(28);}
 	if(!player.ach.includes(29) && player.PL2info.gte('e10000')){othershine = true; player.ach.push(29);}
+	if(!player.ach.includes(30) && player.PL3unlock){othershine = true; player.ach.push(30);}
+	if(!player.ach.includes(31) && player.PL3info.gte('1.797e308')){othershine = true; player.ach.push(31);}
 }
 
 var othershine = false;
@@ -2590,7 +2804,7 @@ function GUI()
 {
 	update_ach();
 	
-	let page_has_spage = [3, 2, 4, 3, 4, 1, 0, 0, 0, 0, 1];
+	let page_has_spage = [3, 2, 4, 3, 4, 2, 0, 0, 0, 0, 2];
 	let max_page_has_spage = 4;
 	
 	for(let i = 1;i <= 11;i++)
@@ -2647,6 +2861,9 @@ function GUI()
 	
 	if(player.permupg.includes(14)) document.getElementById('spagebt2_2').style.display = 'inline-block';
 	else document.getElementById('spagebt2_2').style.display = 'none';
+	
+	if(player.permupg.includes(43)) document.getElementById('spagebt2_6').style.display = 'inline-block';
+	else document.getElementById('spagebt2_6').style.display = 'none';
 	
 	document.getElementById('PL1infoget').innerHTML = notation(PL1infoget);
 	document.getElementById('PL2infoget').innerHTML = notation(PL2infoget);
@@ -2944,6 +3161,15 @@ function GUI()
 		document.getElementById('algor').style.display = 'block';
 		document.getElementById('algornum').innerHTML = notation(player.algor);
 		document.getElementById('algordata').innerHTML = notation(player.algordata);
+		if(player.algordata.gte(1e13))
+		{
+			document.getElementById('algordataspill').style.display = 'block';
+			document.getElementById('algordataspill').innerHTML = '在达到 1.000e13 算法数据后，算法数据将溢出！获取速度变为' + notation(getalgordataspillroot()) + '次方根';
+		}
+		else
+		{
+			document.getElementById('algordataspill').style.display = 'none';
+		}
 		document.getElementById('algoreffect').innerHTML = notation(getalgoreffect());
 		document.getElementById('algorcost').innerHTML = notation(getalgorcost());
 		if(player.PL1info.gte(getalgorcost()))
@@ -2990,6 +3216,20 @@ function GUI()
 	else
 	{
 		document.getElementById('algor').style.display = 'none';
+	}
+	
+	if(player.permupg.includes(43))
+	{
+		document.getElementById('chaosshard').innerHTML = notation(player.chaosshard);
+		document.getElementById('chaosmass').innerHTML = notation(player.chaosmass);
+		document.getElementById('chaosmasseffect').innerHTML = getchaosmasseffect();
+		let lim = getreactparalim();
+		for(let i = 0;i < 4;i++)
+		{
+			document.getElementById('reactpara' + i).innerHTML = notation(player.reactpara[i]);
+			document.getElementById('reactparalim' + i).innerHTML = notation(lim[i]);
+			document.getElementById('reactbar' + i).style.width = 100 - (player.reactpara[i].div(lim[i]).mul(100)) + '%';
+		}
 	}
 }
 
