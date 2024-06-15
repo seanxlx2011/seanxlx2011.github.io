@@ -6,6 +6,7 @@
         <link href="style.css" rel="stylesheet" type="text/css" />
 		
 		<style>
+		
 		.slicetext {
 		  animation: corrupted_text 0.5s cubic-bezier(0.37, 0, 0.63, 1) infinite;
 		  font-size: 24px;
@@ -141,6 +142,26 @@
 				background-color: red;
 			}
 		}
+		
+		.news {
+			border: 2px solid white;
+			color: white;
+			background: black;
+			float: center;
+			width: 90%;
+			height: 18px;
+			overflow: hidden;
+		}
+		
+		.newstext {
+			position: absolute;
+			font-size: 12px;
+			color: white;
+			top: 25%;
+			left: 100%;
+			white-space: nowrap;
+		}
+		
 		
 		.buymaxjd {
 			background-color: black;
@@ -331,6 +352,10 @@
 	<body style="background-color: #000000; font-family: MonospaceTypewriter, monospace ">
 		<script type="text/javascript" src="break_eternity.js"></script>
 		
+		<div align="center" class="news">
+			<span class="newstext" id="newstext">这是一条不滚动新闻</span>
+		</div>
+		<br>
 		<p align="center" class="ftsz3"><span>你有</span><span id="data"></span><span>数据</span></p>
 		
 		<p align="center">
@@ -846,6 +871,7 @@
 			<p align="center">
 				<button class="spagebt" onclick="chspage(1)">成就</button>
 				<button class="spagebt" onclick="chspage(2)">关于游戏</button>
+				<button class="spagebt" onclick="chspage(3)">统计</button>
 			</p>
 			<div id="spage1_11" align="center">
 				<table>
@@ -890,16 +916,25 @@
 				<p class="ftsz2">
 					<span class="ftsz4">数据增量重制版 - Incremental Data Rewritten</span>
 					<br>
-					<span class="ftsz3">作者：seanxlx<br>当前版本：C1<br></span>
+					<span class="ftsz3">作者：seanxlx<br>当前版本：C-News<br></span>
 					<br>
 					<span class="ftsz2">
 						版本更新记录：
 						<br>
+						C-News - 新闻更新<br>
+						增加了滚动新闻。
+						<br><br>
 						C1 - 混沌更新<br>
-						增加了混沌层级的部分内容。
+						增加了混沌层级的部分内容。<br>
 						Endgame: 10~ (看你的耐心) 混沌碎片。
 						<br><br>
 					</span>
+				</p>
+			</div>
+			<div id="spage3_11" align="center">
+				<p class="ftsz3">
+					你有<span id="data2"></span>数据<br>
+					<span class="ftsz2"id="datashow"></span>
 				</p>
 			</div>
 		</div>
@@ -1777,6 +1812,8 @@ function getsliceeffect()
 	if(player.permupg.includes(9)) p = p.mul(1.5);
 	if(player.permupg.includes(42)) p = p.mul(player.algordata.add(10).log(10).mul(3).min(1000));
 	if(player.chaosmass.gte(2e8)) p = p.mul(player.chaosmass.div(2).log10().sub(7).mul(50).sub(49));
+	if(player.permupg.includes(44)) p = p.mul(player.slice.add(10).log10().mul(2).sub(1).root(6));
+	if(player.star.gte('e730')) p = p.mul(player.star.div('e730').add(10).log10().root(4));
 	//pow
 	
 	let effect = player.slice.pow(p).max(1);
@@ -1862,6 +1899,7 @@ function getdimscalx()
 {
 	let base = N(1);
 	if(player.permupg.includes(5)) base = base.mul(0.7);
+	if(player.permupg.includes(45)) base = base.mul(N(1).div(player.chaosmass.add(100).log(100).root(5)));
 	base = base.add(1);
 	return base;
 }
@@ -1902,8 +1940,10 @@ function getstareffect()
 	else e = e + '节点升级效果×' + notation(player.star.add(2).log(2)) + '<br>';
 	if(player.star.gte(1e50)) e = e + '位面切片获取速度×' + notation(player.permupg.includes(6) ? player.star.add(1).root(4.5) : player.star.add(10).log10().pow(1.75)) + '<br>';
 	if(player.star.gte(1e70)) e = e + '位面切片增幅指数×' + notation(player.star.add(10).div(1e70).max(1).root(7).min(3.5)) + '<br>';
+	if(player.star.gte('e370')) e = e + '位面切片增幅指数×' + notation(player.star.div('e730').add(10).log10().root(4)) + '<br>';
 	if(!player.star.gte(1e50)) e = e + '到达 1.000e50 星辰解锁星辰第二效果' + '<br>';
 	else if(!player.star.gte(1e70)) e = e + '到达 1.000e70 星辰解锁星辰第三效果' + '<br>';
+	else if(!player.star.gte('e730')) e = e + '到达 1.000e730 星辰解锁星辰第四效果' + '<br>';
 	return e;
 }
 
@@ -1997,7 +2037,7 @@ function getentropy()
 {
 	if(player.openentropy || player.permupg.includes(33))
 	{
-		player.entropy[0] = player.entropy[0].max(player.PL1info.add(1).log10().div(100).sub(25).pow(0.5)).min(5);
+		player.entropy[0] = player.entropy[0].max(player.PL1info.add(1).log10().div(100).sub(25).pow(0.5)).min(N(5).add(player.entropy[2].gte(4) ? player.entropy[2].sub(4).mul(2) : 0));
 		player.entropy[1] = player.entropy[1].max(player.boost.add(1).log(N(10).mul(
 			player.entropy[2].gte(1.014) ? N(1).sub(player.entropy[2].mul(0.1)) : 1)).div(2)).min(5);
 		player.entropy[2] = player.entropy[2].max(player.slice.add(1).log10().sub(3).div(140)).min(5);
@@ -2028,8 +2068,10 @@ function getentropyeffect(i)
 	{
 		if(player.entropy[2].gte(1)) e = e + '传输节点产能×' + notation(N(100).pow(player.entropy[2].add(3).pow(4)).min('e8192')) + '<br>';
 		if(player.entropy[2].gte(1.014)) e = e + '熵_II获取公式中的对数×' + notation(N(1).sub(player.entropy[2].mul(0.18))) + '<br>';
+		if(player.entropy[2].gte(4)) e = e + '熵_I获取上限+' + notation(player.entropy[2].sub(4).mul(2)) + '<br>';
 		if(!player.entropy[2].gte(1)) e = e + '到达 1.00 熵_III解锁熵_III第一效果<br>';
 		else if(!player.entropy[2].gte(1.014)) e = e + '到达 1.014 熵_III解锁熵_III第二效果<br>';
+		else if(!player.entropy[2].gte(4)) e = e + '到达 4.00 熵_III解锁熵_III第三效果<br>';
 		return e;
 	}
 	if(i == 3)
@@ -2187,22 +2229,26 @@ function getpermupgeffect(num)
 	else if(num == 41) return '混沌重置后保留宇宙升级。';
 	else if(num == 42) return '算法数据增强位面切片增幅指数。当前：×' + notation(player.algordata.add(10).log(10).mul(3).min(1000));
 	else if(num == 43) return '解锁反应堆。(在混沌选项卡内)';
+	else if(num == 44) return '位面切片增强位面切片增幅指数。当前：×' + notation(player.slice.add(10).log10().mul(2).sub(1).root(6));
+	else if(num == 45) return '混沌质量弱化维度折算。当前：×' + notation(N(1).div(player.chaosmass.add(100).log(100).root(5)));
+	else if(num == 46) return '数据延迟算法数据溢出。当前：×' + notation(player.data.add(10).log10().add(9).log10().root(5));
+	else if(num == 47) return 'COMING SOON。';
 	else return '无效升级';
 }
 
-var permupgnum = 44;
+var permupgnum = 48;
 var permupgcost = [N(1e75), N(1e78), N(1e19), N(1e82), N(1e85), N(3e23), N(1e88), N(4.5e25), N(5e95), N(1e40)
 , N(1e42), N(1e124), N(2e46), N(1e50), N(1e150), N(1e70), N(1e190), N(1e92), N(1e240), N(1e127)
 , N(1e255), N(4.65), N(1e270), N(7), N(1e146), N(1e162), N('1.797e308'), N('e400'), N('e3680'), N('e5300')
 , N(1), N(1), N(2), N(2), N(3), N(4), N(5), N(6), N(7), N(1e15)
-, N('e70000'), N('e120000'), N('e4.6e6'), N(9.7)];
+, N('e70000'), N('e120000'), N('e4.6e6'), N(9.7), N(4e9), N('e9.4e6'), N(400), N('e1.18e7')];
 var permupgcosttype = [0, 0, 1, 0, 0, 1, 0, 1, 0, 1
 , 1, 0, 1, 1, 0, 1, 0, 1, 0, 1
 , 0, 2, 0, 2, 1, 1, 0, 0, 0, 0
 , 3, 3, 3, 3, 3, 3, 3, 3, 3, 3
-, 0, 1, 0, 2];
-var permupgcosttypename = ['宇宙信息', '神星', '挑战复杂度纪录', '混沌信息'];
-var permupgcosttypeinternal = ['PL2info', 'godstar', 'chalcomp_temp', 'PL3info'];
+, 0, 1, 0, 2, 4, 0, 3, 1];
+var permupgcosttypename = ['宇宙信息', '神星', '挑战复杂度纪录', '混沌信息', '混沌质量'];
+var permupgcosttypeinternal = ['PL2info', 'godstar', 'chalcomp_temp', 'PL3info', 'chaosmass'];
 
 function buypermupg(num)
 {
@@ -2247,6 +2293,7 @@ function build_permupgui()
 			else if(permupgcosttype[i] == 1) document.getElementById('permupg' + i).style['background-color'] = 'orange';
 			else if(permupgcosttype[i] == 2) document.getElementById('permupg' + i).style['background-color'] = 'red';
 			else if(permupgcosttype[i] == 3) document.getElementById('permupg' + i).style['background-color'] = 'gold';
+			else if(permupgcosttype[i] == 4) document.getElementById('permupg' + i).style['background-color'] = '#ffcc00';
 		}
 		else if(player[permupgcosttypeinternal[permupgcosttype[i]]].gte(permupgcost[i]))
 		{
@@ -2531,7 +2578,18 @@ function buymaxalgorrebuy()
 	}
 }
 
-function getalgordataspillroot(){return player.algordata.log10().div(2).sub(5.5)};
+function getalgordataspillstart()
+{
+	let base = N(1e13);
+	if(player.permupg.includes(46)) base = base.mul(player.data.add(10).log10().add(9).log10().root(5));
+	return base;
+}
+
+function getalgordataspillroot()
+{
+	let start = getalgordataspillstart();
+	return player.algordata.log10().div(2).sub(start.log10().div(2).sub(1));
+};
 
 function getPL3infoeffect()
 {
@@ -2729,7 +2787,7 @@ function produce()
 		let adg = N(0);
 		adg = adg.add(getalgorbase().pow(player.algor).sub(1));
 		if(player.permupg.includes(37)) adg = adg.mul(player.data.add(10).log10().add(9).log10().max(2).div(2));
-		if(player.algordata.gte(1e13)) adg = adg.root(getalgordataspillroot());
+		if(player.algordata.gte(getalgordataspillstart())) adg = adg.root(getalgordataspillroot());
 		player.algordata = player.algordata.add(adg);
 	}
 	
@@ -2800,11 +2858,46 @@ function hidenode()
 	player.hidenode = !player.hidenode;
 }
 
+function timeshow(time)
+{
+	let s = '';
+	if(time >= 31536000) s = s + Math.floor(time / 31536000) + '年';
+	time -= Math.floor(time / 31536000) * 31536000;
+	if(time >= 86400) s = s + Math.floor(time / 86400) + '天';
+	time -= Math.floor(time / 86400) * 86400;
+	if(time >= 3600) s = s + Math.floor(time / 3600) + '小时';
+	time -= Math.floor(time / 3600) * 3600;
+	if(time >= 60) s = s + Math.floor(time / 60) + '分钟';
+	time -= Math.floor(time / 60) * 60;
+	s = s + Math.floor(time) + '秒';
+	return s;
+}
+
+function getdatashow()
+{
+	let planck = 3.3e-102;
+	if(player.data.gte('ee1000')) return '如果你每秒写1个数字，你需要写' + timeshow(player.data.log10().log10()) + '才能写出你的数据的数量级数量。';
+	else if(player.data.gte(1e300)) return '如果你每秒写1个数字，你需要写' + timeshow(player.data.log10()) + '才能写出你的数据。';
+	else if(player.data.gte(1e81 / planck)) return '如果每个数据占据1个普朗克体积，你的数据占据了' + notation(player.data.div(1e81 / planck)) + '个可观测宇宙。';
+	else if(player.data.gte(1e48 / planck)) return '如果每个数据占据1个普朗克体积，你的数据占据了' + notation(player.data.div(1e48 / planck)) + '立方光年。';
+	else if(player.data.gte(3e27 / planck)) return '如果每个数据占据1个普朗克体积，你的数据占据了' + notation(player.data.div(3e27 / planck)) + '个太阳。';
+	else if(player.data.gte(3e24 / planck)) return '如果每个数据占据1个普朗克体积，你的数据占据了' + notation(player.data.div(3e24 / planck)) + '个木星。';
+	else if(player.data.gte(4e19 / planck)) return '如果每个数据占据1个普朗克体积，你的数据占据了' + notation(player.data.div(4e19 / planck)) + '个月球。';
+	else if(player.data.gte(1e18 / planck)) return '如果每个数据占据1个普朗克体积，你的数据占据了' + notation(player.data.div(1e18 / planck)) + '个塞德娜。';
+	else if(player.data.gte(1e-30 / planck)) return '如果每个数据占据1个普朗克体积，你的数据占据了' + notation(player.data.div(1e-30 / planck)) + '个氢原子。';
+	else if(player.data.gte(2e-64 / planck)) return '如果每个数据占据1个普朗克体积，你的数据占据了' + notation(player.data.div(2e-64 / planck)) + '个顶夸克。';
+	else if(player.data.gte(5e-46 / planck)) return '如果每个数据占据1个普朗克体积，你的数据占据了' + notation(player.data.div(5e-46 / planck)) + '个质子。';
+	else if(player.data.gte(1e-54 / planck)) return '如果每个数据占据1个普朗克体积，你的数据占据了' + notation(player.data.div(1e-54 / planck)) + '个电子。';
+	else if(player.data.gte(2e-64 / planck)) return '如果每个数据占据1个普朗克体积，你的数据占据了' + notation(player.data.div(2e-64 / planck)) + '个顶夸克。';
+	else if(player.data.gte(1e-72 / planck)) return '如果每个数据占据1个普朗克体积，你的数据占据了' + notation(player.data.div(1e-72 / planck)) + '个电中微子。';
+	else return '如果每个数据占据1个普朗克体积，你的数据占据了' + notation(player.data) + '个普朗克体积。';
+}
+
 function GUI()
 {
 	update_ach();
 	
-	let page_has_spage = [3, 2, 4, 3, 4, 2, 0, 0, 0, 0, 2];
+	let page_has_spage = [3, 2, 4, 3, 4, 2, 0, 0, 0, 0, 3];
 	let max_page_has_spage = 4;
 	
 	for(let i = 1;i <= 11;i++)
@@ -2870,6 +2963,8 @@ function GUI()
 	document.getElementById('PL3infoget').innerHTML = notation(PL3infoget);
 	
 	document.getElementById('data').innerHTML = notation(player.data);
+	document.getElementById('data2').innerHTML = notation(player.data);
+	document.getElementById('datashow').innerHTML = getdatashow();
 	document.getElementById('PL1info').innerHTML = notation(player.PL1info);
 	document.getElementById('PL2info').innerHTML = notation(player.PL2info);
 	document.getElementById('PL3info').innerHTML = notation(player.PL3info);
@@ -3164,7 +3259,7 @@ function GUI()
 		if(player.algordata.gte(1e13))
 		{
 			document.getElementById('algordataspill').style.display = 'block';
-			document.getElementById('algordataspill').innerHTML = '在达到 1.000e13 算法数据后，算法数据将溢出！获取速度变为' + notation(getalgordataspillroot()) + '次方根';
+			document.getElementById('algordataspill').innerHTML = '在达到 ' + notation(getalgordataspillstart()) + ' 算法数据后，算法数据将溢出！获取速度变为' + notation(getalgordataspillroot()) + '次方根';
 		}
 		else
 		{
@@ -3233,7 +3328,6 @@ function GUI()
 	}
 }
 
-
 init();
 
 var playerTemp = player;
@@ -3258,11 +3352,58 @@ if('mag' in player.entropy) player.entropy = [N(0), N(0), N(0), N(0)];
 dis_permupgui();
 dis_chalui();
 
+//滚动新闻
+var news = {
+	0: {text() {return '这是一条不滚动新闻';}},
+	1: {text() {return notation(player.data) + '数据？弱爆了';}},
+	2: {text() {return '新闻为什么不从左往右走？';}},
+	3: {text() {return '原神，启动';}},
+	4: {text() {return '史上平衡最差的增量游戏是什么？IMR算什么，IDR才是真神';}},
+	5: {text() {return '|0````1````2````2.5``2.9``3.2``3.5``|这是一把被软上限限制的尺子';}},
+	6: {text() {return '|0````1````2````2````2````2````2````|这是一把被硬上限限制的尺子';}},
+	7: {text() {return '|0````1````1.8``2.3``2.6``2.8``3````|这是一把被渐进限限制的尺子';}},
+	8: {text() {return '你难以想象本游戏制造了多少软上限';}},
+	9: {text() {return '我被chaos大重置chaos了';}},
+	10: {text() {return '本游戏使用HTML/Javascript/CSS编写';}},
+	11: {text() {return '美国有硅谷，中国有洛谷';}},
+	12: {text() {return '我们为我们的产品质量感到自豪……';}},
+	13: {text() {return '本游戏共有七个声望层：世界、宇宙、混沌、虚空、天理、现实、超越';}},
+	14: {text() {return '本游戏每个声望层都没有反物质维度的现实层级大';}},
+	15: {text() {return '你没有' + notation(player.data) + '数据。';}},
+	16: {text() {return '新闻机构瘫痪了';}},
+	17: {text() {return '你不知道你在看的新闻都是假新闻吗？';}},
+	18: {text() {return '本游戏共有' + newsl + '个滚动新闻';}},
+	19: {text() {return '说好了5小时后更新，可是都好几天了！';}},
+	20: {text() {return '当你看这条新闻时，你就看过这条新闻了';}},
+	21: {text() {return '增量的反义词是减魖';}},
+	22: {text() {return '游戏有bug怎么办？只要我们把代码删完，就没有bug了。';}},
+	//{text() {return '';}},
+};
+let newsl = 23;
+let wid = window.innerWidth;
+let nownews = Math.floor(Math.random() * newsl);
+let newsleft = 100;
+document.getElementById('newstext').left = '100%';
+document.getElementById('newstext').innerHTML = news[nownews].text();
+function newsscroll()
+{
+	newsleft -= 0.2;
+	let nowpx = newsleft / 100 * wid;
+	if(nowpx < 0 - news[nownews].text().length * 16)
+	{
+		nownews = Math.floor(Math.random() * newsl);
+		document.getElementById('newstext').innerHTML = news[nownews].text();
+		newsleft = 100;
+	}
+	document.getElementById('newstext').style.left = newsleft + '%';
+}
+
 setInterval(produce, 100);
 setInterval(GUI, 40);
 setInterval(data_print, 400);
 setInterval(build_permupgui, 100);
 setInterval(build_chalui, 100);
+setInterval(newsscroll, 40);
 		</script>
 	</body>
 </html>
