@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.25, maximum-scale=4.0, user-scalable=yes" />
-        <title>数据增量重制版</title>
+        
         <link href="style.css" rel="stylesheet" type="text/css" />
 		
 		<style>
@@ -74,7 +74,7 @@
 		.pagebt {
 			background-color: black;
 			height: 50px;
-			width: 120px;
+			width: 100%;
 			border: 4px solid white;
 			color: white;
 			padding: 10px;
@@ -341,10 +341,53 @@
 		
 		.reactbar {
 			height: 100%;
-			width: 19%;
+			width: 100%;
 			color: white;
 			background: white;
 			float: right;
+		}
+		
+		@keyframes elements {
+			0%, 100% {
+				border-color: #ff0000;
+				background-color: #006666;
+			}
+			33% {
+				border-color: #00ff00;
+				background-color: #660066;
+			}
+			66% {
+				border-color: #0000ff;
+				background-color: #666600;
+			}
+		}
+		
+		@keyframes bhbutton {
+			0%, 100% {
+				background-color: black;
+				color: white;
+			}
+			40% {
+				background-color: black;
+				color: white;
+			}
+			50% {
+				background-color: white;
+				color: black;
+			}
+			90% {
+				background-color: white;
+				color: black;
+			}
+		}
+		
+		.exchal {
+			width: 60px;
+			height: 60px;
+			color: white;
+			border: 1px solid white;
+			background-color: grey;
+			font-size: 20px;
 		}
 		</style>
 	</head>
@@ -352,13 +395,11 @@
 	<body style="background-color: #000000; font-family: MonospaceTypewriter, monospace ">
 		<script type="text/javascript" src="break_eternity.js"></script>
 		
-		<div align="center" class="news">
-			<span class="newstext" id="newstext">这是一条不滚动新闻</span>
-		</div>
+		<title>数据增量重制版(C2)</title>
 		<br>
-		<p align="center" class="ftsz3"><span>你有</span><span id="data"></span><span>数据</span></p>
 		
-		<p align="center">
+		<div style="width: 100%; height: 100%; overflow-y: auto; overflow-x: hidden">
+		<div style="width: 15%; height: 100%; overflow-y: auto; overflow-x: hidden; position: absolute; top: 0; left: 0%;">
 			<button class="pagebt" onclick="chpage(1)">传输节点</button>
 			<button class="pagebt" onclick="chpage(2)">层级</button>
 			<button class="pagebt" onclick="chpage(3)">统计</button>
@@ -372,6 +413,14 @@
 			background-size: cover;
 			background-position: center; color: black; font-weight: bold;" id="PL7pbt">超越</button>
 			<button class="pagebt" onclick="chpage(11)" id="pagebt11">杂项</button>
+		</div>
+		<div style="width: 85%; height: 100%; overflow-y: auto; overflow-x: hidden; position: absolute; top: 0; left: 15%;">
+		<div align="center" class="news">
+			<span class="newstext" id="newstext">这是一条不滚动新闻</span>
+		</div>
+		<p align="center" class="ftsz3"><span>你有</span><span id="data"></span><span>数据</span></p>
+		<p align="center" class="ftsz2"><span>混沌以前全局速度：×</span><span id="PL3globalspeed"></span></p>
+		<p align="center">
 		</p>
 		
 		<div id="page1">
@@ -410,7 +459,6 @@
 					<button class="buymaxjd" onclick="allmaxjd()">全部最大化</button>
 					<button class="buymaxjd" onclick="export_save()">导出存档到剪贴板</button>
 					<button class="buymaxjd" onclick="import_save()">导入存档</button>
-					<button class="buymaxjd" onclick="window.open('https://0i00000000a7.github.io/IDR-savebank/', '_blank');">访问存档银行</button>
 				</p>
 				
 				<div id="algor">
@@ -424,8 +472,8 @@
 						<span class="ftsz3 spill" id="algordataspill"></span>
 						<table align="center">
 						<td><button class="boostbt" id="algorbt" onclick="buyalgor()">购买算法<br>价格：<span id="algorcost"></span>世界信息</button></td>
-						<td><button class="boostbt" id="algorrebuy1bt" onclick="buyalgorrebuy(1)">真空衰变<span id="algorrebuy1"></span><br>使节点购买倍数^<span id="algorrebuy1effect"></span><br>价格：<span id="algorrebuy1cost"></span>世界信息</button></td>
-						<td><button class="boostbt" id="algorrebuy2bt" onclick="buyalgorrebuy(2)">宇宙折叠<span id="algorrebuy2"></span><br>使算法数据指数+<span id="algorrebuy2effect"></span><br>价格：<span id="algorrebuy2cost"></span>世界信息</button></td>
+						<td><button class="boostbt" id="algorrebuy1bt" onclick="buyalgorrebuy(1)"><span id="algorrebuy1scal"></span>真空衰变<span id="algorrebuy1"></span><br>使节点购买倍数^<span id="algorrebuy1effect"></span><br>价格：<span id="algorrebuy1cost"></span>世界信息</button></td>
+						<td><button class="boostbt" id="algorrebuy2bt" onclick="buyalgorrebuy(2)"><span id="algorrebuy2scal"></span>宇宙折叠<span id="algorrebuy2"></span><br>使算法数据指数+<span id="algorrebuy2effect"></span><br>价格：<span id="algorrebuy2cost"></span>世界信息</button></td>
 						</table>
 					</p>
 				</div>
@@ -527,6 +575,7 @@
 			<p align="center">
 				<button class="spagebt" onclick="chspage(1)">重置层级</button>
 				<button class="spagebt" onclick="chspage(2)" id="spagebt2_2">挑战</button>
+				<button class="spagebt" onclick="chspage(3)" id="spagebt3_2" style="box-shadow: 0px 0px 10px white">奇异挑战</button>
 			</p>
 			<div id="spage1_2" align="center">
 				<table align="center">
@@ -559,6 +608,13 @@
 				<button class="chalpara" style="height: 50px" onclick="resetchalpara()">重置挑战参数</button>
 				<button class="chalpara" style="height: 50px" onclick="openchal()" id="openchal">开始/结束挑战</button>
 				<div id="challenge_detail"></div>
+			</div>
+			<div id="spage3_2" align="center">
+				<p class="ftsz2">奇异挑战<br>奇异挑战是系统事先预设的挑战，拥有普通挑战中没有的特殊参数。
+				<br>奇异挑战可以完成多次，目标会逐渐增长。完成更多次的奇异挑战可以获得更高的奖励。
+				<br>达成目标后点击挑战图标即可完成挑战。</p>
+				<button class="chalpara" style="height: 30px" onclick="closeexchal()" id="closeexchal">退出奇异挑战</button>
+				<div id="exchal_detail"></div>
 			</div>
 		</div>
 		<div id="page3">
@@ -835,8 +891,15 @@
 			<p align="center">
 				<button class="spagebt" onclick="chspage(1)">混沌效果</button>
 				<button class="spagebt" onclick="chspage(2)" id="spagebt2_6">反应堆</button>
+				<button class="spagebt" onclick="chspage(3)" id="spagebt3_6" style="animation: elements 2s linear infinite;">元素</button>
+				<button class="spagebt" onclick="chspage(4)" id="spagebt4_6" style="animation: bhbutton 5s linear infinite;">黑洞</button>
+				<button class="spagebt" onclick="chspage(5)" id="spagebt5_6">数据压制</button>
 			</p>
 			<div id="spage1_6">
+				<p class="ftsz3" align="center" id="autochaos">
+					<button class="boostbt" onclick="let x = prompt('到达 X 混沌信息后混沌重置，若要关闭自动混沌输入-1', '');
+					if(x == '-1'){player.autochaos = false;}else{player.autochaos = true; player.autochaosgoal = N(x);}" id="autochaosbutton">更改自动混沌设置</button>
+				</p>
 				<p class="ftsz3" align="center">
 					<span>你进行了 </span><span style="color: gold;" id="PL3tms"></span><span> 次混沌重置</span><br>
 					<span>你总共有 </span><span style="color: gold;" id="PL3infottl"></span><span> 混沌信息</span><br>
@@ -855,8 +918,35 @@
 				<div class="reaction"><div class="reactbar" id="reactbar1"></div></div>
 				<p class="ftsz2" style="color: red;">反应堆温度：<span id="reactpara2"></span>/<span id="reactparalim2"></span>，超限后反应失败。</p>
 				<div class="reaction" style="background: red;"><div class="reactbar" id="reactbar2"></div></div>
-				<p class="ftsz2">反应进度：<span id="reactpara3"></span>/<span id="reactparalim3"></span>，超限后获得混沌碎片</p>
+				<p class="ftsz2">反应进度：<span id="reactpara3"></span>/<span id="reactparalim3"></span>，超限后获得<span id="reactgoal">混沌碎片</span></p>
 				<div class="reaction" style="background: orange;"><div class="reactbar" id="reactbar3"></div></div>
+			</div>
+			<div id="spage3_6" align="center">
+				<button class="chalpara" onclick="startelements()" id="startelements"></button>
+				<br>
+				<span class="ftsz2" id="elementseffect" style="color: lightblue;"></button>
+			</div>
+			<div id="spage4_6" align="center">
+				<p class="ftsz3">当前虚空：#<span id="PL4tms"></span></p>
+				<p class="ftsz2">奇点凝聚进度：<span id="singnow"></span>/<span id="singcap"></span></p>
+				<br>
+				<p class="ftsz2">黑洞关闭时可基于数据提升黑洞，黑洞开启时持续减弱黑洞并获得加成。黑洞小于1时自动关闭。<br>
+				黑洞开启时基于黑洞大小凝聚奇点，进度满后将到达下一个虚空。</p>
+				<br>
+				<p class="ftsz2">黑洞(<span id="blackhole"></span>)</p>
+				<button class="chalpara" id="bhbutton" onclick="cbh()">开启/关闭黑洞</button><br>
+				<span class="ftsz2" style="color: lightblue;" id="bheffect"></span>
+			</div>
+			<div id="spage5_6" align="center">
+				<p class="ftsz3">当前你有 <span style="color: silver;" id="suppdata"></span> 压制数据</p>
+				<p class="ftsz3">压制数据生产了 <span style="color: silver;"id="colldata"></span> 折叠数据</p>
+				<span class="ftsz2" style="color: lightblue;" id="colleffect"></span>
+				<button class="chalpara" style="height: 160px; width: 80%; border-color: silver; box-shadow: 0px 0px 10px silver;" id="opensupp" onclick="opensupp()">
+					<span class="ftsz3" style="color: silver">开启/关闭数据压制<br></span>
+					<span class="ftsz3" id="suppget">+0 压制数据<br></span>
+					<span id="suppweaken">启动数据压制之后，黑洞失效，强制开启奇异挑战1~4，但传输节点指数^1.5。</span>
+				</button>
+				<div style="width: 80%" id="suppupg_detail"></div>
 			</div>
 		</div>
 		<div id="page7">
@@ -871,7 +961,7 @@
 			<p align="center">
 				<button class="spagebt" onclick="chspage(1)">成就</button>
 				<button class="spagebt" onclick="chspage(2)">关于游戏</button>
-				<button class="spagebt" onclick="chspage(3)">统计</button>
+				<button class="spagebt" onclick="chspage(3)">统计与推荐</button>
 			</p>
 			<div id="spage1_11" align="center">
 				<table>
@@ -916,10 +1006,14 @@
 				<p class="ftsz2">
 					<span class="ftsz4">数据增量重制版 - Incremental Data Rewritten</span>
 					<br>
-					<span class="ftsz3">作者：seanxlx<br>当前版本：C-News<br></span>
+					<span class="ftsz3">作者：seanxlx<br>当前版本：C2<br></span>
 					<br>
 					<span class="ftsz2">
 						版本更新记录：
+						<br>
+						C2 - 混沌更新第二弹<br>
+						增加了混沌层级的部分内容。<br>
+						Endgame: 至少ee36数据。
 						<br>
 						C-News - 新闻更新<br>
 						增加了滚动新闻。
@@ -936,7 +1030,27 @@
 					你有<span id="data2"></span>数据<br>
 					<span class="ftsz2"id="datashow"></span>
 				</p>
+				<table align="center">
+					<td></td>
+					<td><button class="buymaxjd" onclick="window.open('https://0i00000000a7.github.io/IDR-savebank/', '_blank');">访问存档银行</button></td>
+					<td></td>
+					<tr>
+					<td><button class="buymaxjd" onclick="window.open('https://dlsdl.github.io/wind_spirit_creation/', '_blank');">风灵作成</button></td>
+					<td><button class="buymaxjd" onclick="window.open('https://0i00000000a7.github.io/points-incremental-rewritten/', '_blank');">点数增量重制版</button></td>
+					<td><button class="buymaxjd" onclick="window.open('https://g1tyx.github.io/antimatter-dimensions/new/', '_blank');">反物质维度</button></td>
+					<tr>
+					<td><button class="buymaxjd" onclick="window.open('https://g8hh.github.io/incremental-mass-rewritten/', '_blank');">质量增量重制版</button></td>
+					<td><button class="buymaxjd" onclick="window.open('https://liuliu66686.github.io/The-Periodic-Elements-Incemental-Tree/TMTR/index.html', '_blank');">元素周期增量树</button></td>
+					<td><button class="buymaxjd" onclick="window.open('https://g8hh.github.io/c0v1d-modding-tree/', '_blank');">病毒树</button></td>
+					<tr>
+					<td><button class="buymaxjd" onclick="window.open('https://www.minecraft.net/zh-hans', '_blank');">我的世界</button></td>
+					<td><button class="buymaxjd" onclick="window.open('https://mrredshark77.github.io/shark-incremental/', '_blank');">鲨鱼增量</button></td>
+					<td><button class="buymaxjd" onclick="window.open('https://ys.mihoyo.com/?utm_source=adbdsem&from_channel=adbdsem#/', '_blank');">原神</button></td>
+				</table>
 			</div>
+		</div>
+		</div>
+		
 		</div>
 		
 		<script>
@@ -1020,8 +1134,22 @@ function init()
 		chaosshard: N(0),
 		chaosmass: N(0),
 		reactpara: [N(0), N(0), N(0), N(0)],
+		openelements: false,
+		elements: 0,
+		autochaos: false,
+		autochaosgoal: N(0),
+		blackhole: N(0),
+		openbh: false,
+		sing: N(0),
+		exchal: [],
+		openexchal: 0,
+		colldata: N(0),
+		opensupp: false,
+		suppdata: N(0),
+		suppupg: [],
 		
 		//void
+		PL4tms: N(0),
 		
 		//theorem
 		
@@ -1057,36 +1185,128 @@ function hard_reset()
 	data_print();
 }
 
-function notation(numbe)
-{
-	let fu = false;
-	let sign = numbe.sign;
-	let layer = numbe.layer;
-	let mag = numbe.mag;
-	let number = N(0);
-	number.sign = sign; number.layer = layer; number.mag = mag;
-	if(number.sign == -1) {fu = true; number.sign = 1;}
-	if(number.mag == Infinity) return (number.sign == -1 ? '-' : '') + "Infinity";
-	let power1 = Decimal.floor(Decimal.log10(number));
-	let base1 = number.div(Decimal.pow(10, power1));
-	let power2 = Decimal.floor(Decimal.log10(power1));
-	let base2 = power1.div(Decimal.pow(10, power2));
-	let power3 = Decimal.floor(Decimal.log10(power2));
-	let base3 = power2.div(Decimal.pow(10, power3));
-	if (number == 0) return "0.000";
-	if (power1 < -3) return (fu ? '-' : '') + base1.mul(10).toFixed(3) + "e" + power1;
-	if (power1 < -2) return (fu ? '-' : '') + number.toFixed(6);
-	if (power1 < -1) return (fu ? '-' : '') + number.toFixed(5);
-	if (power1 < 0) return (fu ? '-' : '') + number.toFixed(4);
-	if (power1 < 1) return (fu ? '-' : '') + number.toFixed(3);
-	if (power1 < 2) return (fu ? '-' : '') + number.toFixed(2);
-	if (power1 < 3) return (fu ? '-' : '') + number.toFixed(1);
-	if (power1 < 6) return (fu ? '-' : '') + number.toFixed(0);
-	if (power1 < 1000000) return (fu ? '-' : '') + base1.toFixed(3) + "e" + power1;
-	if (power2 < 1000000) return (fu ? '-' : '') + "e" + base2.toFixed(3) + "e" + power2;
-	if (power3 < 1000000) return (fu ? '-' : '') + "ee" + base3.toFixed(3) + "e" + power3;
-	return number.mag.toFixed(0) + "f" + number.layer.toFixed(0);
+//NOTATION ------------------------------------------------------------------------------------------------------------------------------------
+//NOTATION ------------------------------------------------------------------------------------------------------------------------------------
+var decimalOne = N(1);
+var decimalZero = N(0);
+function exponentialFormat(num, precision, mantissa = true) {
+    let e = num.log10().floor()
+    let m = num.div(Decimal.pow(10, e))
+    if (m.toStringWithDecimalPlaces(precision) == 10) {
+        m = decimalOne
+        e = e.add(1)
+    }
+    e = (e.gte(1e6) ? format(e, 3) : (e.gte(10000) ? commaFormat(e, 0) : e.toStringWithDecimalPlaces(0)))
+    if (mantissa)
+        return m.toStringWithDecimalPlaces(precision) + "e" + e
+    else return "e" + e
 }
+
+function commaFormat(num, precision) {
+    if (num === null || num === undefined) return "NaN"
+    if (num.mag < 0.001) return (0).toFixed(precision)
+    let init = num.toStringWithDecimalPlaces(precision)
+    let portions = init.split(".")
+    //portions[0] = portions[0].replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")
+    if (portions.length == 1) return portions[0]
+    return portions[0] + "." + portions[1]
+}
+
+
+function regularFormat(num, precision) {
+    if (num === null || num === undefined) return "NaN"
+    if (num.mag < 0.0001) return (0).toFixed(precision)
+    if (num.mag < 0.1 && precision !==0) precision = Math.max(precision, 4)
+    return num.toStringWithDecimalPlaces(precision)
+}
+
+function fixValue(x, y = 0) {
+    return x || new Decimal(y)
+}
+
+function sumValues(x) {
+    x = Object.values(x)
+    if (!x[0]) return decimalZero
+    return x.reduce((a, b) => Decimal.add(a, b))
+}
+
+function format(decimal, precision = 3, small) {
+    small = small || 0
+    decimal = new Decimal(decimal)
+    if (isNaN(decimal.sign) || isNaN(decimal.layer) || isNaN(decimal.mag)) {
+        player.hasNaN = true;
+        return "NaN"
+    }
+    if (decimal.sign < 0) return "-" + format(decimal.neg(), precision)
+    if (decimal.mag == Number.POSITIVE_INFINITY) return "Infinity"
+    if (decimal.gte("eeee1000")) {
+        var slog = decimal.slog()
+        if (slog.gte(1e6)) return "F" + format(slog.floor())
+        else return Decimal.pow(10, slog.sub(slog.floor())).toStringWithDecimalPlaces(3) + "F" + commaFormat(slog.floor(), 0)
+    }
+    else if (decimal.gte("1e1000000")) return exponentialFormat(decimal, 2, false)
+    else if (decimal.gte("1e10000")) return exponentialFormat(decimal, 2)
+    else if (decimal.gte(1e6)) return exponentialFormat(decimal, 3)
+    else if (decimal.gte(1e3)) return commaFormat(decimal, 0)
+    else if (decimal.gte(0.0001) || !small) return regularFormat(decimal, precision)
+    else if (decimal.eq(0)) return (0).toFixed(precision)
+
+    decimal = invertOOM(decimal)
+    let val = ""
+    if (decimal.lt("1e1000")){
+        val = exponentialFormat(decimal, precision)
+        return val.replace(/([^(?:e|F)]*)$/, '-$1')
+    }
+    else   
+        return format(decimal, precision) + "⁻¹"
+
+}
+
+function notation(decimal, precision = 3)
+{
+	return format(decimal, precision);
+}
+
+function formatWhole(decimal) {
+    decimal = new Decimal(decimal)
+    if (decimal.gte(1e9)) return format(decimal, 2)
+    if (decimal.lte(0.99) && !decimal.eq(0)) return format(decimal, 2)
+    return format(decimal, 0)
+}
+
+function formatTime(s) {
+    if (s < 60) return format(s) + "s"
+    else if (s < 3600) return formatWhole(Math.floor(s / 60)) + "m " + format(s % 60) + "s"
+    else if (s < 86400) return formatWhole(Math.floor(s / 3600)) + "h " + formatWhole(Math.floor(s / 60) % 60) + "m " + format(s % 60) + "s"
+    else if (s < 31536000) return formatWhole(Math.floor(s / 86400) % 365) + "d " + formatWhole(Math.floor(s / 3600) % 24) + "h " + formatWhole(Math.floor(s / 60) % 60) + "m " + format(s % 60) + "s"
+    else return formatWhole(Math.floor(s / 31536000)) + "y " + formatWhole(Math.floor(s / 86400) % 365) + "d " + formatWhole(Math.floor(s / 3600) % 24) + "h " + formatWhole(Math.floor(s / 60) % 60) + "m " + format(s % 60) + "s"
+}
+
+function toPlaces(x, precision, maxAccepted) {
+    x = new Decimal(x)
+    let result = x.toStringWithDecimalPlaces(precision)
+    if (new Decimal(result).gte(maxAccepted)) {
+        result = new Decimal(maxAccepted - Math.pow(0.1, precision)).toStringWithDecimalPlaces(precision)
+    }
+    return result
+}
+
+// Will also display very small numbers
+function formatSmall(x, precision=2) { 
+    return format(x, precision, true)    
+}
+
+function invertOOM(x){
+    let e = x.log10().ceil()
+    let m = x.div(Decimal.pow(10, e))
+    e = e.neg()
+    x = new Decimal(10).pow(e).times(m)
+
+    return x
+}
+
+//NOTATION ------------------------------------------------------------------------------------------------------------------------------------
+//NOTATION ------------------------------------------------------------------------------------------------------------------------------------
 
 function transformToDecimal(object)
 {
@@ -1129,6 +1349,7 @@ function import_save()
 	if (userInput != null && userInput !== "") {
 		player = JSON.parse(atob(userInput));
 		transformToDecimal(player);
+		data_print();
 		location.reload();
 	} else {
 	}
@@ -1137,6 +1358,8 @@ function import_save()
 function getjdscs(i)
 {
 	let base = [N(1024), N(1e10), N(1e50), N('e400'), N(180000), N(1e7), N(2e8), N(2e10)];
+	if(getexchalopen().includes(6)) return base;
+	
 	if(player.boost.gte(55)) base[2] = base[2].pow(1.5);
 	if(player.boost.gte(315)) base[3] = base[3].pow(1.25);
 	if(player.boost2.gte(250)) base[3] = base[3].pow(2);
@@ -1154,6 +1377,12 @@ function getjdscs(i)
 function getjdscx(i)
 {
 	let base = [N(1), N(4), N(99), N(999), N(1 / 9), N(1 / 6), N(1 / 3), N(1 / 7)];
+	if(getexchalopen().includes(6))
+	{
+		for(let i = 0;i < 8;i++) base[i] = N(1).div(base[i].add(1));
+		return base;
+	}
+	
 	if(player.boost.gte(15)) base[0] = base[0].mul(0.75);
 	if(player.boost.gte(20)) base[0] = base[0].mul(0.4);
 	if(player.boost.gte(21)) base[1] = base[1].mul(N(1).div(player.boost.add(1).root(15)));
@@ -1168,6 +1397,8 @@ function getjdscx(i)
 	if(player.boost2.gte(470)) base[3] = base[3].mul(0.7);
 	if(player.permupg.includes(28)) base[3] = base[3].mul(0.5);
 	if(player.permupg.includes(40)) base[6] = base[6].mul(0.6);
+	//delete
+	if(player.permupg.includes(51)) {base[4] = N(0);}
 	for(let i = 0;i < 8;i++) base[i] = N(1).div(base[i].add(1));
 	return base;
 }
@@ -1184,14 +1415,17 @@ function getjdprice()
 function getbuyjdeffect()
 {
 	let base = N(2);
+	if(getexchalopen().includes(7)) return N(1);
 	//mul
 	if(player.PL2unlock && !player.permupg.includes(17)) base = base.mul(player.star.add(10).log10().pow(0.5));
 	else if(player.PL2unlock && player.permupg.includes(17)) base = base.mul(player.star.add(2).log(2));
 	if(player.permupg.includes(2)) base = base.mul(player.PL2info.add(1).log10().mul(1.5).root(1.75).max(1));
 	if(player.godstar.gte(1e21)) base = base.mul(player.godstar.div(1e15).sub(999999).root(5).max(1).min(30000));
 	if(player.permupg.includes(21)) base = base.mul(player.dimension.add(2).div(2).root(1.2));
+	if(player.PL3info.gte(250000)) base = base.mul(player.PL3infottl.sub(250000).add(1).root(2));
 	//pow
-	if(player.permupg.includes(29)) base = base.pow(N(1).add(player.algorrebuy[1].mul(0.1)));
+	if(player.permupg.includes(29)) base = base.pow(N(1).add(player.algorrebuy[0].add(player.permupg.includes(57) ? player.algorrebuy[1].mul(0.5) : 0).mul(0.05)));
+	if(player.exchal[5].gte(1)) base = base.pow(exchal[5].effect());
 	//dil
 	return base;
 }
@@ -1223,7 +1457,7 @@ function getjdx()
 		if(player.PL1upg[7]) base[i] = base[i].mul(getsliceeffect());
 		if(player.origin_data.gte(1e5) && !(player.openchal && player.chalpara.includes(2))) base[i] = base[i].mul(player.origin_data.div(100).sub(1000).max(1).pow(20));
 		if(player.entropy[2].gte(1)) base[i] = base[i].mul(N(100).pow(player.entropy[2].add(3).pow(4)).min('e8192'));
-		if(player.PL2upg[2] && !player.permupg.includes(11)) base[i] = base[i].mul(N(10).pow(player.godstar.mul(60).root(1.8).min(N(2000).add(player.godstar.root(2.1))).min(N(10000).add(player.godstar.root(4))).min(N(20000).add(player.godstar.log10().mul(45)))));
+		if(player.PL2upg[2] && !player.permupg.includes(11)) base[i] = base[i].mul(N(10).pow(player.godstar.mul(60).root(1.8).min(N(2000).add(player.godstar.root(2.1))).min(N(10000).add(player.godstar.root(4))).min(N(20000).add(player.godstar.log10().mul(45)))).min('e1e12'));
 		if(player.PL3infottl.gte(6.666)) base[i] = base[i].mul(player.PL3infottl.pow(100));
 		//pow
 		if(player.boost.gte(65)) base[i] = base[i].pow(N(1).add(player.boost.root(10).div(15)));
@@ -1239,6 +1473,11 @@ function getjdx()
 		if(player.permupg.includes(12)) base[i] = base[i].pow(player.star.add(10).log10().add(10).log10().root(6));
 		if(player.chalcomp.gte(1.5)) base[i] = base[i].pow(N(1).add(player.chalcomp.log(1.5).root(7).log(2)));
 		if(player.PL3unlock) base[i] = base[i].pow(player.PL3infottl.add(10).log10().root(2));
+		if(player.boost3.gte(52)) base[i] = base[i].pow(player.boost.add(1).log10().div(3).add(1).root(2));
+		if(player.elements >= 5) base[i] = base[i].pow(1.9 - 0.1 * i);
+		if(player.exchal[1].gte(1)) base[i] = base[i].pow(exchal[1].effect());
+		if(player.colldata.gte(1e18)) base[i] = base[i].pow(player.colldata.div(1e18).root(1.5).iteratedlog(10, 0.75).add(0.75));
+		if(player.colldata.gte(1e54)) base[i] = base[i].pow(player.colldata.mul(player.star.add(1).root(1000)).div(1e54).add(9).log10());
 		//dil
 		if(player.openentropy)
 		{
@@ -1247,6 +1486,8 @@ function getjdx()
 		if(player.openchal && player.chalpara.includes(0)) base[i] = N(10).pow(base[i].log10().pow(0.4)).max(1);
 		if(player.openchal && player.chalpara.includes(4)) base[i] = N(10).pow(base[i].log10().pow(1.7)).max(1);
 		if(player.openchal && player.chalpara.includes(5)) base[i] = N(10).pow(base[i].log10().pow(1.3)).max(1);
+		if(getexchalopen().includes(3)) base[i] = N(10).pow(base[i].log10().pow(0.5)).max(1);
+		if(player.opensupp) base[i] = N(10).pow(base[i].log10().pow(1.5)).max(1);
 		for(let j = 4;j < 8;j++)
 		{
 			if(base[i].gte(N(10).pow(scs[j])))
@@ -1503,8 +1744,9 @@ function getboost2effect(b)
 	else return '';
 }
 
-var boost3effectlist = [N(1), N(2), N(3), N(4), N(8), N(9), N(12), N(13)];
-var boost3effectnum = 8;
+var boost3effectlist = [N(1), N(2), N(3), N(4), N(8), N(9), N(12), N(13)
+, N(52)];
+var boost3effectnum = 9;
 
 function getboost3effect(b)
 {
@@ -1539,6 +1781,10 @@ function getboost3effect(b)
 	else if(!b.gte(13))
 	{
 		return '在13三重跃迁，移除节点三阶软上限。';
+	}
+	else if(!b.gte(52))
+	{
+		return '在52三重跃迁，跃迁以指数增幅节点产能。当前：^' + notation(player.boost.add(1).log10().div(3).add(1).root(2));
 	}
 	else return '';
 }
@@ -1612,6 +1858,7 @@ function PL3reset()
 
 function buyboost()
 {
+	if(getexchalopen().includes(1)) return;
 	let cost = getboostcost();
 	if(player.data.gte(cost))
 	{
@@ -1622,6 +1869,7 @@ function buyboost()
 
 function buymaxboost()
 {
+	if(getexchalopen().includes(1)) return;
 	if(!player.PL1upg[4]) return;
 	let zs1x = getboostzs1x();
 	let ans = N(0);
@@ -1642,6 +1890,7 @@ function buymaxboost()
 
 function buyboost2()
 {
+	if(getexchalopen().includes(1)) return;
 	let cost = getboost2cost();
 	if(player.boost.gte(cost))
 	{
@@ -1652,6 +1901,7 @@ function buyboost2()
 
 function buymaxboost2()
 {
+	if(getexchalopen().includes(1)) return;
 	let cost_sub = N(0);
 	if(player.PL1upg[7]) cost_sub = cost_sub.add(player.sliceupg_rep[2]);
 	if(player.boost3.gte(2)) cost_sub = cost_sub.add(player.boost3.add(1).mul(2).pow(1.25));
@@ -1665,6 +1915,7 @@ function buymaxboost2()
 
 function buyboost3()
 {
+	if(getexchalopen().includes(1)) return;
 	let cost = getboost3cost();
 	if(player.boost2.gte(cost))
 	{
@@ -1675,6 +1926,7 @@ function buyboost3()
 
 function buymaxboost3()
 {
+	if(getexchalopen().includes(1)) return;
 	let ans = player.boost2.sqrt().sub(7).floor();
 	if(ans.gte(player.boost3))
 	{
@@ -1727,14 +1979,17 @@ function updatePLinfoget()
 		else PL2infoget = player.PL1info.root(3500).div(100);
 	}
 	else PL2infoget = N(0);
+	if(player.permupg.includes(53)) PL2infoget = PL2infoget.pow(2);
 	
 	PL2infoget = PL2infoget.floor();
 	
 	if(player.PL2info.gte('e10000'))
 	{
-		PL3infoget = player.PL2info.log10().root(4).div(5).sub(1);
+		if(player.elements >= 4) PL3infoget = player.PL2info.log10().root(2).div(10).sub(9);
+		else PL3infoget = player.PL2info.log10().root(4).div(5).sub(1);
 	}
 	else PL3infoget = N(0);
+	if(player.exchal[7].gte(1)) PL3infoget = PL3infoget.mul(exchal[7].effect());
 	
 	PL3infoget = PL3infoget.floor();
 }
@@ -1815,6 +2070,8 @@ function getsliceeffect()
 	if(player.permupg.includes(44)) p = p.mul(player.slice.add(10).log10().mul(2).sub(1).root(6));
 	if(player.star.gte('e730')) p = p.mul(player.star.div('e730').add(10).log10().root(4));
 	//pow
+	//delete
+	if(getexchalopen().includes(3)) p = N(0.001);
 	
 	let effect = player.slice.pow(p).max(1);
 	if(player.openchal && player.chalpara.includes(1)) effect = N(1);
@@ -1900,6 +2157,7 @@ function getdimscalx()
 	let base = N(1);
 	if(player.permupg.includes(5)) base = base.mul(0.7);
 	if(player.permupg.includes(45)) base = base.mul(N(1).div(player.chaosmass.add(100).log(100).root(5)));
+	if(player.elements >= 2) base = base.mul(N(1).div(player.algordata.add(10).log10().root(2)));
 	base = base.add(1);
 	return base;
 }
@@ -1956,6 +2214,7 @@ function getsnscs()
 function getsnscx()
 {
 	let base = [N(4), N(24), N(1e5 - 1), N(1e25)];
+	if(player.elements >= 8) base[2] = base[2].mul(0.002);
 	for(let i = 0;i < 4;i++) base[i] = N(1).div(base[i].add(1));
 	return base;
 }
@@ -2007,6 +2266,7 @@ function getsnx()
 		if(player.entropy[1].gte(1.4)) snx[i] = snx[i].mul(N(100).pow(player.entropy[1]));
 		if(player.chaosmass.gte(100000)) snx[i] = snx[i].mul(player.chaosmass.sub(99999.99).mul(100).root(2));
 		//pow
+		if(player.colldata.gte(1e54)) snx[i] = snx[i].pow(player.colldata.mul(player.star.add(1).root(1000)).div(1e54).add(9).log10());
 		//sc
 		for(let j = 0;j < 4;j++)
 		{
@@ -2097,12 +2357,12 @@ function buyPL2upg(i)
 function getgodstareffect()
 {
 	let e = '';
-	if(!player.permupg.includes(11)) e = e + '传输节点产能×' + notation(N(10).pow(player.godstar.mul(60).root(1.8).min(N(2000).add(player.godstar.root(2.1))).min(N(10000).add(player.godstar.root(4))).min(N(20000).add(player.godstar.log10().mul(45))))) + '<br>';
+	if(!player.permupg.includes(11)) e = e + '传输节点产能×' + notation(N(10).pow(player.godstar.mul(60).root(1.8).min(N(2000).add(player.godstar.root(2.1))).min(N(10000).add(player.godstar.root(4))).min(N(20000).add(player.godstar.log10().mul(45)))).min('e1e12')) + '<br>';
 	else e = e + '传输节点产能^' + notation(player.godstar.add(10).log10().add(10).log10().root(3)) + '<br>';
 	if(player.godstar.gte(3e6)) e = e + '节点五阶软上限指数延迟^' + notation(N(1).add(player.godstar.div(3e6).add(1).log10().add(10).log10().log10().min(0.025))) + '<br>';
 	if(player.godstar.gte(1e13)) e = e + '本源数据获取速度×' + notation(player.godstar.div(1e9).sub(9999).root(1.25).max(1).min('e1800')) + '<br>';
 	if(player.godstar.gte(1e21)) e = e + '传输节点升级效果×' + notation(player.godstar.div(1e15).sub(999999).root(5).max(1).min(30000)) + '<br>';
-	if(player.godstar.gte(1e140)) e = e + '位面切片获取速度×' + notation(player.godstar.div(1e120).root(4).div(100).sub(999).min(1e50)) + '<br>';
+	if(player.godstar.gte(1e140)) e = e + '位面切片获取速度×' + notation(player.godstar.div(1e120).root(4).div(100).sub(999).min(N(1e50).add(player.permupg.includes(50) ? player.godstar.log(1.0001).pow(1000) : 0))) + '<br>';
 	if(!player.godstar.gte(3e6)) e = e + '到达 3.000e6 神星解锁神星第二效果<br>';
 	else if(!player.godstar.gte(1e13)) e = e + '到达 1.000e13 神星解锁神星第三效果<br>';
 	else if(!player.godstar.gte(1e21)) e = e + '到达 1.000e21 神星解锁神星第四效果<br>';
@@ -2121,14 +2381,23 @@ function unlockgn(num)
 	}
 }
 
+function getbuygnx()
+{
+	let base = N(3);
+	if(player.exchal[4].gte(1)) base = base.mul(exchal[4].effect());
+	return base;
+}
+
 function getgnx()
 {
 	let base = [N(1), N(1), N(1), N(1), N(1), N(1), N(1), N(1)];
 	for(let i = 0;i < 8;i++)
 	{
-		base[i] = base[i].mul(N(3).pow(player.buygn[i]));
+		base[i] = base[i].mul(getbuygnx().pow(player.buygn[i]));
 		if(player.permupg.includes(4)) base[i] = base[i].mul(player.PL2info.add(10).div(1e40).log10().max(1));
 		if(player.permupg.includes(13)) base[i] = base[i].mul(N(1.1).pow(player.boost3));
+		if(player.openchal && player.chalpara.includes(8)) base[i] = N(0);
+		if(getexchalopen().includes(5)) base[i] = N(10).pow(base[i].log10().pow(0.25));
 	}
 	return base;
 }
@@ -2183,6 +2452,15 @@ function getfreepermupg()
 	return e;
 }
 
+function getdisablepermupg(i)
+{
+	if(getexchalopen().includes(4))
+	{
+		if(i == 0 || i == 1 || i == 3 || i == 7 || i == 8 || i == 11 || i == 12 || i == 15 || i == 17 || i == 23 || i == 25 || i == 28) return true;
+	}
+	return false;
+}
+
 function getpermupgeffect(num)
 {
 	if(num == 0) return '位面切片效果增幅世界信息。当前：×' + notation(getsliceeffect().pow(0.4));
@@ -2224,7 +2502,7 @@ function getpermupgeffect(num)
 	else if(num == 36) return '你自动购买维度和算法，它们不消耗任何东西。';
 	else if(num == 37) return '数据增强算法数据获取。当前：×' + notation(player.data.add(10).log10().add(9).log10().div(2));
 	else if(num == 38) return '你自动购买算法可购买，它们不消耗任何东西。';
-	else if(num == 39) return '每秒自动获得1%重置时可获得的混沌信息。';
+	else if(num == 39) return '解锁自动混沌重置。';
 	else if(num == 40) return '节点七阶软上限弱化40%。';
 	else if(num == 41) return '混沌重置后保留宇宙升级。';
 	else if(num == 42) return '算法数据增强位面切片增幅指数。当前：×' + notation(player.algordata.add(10).log(10).mul(3).min(1000));
@@ -2232,26 +2510,41 @@ function getpermupgeffect(num)
 	else if(num == 44) return '位面切片增强位面切片增幅指数。当前：×' + notation(player.slice.add(10).log10().mul(2).sub(1).root(6));
 	else if(num == 45) return '混沌质量弱化维度折算。当前：×' + notation(N(1).div(player.chaosmass.add(100).log(100).root(5)));
 	else if(num == 46) return '数据延迟算法数据溢出。当前：×' + notation(player.data.add(10).log10().add(9).log10().root(5));
-	else if(num == 47) return 'COMING SOON。';
+	else if(num == 47) return '解锁阶层5挑战参数。';
+	else if(num == 48) return '你可以用反应堆压缩元素。';
+	else if(num == 49) return '位面切片获取量（软上限后）^1.5。';
+	else if(num == 50) return '神星第五效果的上限变为软上限。';
+	else if(num == 51) return '移除节点五阶软上限。';
+	else if(num == 52) return '算法数据增幅算法底数。当前：+' + notation(player.algordata.add(1).log10().root(5).div(3));
+	else if(num == 53) return '宇宙信息获取量^2。';
+	else if(num == 54) return '算法底数+0.5。';
+	else if(num == 55) return '释放黑洞(在混沌选项卡内)。';
+	else if(num == 56) return '八重神子增幅算法底数。当前：+' + notation(player.godnode[7].add(1).log10().add(1).log10().root(4));
+	else if(num == 57) return '每2个宇宙折叠使真空衰变+1。当前：+' + notation(player.algorrebuy[1].mul(0.5)) + '；每4个真空衰变使算法+1。当前：+' + notation(player.algorrebuy[0].mul(0.25));
+	else if(num == 58) return '解锁奇异挑战1(在层级选项卡内)。';
+	else if(num == 59) return '开启黑洞不消耗黑洞，关闭黑洞时黑洞的充能变得更强。';
 	else return '无效升级';
 }
 
-var permupgnum = 48;
+var permupgnum = 60;
 var permupgcost = [N(1e75), N(1e78), N(1e19), N(1e82), N(1e85), N(3e23), N(1e88), N(4.5e25), N(5e95), N(1e40)
 , N(1e42), N(1e124), N(2e46), N(1e50), N(1e150), N(1e70), N(1e190), N(1e92), N(1e240), N(1e127)
 , N(1e255), N(4.65), N(1e270), N(7), N(1e146), N(1e162), N('1.797e308'), N('e400'), N('e3680'), N('e5300')
-, N(1), N(1), N(2), N(2), N(3), N(4), N(5), N(6), N(7), N(1e15)
-, N('e70000'), N('e120000'), N('e4.6e6'), N(9.7), N(4e9), N('e9.4e6'), N(400), N('e1.18e7')];
+, N(1), N(1), N(2), N(2), N(3), N(4), N(5), N(6), N(7), N(10000)
+, N('e70000'), N('e120000'), N('e4.6e6'), N(9.7), N(4e9), N('e9.4e6'), N(400), N('e1.18e7'), N('e2.18e7'), N('e2.7e7')
+, N('e1e8'), N('e2.5e8'), N(1e13), N('e6e8'), N('e2.1e9'), N(1e6), N('e5e9'), N('e2e10'), N('e3e11'), N(1e14)];
 var permupgcosttype = [0, 0, 1, 0, 0, 1, 0, 1, 0, 1
 , 1, 0, 1, 1, 0, 1, 0, 1, 0, 1
 , 0, 2, 0, 2, 1, 1, 0, 0, 0, 0
 , 3, 3, 3, 3, 3, 3, 3, 3, 3, 3
-, 0, 1, 0, 2, 4, 0, 3, 1];
+, 0, 1, 0, 2, 4, 0, 3, 1, 0, 1
+, 0, 0, 4, 1, 1, 3, 0, 1, 1, 3];
 var permupgcosttypename = ['宇宙信息', '神星', '挑战复杂度纪录', '混沌信息', '混沌质量'];
 var permupgcosttypeinternal = ['PL2info', 'godstar', 'chalcomp_temp', 'PL3info', 'chaosmass'];
 
 function buypermupg(num)
 {
+	if(getdisablepermupg(num)) return;
 	if(player.permupg.includes(num)) return;
 	if(player[permupgcosttypeinternal[permupgcosttype[num]]].gte(permupgcost[num]))
 	{
@@ -2276,7 +2569,9 @@ function build_permupgui()
 	if(mouseenterpermupg != -1)
 	{
 		ui = ui + '<span class="ftsz2">永久升级' + (mouseenterpermupg + 1) + '</span><br>';
+		if(getdisablepermupg(mouseenterpermupg)) ui = ui + '<span style="color: red"><strike>';
 		ui = ui + '<span style="color: lightblue">' + getpermupgeffect(mouseenterpermupg) + '</span><br>';
+		if(getdisablepermupg(mouseenterpermupg)) ui = ui + '</strike></span>';
 		ui = ui + '<span class="ftsz2">价格：' + notation(permupgcost[mouseenterpermupg]) + permupgcosttypename[permupgcosttype[mouseenterpermupg]] + '</span><br><br>';
 	}
 	else ui = ui + '<br><br><br><br>';
@@ -2302,6 +2597,19 @@ function build_permupgui()
 		else
 		{
 			document.getElementById('permupg' + i).style['background-color'] = 'black';
+		}
+		
+		
+		if(getdisablepermupg(i))
+		{
+			document.getElementById('permupg' + i).style['border-color'] = 'white';
+			document.getElementById('permupg' + i).style['background-color'] = 'black';
+			document.getElementById('permupg' + i).style['color'] = 'black';
+		}
+		else
+		{
+			document.getElementById('permupg' + i).style['border-color'] = 'white';
+			document.getElementById('permupg' + i).style['color'] = 'white';
 		}
 	}
 }
@@ -2337,12 +2645,16 @@ function getchallayerunlock()
 	{
 		base = N(4);
 	}
+	if(player.permupg.includes(47))
+	{
+		base = N(5);
+	}
 	return base;
 }
 
-var chalparanum = 7;
-var challayernum = 4;
-var challayerhaspara = [1, 2, 1, 3];
+var chalparanum = 9;
+var challayernum = 5;
+var challayerhaspara = [1, 2, 1, 3, 2];
 
 function canchangechalpara(num)
 {
@@ -2390,6 +2702,8 @@ function getchalparatext(num)
 	else if(num == 4) return '节点产能指数^1.7';
 	else if(num == 5) return '节点产能与世界信息获取量指数^1.3';
 	else if(num == 6) return '世界信息获取量指数^1.7';
+	else if(num == 7) return '算法数据的溢出起点^0.25<br>挑战开始和结束都为混沌重置<br>完成需求为1e2000宇宙信息';
+	else if(num == 8) return '禁用神子生产<br>挑战开始和结束都为混沌重置<br>完成需求为1e2000宇宙信息';
 	else return '暂时没有这个参数';
 }
 
@@ -2429,7 +2743,8 @@ function openchal()
 		player.PL2info = player.PL2info.add(PL2infoget);
 		player.PL2unlock = true;
 		player.PL2tms = player.PL2tms.add(1);
-		if(player.openchal && getchalparacomp().gte(player.chalcomp))
+		if(player.openchal && getchalparacomp().gte(player.chalcomp)
+		&& !(player.chalpara.includes(7) || player.chalpara.includes(8)))
 		{
 			player.chalcomp = getchalparacomp();
 		}
@@ -2437,13 +2752,41 @@ function openchal()
 	PL2reset();
 	if(player.PL2tms.gte(2)) player.PL1upg = [true, true, true, true, true, true, true, true];
 	if(player.PL2tms.gte(4)) player.sliceupg = [true, true, true, true], player.unlock_origin = true;
+	if(player.chalpara.includes(7) || player.chalpara.includes(8))
+	{
+		if(player.PL2info.gte('e10000'))
+		{
+			player.PL3info = player.PL3info.add(PL3infoget);
+			player.PL3infottl = player.PL3infottl.add(PL3infoget);
+			player.PL3unlock = true;
+			player.PL3tms = player.PL3tms.add(1);
+		}
+		if(player.PL2info.gte('e2000'))
+		{
+			if(player.openchal && getchalparacomp().gte(player.chalcomp))
+			{
+				player.chalcomp = getchalparacomp();
+			}
+		}
+		PL3reset();
+		if(player.permupg.includes(32))
+		{
+			player.PL2tms = N(35);
+			player.PL1upg = [true, true, true, true, true, true, true, true];
+			player.sliceupg = [true, true, true, true], player.unlock_origin = true;
+		}
+		if(player.permupg.includes(41))
+		{
+			player.PL2upg = [true, true, true, true];
+		}
+	}
 	player.openchal = !player.openchal;
 }
 
 function getchalparacomp()
 {
 	let base = N(1);
-	let qz = [N(1), N(1), N(1.5), N(-1)];
+	let qz = [N(1), N(1), N(1.5), N(-1), N(1.5)];
 	let nowid = 0;
 	if(player.permupg.includes(20)) qz[3] = qz[3].add(0.2);
 	for(let i = 0;i < getchallayerunlock();i++)
@@ -2463,7 +2806,9 @@ function getchalcompeffect()
 {
 	let e = '';
 	if(player.chalcomp.gte(1.5)) e = e + '传输节点^' + notation(N(1).add(player.chalcomp.log(1.5).root(7).log(2))) + '<br>';
+	if(player.chalcomp.gte(10)) e = e + '算法数据的溢出延迟×' + notation(player.chalcomp.mul(50).sub(499).root(2)) + '<br>';
 	if(!player.chalcomp.gte(1.5)) e = e + '到达 1.5 复杂度纪录解锁挑战第一效果<br>';
+	if(!player.chalcomp.gte(10)) e = e + '到达 10 复杂度纪录解锁挑战第二效果<br>';
 	return e;
 }
 
@@ -2480,10 +2825,12 @@ function build_chalui()
 	for(let i = 0;i < getchallayerunlock();i++)
 	{
 		document.getElementById('challayer' + i).style.display = 'block';
+		document.getElementById('challayert' + i).style.display = 'block';
 	}
 	for(let i = getchallayerunlock();i < challayernum;i++)
 	{
 		document.getElementById('challayer' + i).style.display = 'none';
+		document.getElementById('challayert' + i).style.display = 'none';
 	}
 	if(player.openchal) document.getElementById('openchal').style['background-color'] = 'red';
 	else document.getElementById('openchal').style['background-color'] = 'black';
@@ -2496,12 +2843,11 @@ function dis_chalui()
 	let nowparaid = 0;
 	for(let i = 0;i < challayernum;i++)
 	{
-		ui = ui + '<td style="width: 50px;"><span class="ftsz2">阶层' + (i + 1) + '</td>';
+		ui = ui + '<td style="width: 50px;"><span class="ftsz2" id="challayert' + i + '">阶层' + (i + 1) + '</td>';
 		ui = ui + '<td align="center" id="challayer' + i + '"><table>';
 		for(let j = 0;j < challayerhaspara[i];j++)
 		{
 			ui = ui + '<td><button class="chalpara" id="chalpara' + nowparaid + '" onclick="changechalpara(' + nowparaid +')"></button></td>';
-			console.log(nowparaid);
 			nowparaid++;
 		}
 		ui = ui + '</table></td><tr>';
@@ -2511,22 +2857,37 @@ function dis_chalui()
 
 function getalgoreffect()
 {
+	if(getexchalopen().includes(2)) return N(0);
 	let power = N(1);
 	if(player.permupg.includes(29)) power = power.add(player.algorrebuy[1].mul(0.02));
+	if(player.colldata.gte(1e9)) power = power.add(player.colldata.div(1e9).log10().root(5).div(10).min(N(0.12).add(player.colldata.log10().root(50).div(1000))));
+	if(getexchalopen().includes(5)) power = N(1);
 	let freelevel = player.algordata.pow(power);
 	return freelevel;
 }
 
+function getalgorscalx()
+{
+	let sx = N(1);
+	if(player.exchal[2].gte(1)) sx = sx.mul(exchal[2].effect());
+	if(player.elements >= 7) sx = sx.mul(0.8);
+	sx = sx.add(1);
+	return sx;
+}
+
 function getalgorcost()
 {
-	if(player.permupg.includes(35)) return N('e14000').mul(N('e1e4').pow(N(1.94).pow(player.algor).sub(1)));
-	else return N('e1e6').mul(N('e2e4').pow(N(2).pow(player.algor).sub(1)));
+	if(player.permupg.includes(35)) return N('e14000').mul(N('e1e4').pow(getalgorscalx().mul(0.97).pow(player.algor).sub(1)));
+	else return N('e1e6').mul(N('e2e4').pow(getalgorscalx().pow(player.algor).sub(1)));
 }
 
 function getalgorbase()
 {
 	let base = N(2);
 	if(player.permupg.includes(25)) base = base.add(1);
+	if(player.permupg.includes(52)) base = base.add(player.algordata.add(1).log10().root(5).div(3));
+	if(player.permupg.includes(54)) base = base.add(0.5);
+	if(player.permupg.includes(56)) base = base.add(player.godnode[7].add(1).log10().add(1).log10().root(4));
 	return base;
 }
 
@@ -2543,14 +2904,28 @@ function buymaxalgor()
 {
 	if(!player.PL1info.gte('e14000')) return;
 	let ans = N(0);
-	if(player.permupg.includes(35)) ans = player.PL1info.div('e14000').log('e1e4').log(1.94).floor().add(1);
-	else ans = player.PL1info.div('e1e6').log('e2e4').log(2).floor().add(1);
+	if(player.permupg.includes(35)) ans = player.PL1info.div('e14000').log('e1e4').log(getalgorscalx().mul(0.97)).floor().add(1);
+	else ans = player.PL1info.div('e1e6').log('e2e4').log(getalgorscalx()).floor().add(1);
 	if(ans.gte(player.algor)) player.algor = ans;
+}
+
+function getalgorrebuyscalx()
+{
+	let base = N(1.05);
+	return base;
 }
 
 function getalgorrebuycost(num)
 {
-	if(num == 0) return N('e1.7e7').mul(N('e4e5').pow(N(2.5).pow(player.algorrebuy[0]).sub(1)));
+	if(num == 0 && player.algorrebuy[0].gte(50))
+	{
+		return N('e1.7e7').mul(N('e4e5').pow(N(2.5).pow(N(50).add(player.algorrebuy[0].sub(50).pow(getalgorrebuyscalx()))).sub(1)));
+	}
+	else if(num == 1 && player.algorrebuy[1].gte(25))
+	{
+		return N('e1.8e7').mul(N('e1e6').pow(N(6).pow(N(25).add(player.algorrebuy[1].sub(25).pow(getalgorrebuyscalx()))).sub(1)));
+	}
+	else if(num == 0) return N('e1.7e7').mul(N('e4e5').pow(N(2.5).pow(player.algorrebuy[0]).sub(1)));
 	else return N('e1.8e7').mul(N('e1e6').pow(N(6).pow(player.algorrebuy[1]).sub(1)));
 }
 
@@ -2569,11 +2944,19 @@ function buymaxalgorrebuy()
 	if(player.PL1info.gte('e1.7e7'))
 	{
 		let ans = player.PL1info.div('e1.7e7').log('e4e5').log(2.5).floor().add(1);
+		if(ans.gte(50))
+		{
+			ans = N(50).add(ans.sub(50).root(getalgorrebuyscalx()).add(1).floor());
+		}
 		if(ans.gte(player.algorrebuy[0])) player.algorrebuy[0] = ans;;
 	}
 	if(player.PL1info.gte('e1.8e7'))
 	{
 		let ans = player.PL1info.div('e1.8e7').log('e1e6').log(6).floor().add(1);
+		if(ans.gte(25))
+		{
+			ans = N(25).add(ans.sub(25).root(getalgorrebuyscalx()).add(1).floor());
+		}
 		if(ans.gte(player.algorrebuy[1])) player.algorrebuy[1] = ans;
 	}
 }
@@ -2581,22 +2964,41 @@ function buymaxalgorrebuy()
 function getalgordataspillstart()
 {
 	let base = N(1e13);
+	//mul
 	if(player.permupg.includes(46)) base = base.mul(player.data.add(10).log10().add(9).log10().root(5));
+	if(player.chalcomp.gte(10)) base = base.mul(player.chalcomp.mul(50).sub(499).root(2));
+	//pow
+	if(player.openchal && player.chalpara.includes(7)) base = base.pow(0.25);
 	return base;
 }
 
-function getalgordataspillroot()
+function getalgordataspillroot(gen)
 {
 	let start = getalgordataspillstart();
-	return player.algordata.log10().div(2).sub(start.log10().div(2).sub(1));
+	if(player.exchal[1].gte(1)) return gen.add(10).log10().div(start.add(10).log10()).root(1.1);
+	return player.algordata.add(10).log10().div(2).sub(start.log10().div(2).sub(1));
 };
+
+function getalgordatagen()
+{
+	let adg = N(0);
+	adg = adg.add(getalgorbase().pow(player.algor.add(player.permupg.includes(57) ? player.algorrebuy[0].mul(0.25) : 0)).sub(1));
+	if(player.permupg.includes(37)) adg = adg.mul(player.data.add(10).log10().add(9).log10().max(2).div(2));
+	if(player.colldata.gte(10)) adg = adg.mul(player.colldata.log10().pow(2));
+	return adg;
+}
+
 
 function getPL3infoeffect()
 {
 	let e = '';
 	e = e + '传输节点产能^' + notation(player.PL3infottl.add(10).log10().root(2)) + '<br>';
 	if(player.PL3infottl.gte(6.666)) e = e + '传输节点产能×' + notation(player.PL3infottl.pow(1000)) + '<br>';
+	if(player.PL3infottl.gte(250000)) e = e + '传输节点购买倍数×' + notation(player.PL3infottl.sub(250000).add(1).root(2)) + '<br>';
+	if(player.PL3infottl.gte(1e14)) e = e + '压制数据获取速度×' + notation(player.PL3infottl.log10().mul(14).sub(195)) + '<br>';
 	if(!player.PL3infottl.gte(6.666)) e = e + '到达 6.666 累计混沌信息解锁混沌第二效果<br>';
+	if(!player.PL3infottl.gte(250000)) e = e + '到达 250000 累计混沌信息解锁混沌第三效果<br>';
+	if(!player.PL3infottl.gte(1e14)) e = e + '到达 1.000e14 累计混沌信息解锁混沌第四效果<br>';
 	return e;
 }
 
@@ -2604,6 +3006,8 @@ function getreactparalim()
 {
 	let base = [N(1), N(10), N(20), N(1000).add(player.chaosshard.pow(2).mul(200))];
 	if(player.chaosshard.gte(7)) base[3] = N(8200).mul(player.chaosshard.sub(5).pow(3));
+	if(player.chaosshard.gte(15)) base[3] = N(1e7).mul(N(1.5).pow(N(1.25).pow(player.chaosshard.sub(15))));
+	if(player.openelements) base[3] = elementsgoal[player.elements + 1];
 	return base;
 }
 
@@ -2627,6 +3031,483 @@ function getchaosmasseffect()
 	if(!player.chaosmass.gte(100000)) e = e + '达到 100000 混沌质量解锁混沌质量第一效果<br>';
 	if(!player.chaosmass.gte(2e8)) e = e + '达到 2.000e8 混沌质量解锁混沌质量第二效果<br>';
 	return e;
+}
+
+var elementsname = ['', 'H','He','Li','Be','B','C','N','O','F','Ne',
+        'Na','Mg','Al','Si','P','S','Cl','Ar','K','Ca',
+        'Sc','Ti','V','Cr','Mn','Fe','Co','Ni','Cu','Zn',
+        'Ga','Ge','As','Se','Br','Kr','Rb','Sr','Y','Zr',
+        'Nb','Mo','Tc','Ru','Rh','Pd','Ag','Cd','In','Sn',
+        'Sb','Te','I','Xe','Cs','Ba','La','Ce','Pr','Nd',
+        'Pm','Sm','Eu','Gd','Tb','Dy','Ho','Er','Tm','Yb',
+        'Lu','Hf','Ta','W','Re','Os','Ir','Pt','Au','Hg',
+        'Tl','Pb','Bi','Po','At','Rn','Fr','Ra','Ac','Th',
+        'Pa','U','Np','Pu','Am','Cm','Bk','Cf','Es','Fm',
+        'Md','No','Lr','Rf','Db','Sg','Bh','Hs','Mt','Ds',
+        'Rg','Cn','Nh','Fl','Mc','Lv','Ts','Og'];
+var elementsgoal = [N(0), N(1e6), N(2e6), N(5e6), N(6e7), N(1e8), N(1e8), N(2e11), N(1e12), N('10^^10')];
+
+function startelements()
+{
+	player.openelements = !player.openelements;
+	player.reactpara = [N(0), N(0), N(0), N(0)];
+	if(player.openelements) page = 6, subpage = 2;
+}
+
+function getelementseffect()
+{
+	let e = '<br>';
+	for(let i = 1;i <= 118;i++)
+	{
+		if(player.elements >= i)
+		{
+			e = e + '[' + elementsname[i] + ' ' + i + ']: ' + geteachelementseffect(i) + '<br>';
+		}
+	}
+	return e;
+}
+
+function geteachelementseffect(x)
+{
+	if(x == 1) return '混沌信息增强反应速度。当前：×' + notation(player.PL3info.add(1).log(2).add(1));
+	else if(x == 2) return '算法数据弱化维度折算。当前：×' + notation(N(1).div(player.algordata.add(10).log10().root(2)));
+	else if(x == 3) return '数据增强反应速度。当前：×' + notation(player.data.add(10).log(10).add(10).log(10));
+	else if(x == 4) return '混沌信息的公式变得更好。';
+	else if(x == 5) return '已知1<=X<=8，X号传输节点^(1.9-0.1×X)。';
+	else if(x == 6) return '混沌以前全局速度增幅反应速度。当前：×' + notation(getPL3globalspeed().root(1.5));
+	else if(x == 7) return '算法折算弱化20%。';
+	else if(x == 8) return '星辰节点三阶软上限弱化99.8%。';
+	return '元素过大';
+}
+
+function getsingcap()
+{
+	let scale = N(2);
+	let ans = N(2).pow(1024).pow(scale.pow(player.PL4tms));
+	return ans;
+}
+
+function getbheffect()
+{
+	let e = '';
+	if(player.openbh) e = e + '(加成已获得)<br>';
+	else e = e + '(开启黑洞以获得加成)<br>';
+	e = e + '基于黑洞和奇点，混沌以前全局速度×' + notation(player.blackhole.mul(player.sing.add(10).log10())) + '<br>';
+	return e;
+}
+
+function getPL3globalspeed()
+{
+	let s = N(1);
+	if(!player.PL3unlock) return N(1);
+	else
+	{
+		if(player.openbh) s = s.mul(player.blackhole.mul(player.sing.add(10).log10()));
+	}
+	if(player.exchal[6].gte(1)) s = s.mul(exchal[6].effect());
+	return s;
+}
+
+function cbh()
+{
+	player.openbh = !player.openbh;
+	if(player.openbh && !player.blackhole.gte(1)) player.openbh = false;
+	if(player.opensupp) player.openbh = false;
+}
+
+var exchal = [
+	null,
+	{
+		name: '区域限定',
+		layer: 'chaos',
+		description: '跃迁锁定为1，二重跃迁、三重跃迁锁定为0。<br>',
+		effectdisplay(){return '增幅一号传输节点产能。当前：^' + notation(this.effect()) + '。<br>第1次完成本挑战时，算法数据的溢出改为基于算法数据获取速度而不是总量。<br>第1次完成本挑战时，解锁奇异挑战2。';},
+		effect()
+		{
+			if(player.exchal[1].gte(1)) return player.exchal[1].add(1).mul(2).root(4);
+			else return N(1);
+		},
+		maxcancomp()
+		{
+			let max = N(100);
+			return max;
+		},
+		goal(num)
+		{
+			return N(10).pow(N(2).pow(num).mul(5e10));
+		},
+		cancomp()
+		{
+			if(player.data.gte(this.goal(player.exchal[1]))) return player.data.log10().div(5e10).log(2).add(1).floor().sub(player.exchal[1]).min(this.maxcancomp().sub(player.exchal[1])); 
+			else return N(0);
+		},
+	},
+	{
+		name: '计算失误',
+		layer: 'chaos',
+		description: '算法数据失去效果。<br>',
+		effectdisplay(){return '弱化算法折算。当前：×' + notation(this.effect()) + '。<br>第1次完成本挑战时，解锁奇异挑战3。';},
+		effect()
+		{
+			if(player.exchal[2].gte(1)) return N(1).div(player.exchal[2].root(1.6).add(1).root(3));
+			else return N(1);
+		},
+		maxcancomp()
+		{
+			let max = N(100);
+			return max;
+		},
+		goal(num)
+		{
+			return N(10).pow(N(9).pow(num).mul(5e10));
+		},
+		cancomp()
+		{
+			if(player.data.gte(this.goal(player.exchal[2]))) return player.data.log10().div(5e10).log(9).add(1).floor().sub(player.exchal[2]).min(this.maxcancomp().sub(player.exchal[2])); 
+			else return N(0);
+		}
+	},
+	{
+		name: '位面冲击',
+		layer: 'chaos',
+		description: '位面切片增幅指数锁定为0.001，且传输节点产能指数^0.5。<br>',
+		effectdisplay(){return '算法数据倍增本源数据获取。当前：×' + notation(this.effect()) + '。<br>第1次完成本挑战时，解锁奇异挑战4。';},
+		effect()
+		{
+			if(player.exchal[3].gte(1)) return player.algordata.add(1).mul(player.exchal[3].add(1).mul(40)).pow(45).pow(player.exchal[3]);
+			else return N(1);
+		},
+		maxcancomp()
+		{
+			let max = N(100);
+			return max;
+		},
+		goal(num)
+		{
+			return N(10).pow(N(4).pow(num).mul(2000));
+		},
+		cancomp()
+		{
+			if(player.data.gte(this.goal(player.exchal[3]))) return player.data.log10().div(2000).log(4).add(1).floor().sub(player.exchal[3]).min(this.maxcancomp().sub(player.exchal[3])); 
+			else return N(0);
+		}
+	},
+	{
+		name: '升级破坏',
+		layer: 'chaos',
+		description: '第30号之前的部分永久升级被禁用。<br>',
+		effectdisplay(){return '增幅神星升级倍数。当前：×' + notation(this.effect()) + '。<br>第1次完成本挑战时，解锁奇异挑战5。';},
+		effect()
+		{
+			if(player.exchal[4].gte(1)) return player.exchal[4].pow(3).add(10).pow(2).log10();
+			else return N(1);
+		},
+		maxcancomp()
+		{
+			let max = N(100);
+			return max;
+		},
+		goal(num)
+		{
+			return N(10).pow(N(10).pow(num).mul(1e15));
+		},
+		cancomp()
+		{
+			if(player.data.gte(this.goal(player.exchal[4]))) return player.data.log10().div(1e15).log(10).add(1).floor().sub(player.exchal[4]).min(this.maxcancomp().sub(player.exchal[4])); 
+			else return N(0);
+		}
+	},
+	{
+		name: '压力陡增',
+		layer: 'chaos',
+		description: '神子产能指数^0.25，算法数据指数始终为1。<br>',
+		effectdisplay(){return '增幅节点升级效果。当前：^' + notation(this.effect()) + '。<br>第1次完成本挑战时，解锁奇异挑战6。<br>第2次完成本挑战时，解锁数据压制(在混沌选项卡内)。';},
+		effect()
+		{
+			if(player.exchal[5].gte(1)) return player.exchal[5].add(1).root(10);
+			else return N(1);
+		},
+		maxcancomp()
+		{
+			let max = N(100);
+			return max;
+		},
+		goal(num)
+		{
+			return N(10).pow(N(5).pow(num).mul(5e13));
+		},
+		cancomp()
+		{
+			if(player.data.gte(this.goal(player.exchal[5]))) return player.data.log10().div(5e13).log(5).add(1).floor().sub(player.exchal[5]).min(this.maxcancomp().sub(player.exchal[5])); 
+			else return N(0);
+		}
+	},
+	{
+		name: '极端折算',
+		layer: 'chaos',
+		description: '节点所有软上限不可削弱或移除。<br>',
+		effectdisplay(){return '增幅混沌以前全局速度。当前：×' + notation(this.effect()) + '。<br>第1次完成本挑战时，解锁奇异挑战7。';},
+		effect()
+		{
+			if(player.exchal[6].gte(1)) return player.exchal[6].add(1).mul(2).pow(1.5);
+			else return N(1);
+		},
+		maxcancomp()
+		{
+			let max = N(100);
+			return max;
+		},
+		goal(num)
+		{
+			return N(10).pow(N(5).pow(num).mul(1e13));
+		},
+		cancomp()
+		{
+			if(player.data.gte(this.goal(player.exchal[6]))) return player.data.log10().div(1e13).log(5).add(1).floor().sub(player.exchal[6]).min(this.maxcancomp().sub(player.exchal[6])); 
+			else return N(0);
+		}
+	},
+	{
+		name: '水泄不通',
+		layer: 'chaos',
+		description: '节点升级效果锁定为×1。<br>',
+		effectdisplay(){return '增幅混沌信息获取量。当前：×' + notation(this.effect()) + '。<br>第1次完成本挑战时，解锁奇异挑战8。';},
+		effect()
+		{
+			if(player.exchal[7].gte(1)) return player.exchal[7].add(1).pow(2).mul(3);
+			else return N(1);
+		},
+		maxcancomp()
+		{
+			let max = N(100);
+			return max;
+		},
+		goal(num)
+		{
+			return N(10).pow(N(4).pow(num).mul(1e11));
+		},
+		cancomp()
+		{
+			if(player.data.gte(this.goal(player.exchal[7]))) return player.data.log10().div(1e11).log(4).add(1).floor().sub(player.exchal[7]).min(this.maxcancomp().sub(player.exchal[7])); 
+			else return N(0);
+		}
+	},
+	{
+		name: '混沌终章',
+		layer: 'chaos',
+		description: '同时开启奇异挑战1~7。<br>',
+		effectdisplay(){return '数据增幅折叠数据获取量。当前：×' + notation(this.effect()) + '。<br>第16次完成本挑战时，解锁<span style="color: white;">虚空</span>重置。';},
+		effect()
+		{
+			if(player.exchal[8].gte(1)) return player.data.add(1e10).log10().log10().root(1.5).pow(player.exchal[8].mul(2).root(2));
+			else return N(1);
+		},
+		maxcancomp()
+		{
+			let max = N(100);
+			return max;
+		},
+		goal(num)
+		{
+			return N(10).pow(N(2).pow(num).mul(10000));
+		},
+		cancomp()
+		{
+			if(player.data.gte(this.goal(player.exchal[8]))) return player.data.log10().div(10000).log(2).add(1).floor().sub(player.exchal[8]).min(this.maxcancomp().sub(player.exchal[8])); 
+			else return N(0);
+		}
+	},
+];
+
+function getexchalunlock(i)
+{
+	if(i == 1) return player.permupg.includes(58);
+	else if(i >= 2 && i <= 8) return player.exchal[i - 1].gte(1);
+}
+
+function getexchalopen()
+{
+	let open = [];
+	if(player.openexchal != 0) open.push(player.openexchal);
+	if(player.opensupp) open.push(1), open.push(2), open.push(3), open.push(4);
+	if(player.openexchal == 8)
+	{
+		for(let i = 1;i <= 7;i++) open.push(i);
+	}
+	let uni = [...new Set(open)];
+	return uni;
+}
+
+var nowclickexchal = 0;
+
+function build_exchalui()
+{
+	let exchaltext = '';
+	if(nowclickexchal != 0)
+	{
+		exchaltext += '奇异挑战' + nowclickexchal + ': ' + exchal[nowclickexchal].name + '(' + player.exchal[nowclickexchal] + '/' + exchal[nowclickexchal].maxcancomp() + ')';
+		if(getexchalopen().includes(nowclickexchal)) exchaltext += '[+' + exchal[nowclickexchal].cancomp() + ']';
+		exchaltext += '<br><span style="color: green">内容：' + exchal[nowclickexchal].description + '</span><br>';
+		exchaltext += '<span style="color: gold">目标：' + notation(exchal[nowclickexchal].goal(player.exchal[nowclickexchal])) + '数据</span><br>';
+		exchaltext += '<span style="color: ' + (player.exchal[nowclickexchal] >= 1 ? 'green' : 'grey') + '">奖励：<br>' + exchal[nowclickexchal].effectdisplay() + '</span><br>';
+	}
+	document.getElementById('exchaltext').innerHTML = exchaltext;
+	for(let i = 1;i < exchal.length;i++) document.getElementById('exchal' + i).style['box-shadow'] = '';
+	let o = getexchalopen();
+	for(let i = 0;i < o.length;i++)  document.getElementById('exchal' + o[i]).style['box-shadow'] = '0px 0px 10px white';
+	for(let i = 1;i < exchal.length;i++)
+	{
+		document.getElementById('exchalcompinfo' + i).innerHTML = player.exchal[i] + '/' + exchal[i].maxcancomp();
+		if(getexchalunlock(i)) document.getElementById('exchalcompinfo' + i).style.display = 'block';
+		else document.getElementById('exchalcompinfo' + i).style.display = 'none';
+	}
+	for(let i = 1;i < exchal.length;i++)
+	{
+		if(getexchalunlock(i)) document.getElementById('exchal' + i).style.display = 'block';
+		else document.getElementById('exchal' + i).style.display = 'none';
+	}
+	if(player.openexchal != 0) document.getElementById('closeexchal').style['opacity'] = '1';
+	else document.getElementById('closeexchal').style['opacity'] = '0.3';
+}
+
+function dis_exchalui()
+{
+	let ui = '<table align="center">';
+	for(let i = 1;i < exchal.length;i++)
+	{
+		let bgc, bdc;
+		if(exchal[i].layer == 'chaos') bgc = '#770', bdc = '#990';
+		ui += '<td><button id="exchal' + i + '"class="exchal" onclick="if(nowclickexchal != ' + i + ') {nowclickexchal = ' + i + ';} else {openexchal(' + i + ')}"style="background-color: ' + bgc + '; border-color: ' + bdc + '">Ex' + i + '</button>';
+		ui += '<p align="center"><span class="ftsz2" id="exchalcompinfo' + i + '"></span></p></td>';
+		if(i >= 2 && exchal[i].layer != exchal[i - 1].layer)
+		{
+			ui += '<tr>';
+		}
+	}
+	ui += '</table><br><span style="font-size: 20px; color: white;" id="exchaltext"></span>';
+	document.getElementById('exchal_detail').innerHTML = ui;
+}
+
+function openexchal(i)
+{
+	if(player.openexchal != 0)
+	{
+		closeexchal();
+	}
+	switch(exchal[i].layer)
+	{
+		case 'chaos':
+			if(player.PL2info.gte('e10000'))
+			{
+				player.PL3info = player.PL3info.add(PL3infoget);
+				player.PL3infottl = player.PL3infottl.add(PL3infoget);
+				player.PL3unlock = true;
+				player.PL3tms = player.PL3tms.add(1);
+			}
+			PL3reset();
+			if(player.permupg.includes(32))
+			{
+				player.PL2tms = N(35);
+				player.PL1upg = [true, true, true, true, true, true, true, true];
+				player.sliceupg = [true, true, true, true], player.unlock_origin = true;
+			}
+			if(player.permupg.includes(41))
+			{
+				player.PL2upg = [true, true, true, true];
+			}
+			break;
+	}
+	player.openexchal = i;
+}
+
+function closeexchal()
+{
+	if(player.openexchal != 0)
+	{
+		player.exchal[player.openexchal] = player.exchal[player.openexchal].add(exchal[player.openexchal].cancomp());
+		switch(exchal[player.openexchal].layer)
+		{
+			case 'chaos':
+				if(player.PL2info.gte('e10000'))
+				{
+					player.PL3info = player.PL3info.add(PL3infoget);
+					player.PL3infottl = player.PL3infottl.add(PL3infoget);
+					player.PL3unlock = true;
+					player.PL3tms = player.PL3tms.add(1);
+				}
+				PL3reset();
+				if(player.permupg.includes(32))
+				{
+					player.PL2tms = N(35);
+					player.PL1upg = [true, true, true, true, true, true, true, true];
+					player.sliceupg = [true, true, true, true], player.unlock_origin = true;
+				}
+				if(player.permupg.includes(41))
+				{
+					player.PL2upg = [true, true, true, true];
+				}
+				break;
+		}
+		player.openexchal = 0;
+	}
+}
+
+function getcolleffect()
+{
+	let e = '';
+	if(player.colldata.gte(10)) e += '算法数据获取速度×' + notation(player.colldata.log10().pow(2)) + '<br>';
+	if(player.colldata.gte(1e6)) e += '(非连续)压制数据获取速度×' + notation(N(2).pow(player.colldata.div(2e5).log(5).floor()))
+	+ '，在' + notation(N(2e5).mul(N(5).pow(player.colldata.div(2e5).log(5).floor().add(1)))) + '使效果×2。<br>';
+	if(player.colldata.gte(1e9)) e += '算法数据加成指数+' + notation(player.colldata.div(1e9).log10().root(5).div(10).min(N(0.12).add(player.colldata.log10().root(50).div(1000)))) + '<br>';
+	if(player.colldata.gte(1e18)) e += '传输节点产能^' + notation(player.colldata.div(1e18).root(1.5).iteratedlog(10, 0.75).add(0.75)) + '<br>';
+	if(player.colldata.gte(1e54)) e += '基于折叠数据和星辰，传输节点和星辰节点产能^' + notation(player.colldata.mul(player.star.add(1).root(1000)).div(1e54).add(9).log10()) + '<br>';
+	
+	if(player.suppdata.gte(1e20)) e += '<span style="color: red">压制数据超过 1.000e20 后触发软上限。</span><br>';
+	if(!player.colldata.gte(10)) e += '到达 10.00 折叠数据解锁折叠第一效果<br>';
+	else if(!player.colldata.gte(1e6)) e += '到达 1.000e6 折叠数据解锁折叠第二效果<br>';
+	else if(!player.colldata.gte(1e9)) e += '到达 1.000e9 折叠数据解锁折叠第三效果<br>';
+	else if(!player.colldata.gte(1e18)) e += '到达 1.000e18 折叠数据解锁折叠第四效果<br>';
+	else if(!player.colldata.gte(1e54)) e += '到达 1.000e54 折叠数据解锁折叠第五效果<br>';
+	
+	if(!player.colldata.gte(1e20)) e += '<span style="color: red">到达 1.000e20 压制数据后触发软上限</span><br>';
+	return e;
+}
+
+function getcollget()
+{
+	let get = N(0);
+	get = player.data.add(10).log10().root(2);
+	if(player.colldata.gte(1e6)) get = get.mul(N(2).pow(player.colldata.div(2e5).log(5).floor()));
+	if(player.PL3info.gte(1e14)) get = get.mul(player.PL3infottl.log10().mul(14).sub(195));
+	if(get.gte(1e20)) get = N(1e20).mul(get.div(1e20).pow(0.8));
+	return get.sub(player.suppdata).max(0);
+}
+
+function opensupp()
+{
+	if(player.opensupp && getcollget().gte(0))
+	{
+		player.suppdata = player.suppdata.add(getcollget());
+	}
+	if(player.PL2info.gte('e10000'))
+	{
+		player.PL3info = player.PL3info.add(PL3infoget);
+		player.PL3infottl = player.PL3infottl.add(PL3infoget);
+		player.PL3unlock = true;
+		player.PL3tms = player.PL3tms.add(1);
+	}
+	PL3reset();
+	if(player.permupg.includes(32))
+	{
+		player.PL2tms = N(35);
+		player.PL1upg = [true, true, true, true, true, true, true, true];
+		player.sliceupg = [true, true, true, true], player.unlock_origin = true;
+	}
+	if(player.permupg.includes(41))
+	{
+		player.PL2upg = [true, true, true, true];
+	}
+	player.opensupp = !player.opensupp;
 }
 
 function automation()
@@ -2680,7 +3561,7 @@ function automation()
 	{
 		for(let i = 0;i < getfreepermupg();i++)
 		{
-			if(!player.permupg.includes(i)) player.permupg.push(i);
+			if(!player.permupg.includes(i) && !getdisablepermupg(i)) player.permupg.push(i);
 		}
 	}
 	
@@ -2701,55 +3582,70 @@ function automation()
 		updatePLinfoget();
 		player.PL2info = player.PL2info.add(PL2infoget.div(player.permupg.includes(18) ? 100 : 10000));
 	}
-	if(player.permupg.includes(39))
-	{
-		updatePLinfoget();
-		player.PL3info = player.PL3info.add(PL3infoget.div(1000));
-	}
+	
+	if(player.permupg.includes(39) && player.autochaos && PL3infoget.gte(player.autochaosgoal)) buyPL3();
 }
+
+var last_update = Date.now();
 
 function produce()
 {
+	if(getexchalopen().includes(1)) player.boost = N(1), player.boost2 = N(0), player.boost3 = N(0);
+	for(let i = 0;i < player.permupg.length;i++)
+	{
+		if(getdisablepermupg(player.permupg[i])) player.permupg[i] = undefined;
+	}
+	if(player.opensupp)
+	{
+		player.openbh = false;
+	}
+	
+	let tickmult = (Date.now() - last_update) / 100;
+	last_update = Date.now();
+	
 	updatePLinfoget();
 	
 	let jdprice = getjdprice();
 	let jdx = getjdx();
 	let jdunlock = [N(1), N(2), N(3), N(4), N(5), N(6), N(7), N(8)];
+	
+	let PL3globalspeed = getPL3globalspeed();
+	
 	for(let i = 7;i >= 1;i--)
 	{
 		if(player.boost.gte(jdunlock[i]))
 		{
-			player.jdnum[i - 1] = player.jdnum[i - 1].add(player.jdnum[i].mul(jdx[i]).div(10));
+			player.jdnum[i - 1] = player.jdnum[i - 1].add(player.jdnum[i].mul(jdx[i]).div(10).mul(PL3globalspeed).mul(tickmult));
 		}
 	}
 	if(player.boost.gte(jdunlock[0]))
 	{
-		player.data = player.data.add(player.jdnum[0].mul(jdx[0]).div(10));
+		player.data = player.data.add(player.jdnum[0].mul(jdx[0]).div(10).mul(PL3globalspeed).mul(tickmult));
 	}
 	if(player.PL2unlock)
 	{
 		let snx = getsnx();
 		for(let i = 7;i >= 1;i--)
 		{
-			player.star_node[i - 1] = player.star_node[i - 1].add(player.star_node[i].mul(snx[i]).div(10));
+			player.star_node[i - 1] = player.star_node[i - 1].add(player.star_node[i].mul(snx[i]).div(10).mul(PL3globalspeed).mul(tickmult));
 		}
-		player.star = player.star.add(player.star_node[0].mul(snx[0]).div(10));
+		player.star = player.star.add(player.star_node[0].mul(snx[0]).div(10).mul(PL3globalspeed).mul(tickmult));
 	}
 	if(player.PL2upg[2])
 	{
 		let gnx = getgnx();
 		for(let i = 7;i >= 1;i--)
 		{
-			player.godnode[i - 1] = player.godnode[i - 1].add(player.godnode[i].mul(gnx[i]).div(10));
+			player.godnode[i - 1] = player.godnode[i - 1].add(player.godnode[i].mul(gnx[i]).div(10).mul(PL3globalspeed).mul(tickmult));
 		}
-		player.godstar = player.godstar.add(player.godnode[0].mul(gnx[0]).div(10));
+		player.godstar = player.godstar.add(player.godnode[0].mul(gnx[0]).div(10).mul(PL3globalspeed).mul(tickmult));
 	}
 	
 	if(player.PL1upg[7])
 	{
 		let slice_gen = N(0.05);
 		if(!player.slice.gte(1e7)) slice_gen = slice_gen.mul(player.slice.div(600).root(1.25).max(1));
-		else slice_gen = slice_gen.mul(player.slice.div(1e7).pow(0.8).mul(1e7).div(600).root(1.25).max(1));
+		else slice_gen = slice_gen.mul(player.slice.min('ee6').div(1e7).pow(0.8).mul(1e7).div(600).root(1.25).max(1));
 		
 		//mul
 		if(player.boost.gte(67)) slice_gen = slice_gen.mul(player.PL1info.add(10).log(2).root(1.5));
@@ -2757,12 +3653,15 @@ function produce()
 		slice_gen = slice_gen.mul(N(1.5).pow(player.sliceupg_rep[0]));
 		if(player.origin_data.gte(100) && !(player.openchal && player.chalpara.includes(2))) slice_gen = slice_gen.mul(player.origin_data.sub(100).max(1).pow(1.15).div(100).max(1));
 		if(player.star.gte(1e50)) slice_gen = slice_gen.mul(player.permupg.includes(6) ? player.star.add(1).root(4.5) : player.star.add(10).log10().pow(1.75));
-		if(player.godstar.gte(1e140)) slice_gen = slice_gen.mul(player.godstar.div(1e120).root(4).div(100).sub(999).min(1e50));
+		if(player.godstar.gte(1e140)) slice_gen = slice_gen.mul(player.godstar.div(1e120).root(4).div(100).sub(999).min(N(1e50).add(player.permupg.includes(50) ? player.godstar.log(1.0001).pow(1000) : 0)));
 		//pow
 		
 		if(slice_gen.gte(5e8) && !player.PL2tms.gte(15)) slice_gen = N(5e8).mul(slice_gen.div(5e8).pow(0.75));
 		if(slice_gen.gte(1e130)) slice_gen = N(1e130).mul(N(10).pow(slice_gen.div(1e130).log10().pow(N(1).div(N(2).mul(player.entropy[3].gte(1.062) ? N(1).sub(player.entropy[3].mul(0.16)).max(0.2) : 1)))));
-		player.slice = player.slice.add(slice_gen);
+		//beforesoftcap
+		if(player.permupg.includes(49)) slice_gen = slice_gen.pow(1.5);
+		
+		player.slice = player.slice.add(slice_gen.mul(PL3globalspeed).mul(tickmult));
 	}
 	
 	if(player.unlock_origin)
@@ -2779,16 +3678,15 @@ function produce()
 		if(player.entropy[3].gte(1)) odg = odg.mul(N(1000).pow(player.entropy[3].pow(1.25)));
 		if(player.godstar.gte(1e13)) odg = odg.mul(player.godstar.div(1e9).sub(9999).root(1.25).max(1).min('e1800'));
 		if(player.permupg.includes(7)) odg = odg.mul(player.PL1info.pow(25).add(1.05).log(1.05).pow(1.15));
-		player.origin_data = player.origin_data.add(odg.div(10));
+		if(player.exchal[3].gte(1)) odg = odg.mul(exchal[3].effect());
+		player.origin_data = player.origin_data.add(odg.div(10).mul(PL3globalspeed).mul(tickmult));
 	}
 	
 	if(player.permupg.includes(24))
 	{
-		let adg = N(0);
-		adg = adg.add(getalgorbase().pow(player.algor).sub(1));
-		if(player.permupg.includes(37)) adg = adg.mul(player.data.add(10).log10().add(9).log10().max(2).div(2));
-		if(player.algordata.gte(getalgordataspillstart())) adg = adg.root(getalgordataspillroot());
-		player.algordata = player.algordata.add(adg);
+		let adg = getalgordatagen();
+		if((player.exchal[1].gte(1) && adg.gte(getalgordataspillstart())) || (!player.exchal[1].gte(1) && player.algordata.gte(getalgordataspillstart()))) adg = adg.root(getalgordataspillroot(adg));
+		player.algordata = player.algordata.add(adg.mul(PL3globalspeed).mul(tickmult));
 	}
 	
 	if(player.permupg.includes(43))
@@ -2796,18 +3694,66 @@ function produce()
 		let lim = getreactparalim();
 		player.reactpara[1] = player.reactpara[1].add(player.reactpara[0].sub(lim[0].div(2)).div(10)).min(lim[1]).max(0);
 		player.reactpara[2] = player.reactpara[2].add(player.reactpara[1].sub(lim[1].div(2)).div(10)).max(0);
-		player.reactpara[3] = player.reactpara[3].add(player.reactpara[2].pow(player.reactpara[2].gte(1) ? 3 : 1).div(10));
+		let reactspeed = N(1);
+		if(player.elements >= 1) reactspeed = reactspeed.mul(player.PL3info.add(1).log(2).add(1));
+		if(player.elements >= 3) reactspeed = reactspeed.mul(player.data.add(10).log(10).add(10).log(10));
+		
+		if(player.elements >= 6) reactspeed = reactspeed.mul(getPL3globalspeed().root(1.5));
+		player.reactpara[3] = player.reactpara[3].add(player.reactpara[2].pow(player.reactpara[2].gte(1) ? 3 : 1).div(10).mul(reactspeed));
 		if(player.reactpara[2].gte(lim[2]))
 		{
 			player.reactpara = [N(0), N(0), N(0), N(0)];
 		}
 		if(player.reactpara[3].gte(lim[3]))
 		{
-			player.reactpara = [N(0), N(0), N(0), N(0)];
-			player.chaosshard = player.chaosshard.add(1);
+			if(player.permupg.includes(48) && player.openelements)
+			{
+				player.reactpara = [N(0), N(0), N(0), N(0)];
+				page = 6;
+				subpage = 3;
+				player.elements++;
+				player.openelements = false;
+			}
+			else
+			{
+				player.reactpara = [N(0), N(0), N(0), N(0)];
+				player.chaosshard = player.chaosshard.add(1);
+			}
 		}
 		
-		player.chaosmass = player.chaosmass.add(N(3).pow(player.chaosshard).sub(1));
+		player.chaosmass = player.chaosmass.add(N(3).pow(player.chaosshard).sub(1).mul(tickmult));
+	}
+	
+	if(player.permupg.includes(55))
+	{
+		if(!player.openbh)
+		{
+			if(!player.permupg.includes(59))
+			{
+				player.blackhole = player.blackhole.add(player.data.add(10).log10().add(10).log10().div(10));
+				if(player.blackhole.gte(player.data.add(10).log10().add(10).log10()))
+				{
+					player.blackhole = player.data.add(10).log10().add(10).log10().mul(player.blackhole.div(player.data.add(10).log10().add(10).log10()).pow(0.99));
+				}
+			}
+			else
+			{
+				player.blackhole = player.data.add(10).log10().add(10).log10().mul(10).max(player.blackhole);
+			}
+		}
+		else
+		{
+			player.sing = player.sing.add(player.blackhole.div(10));
+			if(!player.permupg.includes(59)) player.blackhole = player.blackhole.pow(0.99).mul(0.975).sub(0.1);
+			if(!player.blackhole.gte(1)) player.openbh = false;
+		}
+	}
+	
+	if(player.exchal[5].gte(2))
+	{
+		let cdg = player.suppdata.pow(2);
+		if(player.exchal[8].gte(1)) cdg = cdg.mul(exchal[8].effect());
+		player.colldata = player.colldata.add(cdg.div(10).mul(tickmult));
 	}
 	
 	getentropy();
@@ -2861,6 +3807,12 @@ function hidenode()
 function timeshow(time)
 {
 	let s = '';
+	if(time >= 1e20)
+	{
+		return '很长时间';
+	}
+	if(time >= 3153600000) s = s + Math.floor(time / 3153600000) + '世纪';
+	time -= Math.floor(time / 3153600000) * 3153600000;
 	if(time >= 31536000) s = s + Math.floor(time / 31536000) + '年';
 	time -= Math.floor(time / 31536000) * 31536000;
 	if(time >= 86400) s = s + Math.floor(time / 86400) + '天';
@@ -2897,8 +3849,8 @@ function GUI()
 {
 	update_ach();
 	
-	let page_has_spage = [3, 2, 4, 3, 4, 2, 0, 0, 0, 0, 3];
-	let max_page_has_spage = 4;
+	let page_has_spage = [3, 3, 4, 3, 4, 5, 0, 0, 0, 0, 3];
+	let max_page_has_spage = 5;
 	
 	for(let i = 1;i <= 11;i++)
 	{
@@ -2958,22 +3910,37 @@ function GUI()
 	if(player.permupg.includes(43)) document.getElementById('spagebt2_6').style.display = 'inline-block';
 	else document.getElementById('spagebt2_6').style.display = 'none';
 	
-	document.getElementById('PL1infoget').innerHTML = notation(PL1infoget);
-	document.getElementById('PL2infoget').innerHTML = notation(PL2infoget);
-	document.getElementById('PL3infoget').innerHTML = notation(PL3infoget);
+	if(player.permupg.includes(48)) document.getElementById('spagebt3_6').style.display = 'inline-block';
+	else document.getElementById('spagebt3_6').style.display = 'none';
 	
-	document.getElementById('data').innerHTML = notation(player.data);
-	document.getElementById('data2').innerHTML = notation(player.data);
+	if(player.permupg.includes(55)) document.getElementById('spagebt4_6').style.display = 'inline-block';
+	else document.getElementById('spagebt4_6').style.display = 'none';
+	
+	if(player.permupg.includes(58)) document.getElementById('spagebt3_2').style.display = 'inline-block';
+	else document.getElementById('spagebt3_2').style.display = 'none';
+	
+	if(player.exchal[5].gte(2)) document.getElementById('spagebt5_6').style.display = 'inline-block';
+	else document.getElementById('spagebt5_6').style.display = 'none';
+	
+	document.getElementById('PL1infoget').innerHTML = notation(PL1infoget, 0);
+	document.getElementById('PL2infoget').innerHTML = notation(PL2infoget, 0);
+	document.getElementById('PL3infoget').innerHTML = notation(PL3infoget, 0);
+	
+	document.getElementById('PL3globalspeed').innerHTML = notation(getPL3globalspeed(), 2);
+	
+	document.getElementById('data').innerHTML = notation(player.data, 0);
+	document.getElementById('data2').innerHTML = notation(player.data, 0);
 	document.getElementById('datashow').innerHTML = getdatashow();
-	document.getElementById('PL1info').innerHTML = notation(player.PL1info);
-	document.getElementById('PL2info').innerHTML = notation(player.PL2info);
-	document.getElementById('PL3info').innerHTML = notation(player.PL3info);
-	document.getElementById('PL3infottl').innerHTML = notation(player.PL3infottl);
+	document.getElementById('PL1info').innerHTML = notation(player.PL1info, 0);
+	document.getElementById('PL2info').innerHTML = notation(player.PL2info, 0);
+	document.getElementById('PL3info').innerHTML = notation(player.PL3info, 0);
+	document.getElementById('PL3infottl').innerHTML = notation(player.PL3infottl, 0);
 	document.getElementById('PL3infoeffect').innerHTML = getPL3infoeffect();
-	document.getElementById('PL2tms').innerHTML = notation(player.PL2tms);
-	document.getElementById('PL3tms').innerHTML = notation(player.PL3tms);
+	document.getElementById('PL2tms').innerHTML = notation(player.PL2tms, 0);
+	document.getElementById('PL3tms').innerHTML = notation(player.PL3tms, 0);
+	//document.getElementById('PL4tms').innerHTML = notation(player.PL4tms);
 	
-	document.getElementById('slice').innerHTML = notation(player.slice);
+	document.getElementById('slice').innerHTML = notation(player.slice, 0);
 	document.getElementById('slice_effect').innerHTML = notation(getsliceeffect());
 	for(let i = 0;i < 3;i++)
 	{
@@ -2982,21 +3949,21 @@ function GUI()
 		else if(sbc[i] > 255) sbc[i] = 255, sbct[i] = ((-sbct[i]) - 1) % 3;
 	}
 	for(let xm = 1;xm < 9;xm++) document.getElementById('slicebt' + xm).style['border-color'] = 'rgb(' + sbc[0] + ',' + sbc[1] + ',' + sbc[2] + ')';
-	document.getElementById('boostnum').innerHTML = notation(player.boost);
-	document.getElementById('boost2num').innerHTML = notation(player.boost2);
-	document.getElementById('boost3num').innerHTML = notation(player.boost3);
+	document.getElementById('boostnum').innerHTML = notation(player.boost, 0);
+	document.getElementById('boost2num').innerHTML = notation(player.boost2, 0);
+	document.getElementById('boost3num').innerHTML = notation(player.boost3, 0);
 	if(player.boost.gte(10)) document.getElementById('boostscaling').innerHTML = '超级折算|';
 	else document.getElementById('boostscaling').innerHTML = '';
-	document.getElementById('boostscalingeffect').innerHTML = notation(getboostzs1x());
+	document.getElementById('boostscalingeffect').innerHTML = notation(getboostzs1x(), 3);
 	document.getElementById('unlock_origin').style.display = (player.unlock_origin ? 'block' : 'none');
 	document.getElementById('uunlock_origin').style.display = (!player.unlock_origin ? 'block' : 'none');
-	document.getElementById('origin_data').innerHTML = notation(player.origin_data);
+	document.getElementById('origin_data').innerHTML = notation(player.origin_data, 0);
 	document.getElementById('origin_effect').innerHTML = getorigineffect();
 	
-	document.getElementById('dim').innerHTML = notation(player.dimension);
+	document.getElementById('dim').innerHTML = notation(player.dimension, 0);
 	document.getElementById('dimcost').innerHTML = notation(getdimcost());
-	document.getElementById('star').innerHTML = notation(player.star);
-	document.getElementById('godstar').innerHTML = notation(player.godstar);
+	document.getElementById('star').innerHTML = notation(player.star, 0);
+	document.getElementById('godstar').innerHTML = notation(player.godstar, 0);
 	document.getElementById('stareffect').innerHTML = getstareffect();
 	document.getElementById('godstareffect').innerHTML = getgodstareffect();
 	if(player.PL2info.gte(getdimcost()))
@@ -3024,7 +3991,7 @@ function GUI()
 			document.getElementById('PL2mlst' + i).style['color'] = 'black';
 		}
 	}
-	document.getElementById('chalcompmax').innerHTML = notation(player.chalcomp);
+	document.getElementById('chalcompmax').innerHTML = notation(player.chalcomp, 3);
 	document.getElementById('chalcompnow').innerHTML = notation(getchalparacomp());
 	document.getElementById('chalcompeffect').innerHTML = getchalcompeffect();
 	
@@ -3106,10 +4073,10 @@ function GUI()
 		{
 			document.getElementById('unlockjd' + (i + 1)).style.display = 'none';
 		}
-		document.getElementById('jdnum' + (i + 1)).innerHTML = notation(player.jdnum[i]);
-		document.getElementById('jdbuy' + (i + 1)).innerHTML = notation(player.buyjd[i].add(player.permupg.includes(24) ? getalgoreffect() : 0));
-		document.getElementById('jdx' + (i + 1)).innerHTML = notation(jdx[i]);
-		document.getElementById('jdcost' + (i + 1)).innerHTML = notation(jdcost[i]);
+		document.getElementById('jdnum' + (i + 1)).innerHTML = notation(player.jdnum[i], 1);
+		document.getElementById('jdbuy' + (i + 1)).innerHTML = notation(player.buyjd[i].add(player.permupg.includes(24) ? getalgoreffect() : 0), 0);
+		document.getElementById('jdx' + (i + 1)).innerHTML = notation(jdx[i], 2);
+		document.getElementById('jdcost' + (i + 1)).innerHTML = notation(jdcost[i], 0);
 		if(player.data.gte(jdcost[i])) document.getElementById('jdbuybt' + (i + 1)).style['background-color'] = '#666666';
 		else document.getElementById('jdbuybt' + (i + 1)).style['background-color'] = '#000000';
 		
@@ -3124,14 +4091,14 @@ function GUI()
 		{
 			if(player.sliceupg_rep[i].gte(200)) document.getElementById('slicebt' + (i + 1)).style['background-color'] = 'green';
 			else document.getElementById('slicebt' + (i + 1)).style['background-color'] = 'black';
-			document.getElementById('sliceupgcost' + (i + 1)).innerHTML = notation(sliceupgcost[i].pow(player.sliceupg_rep[i].add(1)));
-			document.getElementById('sliceupglevel' + (i + 1)).innerHTML = notation(player.sliceupg_rep[i]);
+			document.getElementById('sliceupgcost' + (i + 1)).innerHTML = notation(sliceupgcost[i].pow(player.sliceupg_rep[i].add(1)), 0);
+			document.getElementById('sliceupglevel' + (i + 1)).innerHTML = notation(player.sliceupg_rep[i], 0);
 		}
 		for(let i = 4;i < 8;i++)
 		{
 			if(player.sliceupg[i - 4]) document.getElementById('slicebt' + (i + 1)).style['background-color'] = 'green';
 			else document.getElementById('slicebt' + (i + 1)).style['background-color'] = 'black';
-			document.getElementById('sliceupgcost' + (i + 1)).innerHTML = notation(sliceupgcost[i]);
+			document.getElementById('sliceupgcost' + (i + 1)).innerHTML = notation(sliceupgcost[i], 0);
 		}
 	}
 	if(player.PL2unlock)
@@ -3143,10 +4110,10 @@ function GUI()
 			let snx = getsnx();
 			let sncost = getsncost(i);
 			let scs = getsnscs();
-			document.getElementById('snbuy' + (i + 1)).innerHTML = notation(player.buysn[i]);
-			document.getElementById('sncost' + (i + 1)).innerHTML = notation(getsncost(i));
-			document.getElementById('snnum' + (i + 1)).innerHTML = notation(player.star_node[i]);
-			document.getElementById('snx' + (i + 1)).innerHTML = notation(snx[i]);
+			document.getElementById('snbuy' + (i + 1)).innerHTML = notation(player.buysn[i], 0);
+			document.getElementById('sncost' + (i + 1)).innerHTML = notation(getsncost(i), 0);
+			document.getElementById('snnum' + (i + 1)).innerHTML = notation(player.star_node[i], 1);
+			document.getElementById('snx' + (i + 1)).innerHTML = notation(snx[i], 2);
 			if(player.star.gte(sncost))
 			{
 				document.getElementById('snbuybt' + (i + 1)).style['background-color'] = '#666666';
@@ -3175,9 +4142,9 @@ function GUI()
 			let gnc = getgnc();
 			if(!player.gnunlock[i]) document.getElementById('unlockgn' + (i + 1)).style.display = 'block', document.getElementById('gnbt' + (i + 1)).style.display = 'none';
 			else document.getElementById('unlockgn' + (i + 1)).style.display = 'none', document.getElementById('gnbt' + (i + 1)).style.display = 'block';
-			document.getElementById('gn' + (i + 1)).innerHTML = notation(player.godnode[i]);
-			document.getElementById('gnx' + (i + 1)).innerHTML = notation(gnx[i]);
-			document.getElementById('gnc' + (i + 1)).innerHTML = notation(gnc[i]);
+			document.getElementById('gn' + (i + 1)).innerHTML = notation(player.godnode[i], 1);
+			document.getElementById('gnx' + (i + 1)).innerHTML = notation(gnx[i], 2);
+			document.getElementById('gnc' + (i + 1)).innerHTML = notation(gnc[i], 0);
 		}
 		if(player.permupg.includes(10)) document.getElementById('buymaxgn').style.display = 'block';
 		else document.getElementById('buymaxgn').style.display = 'none';
@@ -3217,21 +4184,21 @@ function GUI()
 		else if(player.PL1info.gte(PL1upgcost[i])) document.getElementById('PL1ug' + (i + 1)).style['background-color'] = '#666666';
 		else document.getElementById('PL1ug' + (i + 1)).style['background-color'] = '#000000';
 	}
-	document.getElementById('PL1ug3effect').innerHTML = notation(player.boost.add(1).pow(1.5));
+	document.getElementById('PL1ug3effect').innerHTML = notation(player.boost.add(1).pow(1.5), 2);
 	for(let i = 0;i < 5;i++)
 	{
 		let cap = [N(100), N(100), N(30), N(30)];
 		if(i != 4 && player.origin_upg[i].gte(cap[i])) document.getElementById('originupg' + (i + 1)).style['background-color'] = 'blue';
 		else if(player.origin_data.gte(getoriginupgcost(i))) document.getElementById('originupg' + (i + 1)).style['background-color'] = '#666666';
 		else document.getElementById('originupg' + (i + 1)).style['background-color'] = 'black';
-		document.getElementById('originupgcost' + (i + 1)).innerHTML = notation(getoriginupgcost(i));
-		document.getElementById('originupglevel' + (i + 1)).innerHTML = notation(player.origin_upg[i]);
+		document.getElementById('originupgcost' + (i + 1)).innerHTML = notation(getoriginupgcost(i), 0);
+		document.getElementById('originupglevel' + (i + 1)).innerHTML = notation(player.origin_upg[i], 1);
 	}
 	if(player.openentropy) document.getElementById('openentropy').style['background-color'] = 'red';
 	else document.getElementById('openentropy').style['background-color'] = 'black';
 	for(let i = 0;i < 4;i++)
 	{
-		document.getElementById('ent' + i).innerHTML = notation(player.entropy[i]);
+		document.getElementById('ent' + i).innerHTML = notation(player.entropy[i], 3);
 		document.getElementById('entropyeffect' + i).innerHTML = getentropyeffect(i);
 	}
 	for(let i = 0;i < 4;i++)
@@ -3254,12 +4221,14 @@ function GUI()
 	if(player.permupg.includes(24))
 	{
 		document.getElementById('algor').style.display = 'block';
-		document.getElementById('algornum').innerHTML = notation(player.algor);
-		document.getElementById('algordata').innerHTML = notation(player.algordata);
-		if(player.algordata.gte(1e13))
+		document.getElementById('algornum').innerHTML = notation(player.algor, 0)
+		+ (player.permupg.includes(57) ? ' + ' + notation(player.algorrebuy[0].mul(0.25)) : '');
+		document.getElementById('algordata').innerHTML = notation(player.algordata, 0);
+		let adg = getalgordatagen();
+		if((player.exchal[1].gte(1) && adg.gte(getalgordataspillstart())) || (!player.exchal[1].gte(1) && player.algordata.gte(getalgordataspillstart())))
 		{
 			document.getElementById('algordataspill').style.display = 'block';
-			document.getElementById('algordataspill').innerHTML = '在达到 ' + notation(getalgordataspillstart()) + ' 算法数据后，算法数据将溢出！获取速度变为' + notation(getalgordataspillroot()) + '次方根';
+			document.getElementById('algordataspill').innerHTML = '在达到 ' + notation(getalgordataspillstart()) + ' 算法数据后，算法数据将溢出！获取速度变为' + notation(getalgordataspillroot(adg)) + '次方根';
 		}
 		else
 		{
@@ -3279,12 +4248,13 @@ function GUI()
 		{
 			document.getElementById('algorrebuy1bt').style.display = 'block';
 			document.getElementById('algorrebuy2bt').style.display = 'block';
-			document.getElementById('algorrebuy1cost').innerHTML = notation(getalgorrebuycost(0));
-			document.getElementById('algorrebuy2cost').innerHTML = notation(getalgorrebuycost(1));
-			document.getElementById('algorrebuy1effect').innerHTML = notation(N(1).add(player.algorrebuy[0].mul(0.1)));
-			document.getElementById('algorrebuy2effect').innerHTML = notation(N(1).add(player.algorrebuy[1].mul(0.02)));
-			document.getElementById('algorrebuy1').innerHTML = notation(player.algorrebuy[0]);
-			document.getElementById('algorrebuy2').innerHTML = notation(player.algorrebuy[1]);
+			document.getElementById('algorrebuy1cost').innerHTML = notation(getalgorrebuycost(0), 0);
+			document.getElementById('algorrebuy2cost').innerHTML = notation(getalgorrebuycost(1), 0);
+			document.getElementById('algorrebuy1effect').innerHTML = notation(N(1).add(player.algorrebuy[0].mul(0.05)));
+			document.getElementById('algorrebuy2effect').innerHTML = notation(player.algorrebuy[1].mul(0.02));
+			document.getElementById('algorrebuy1').innerHTML = notation(player.algorrebuy[0], 0)
+			+ (player.permupg.includes(57) ? ' + ' + notation(player.algorrebuy[1].mul(0.5)) : '');
+			document.getElementById('algorrebuy2').innerHTML = notation(player.algorrebuy[1], 0);
 			if(player.PL1info.gte(getalgorrebuycost(0)))
 			{
 				document.getElementById('algorrebuy1bt').style['background-color'] = '#666666';
@@ -3301,6 +4271,10 @@ function GUI()
 			{
 				document.getElementById('algorrebuy2bt').style['background-color'] = 'black';
 			}
+			if(player.algorrebuy[0].gte(50)) document.getElementById('algorrebuy1scal').innerHTML = '超级折算|';
+			else document.getElementById('algorrebuy1scal').innerHTML = '';
+			if(player.algorrebuy[1].gte(25)) document.getElementById('algorrebuy2scal').innerHTML = '超级折算|';
+			else document.getElementById('algorrebuy2scal').innerHTML = '';
 		}
 		else
 		{
@@ -3315,8 +4289,8 @@ function GUI()
 	
 	if(player.permupg.includes(43))
 	{
-		document.getElementById('chaosshard').innerHTML = notation(player.chaosshard);
-		document.getElementById('chaosmass').innerHTML = notation(player.chaosmass);
+		document.getElementById('chaosshard').innerHTML = notation(player.chaosshard, 0);
+		document.getElementById('chaosmass').innerHTML = notation(player.chaosmass, 0);
 		document.getElementById('chaosmasseffect').innerHTML = getchaosmasseffect();
 		let lim = getreactparalim();
 		for(let i = 0;i < 4;i++)
@@ -3324,6 +4298,60 @@ function GUI()
 			document.getElementById('reactpara' + i).innerHTML = notation(player.reactpara[i]);
 			document.getElementById('reactparalim' + i).innerHTML = notation(lim[i]);
 			document.getElementById('reactbar' + i).style.width = 100 - (player.reactpara[i].div(lim[i]).mul(100)) + '%';
+		}
+		document.getElementById('reactgoal').innerHTML = '混沌碎片';
+	}
+	
+	if(player.permupg.includes(48))
+	{
+		document.getElementById('startelements').innerHTML = '开始/结束压缩元素' + (player.elements + 1);
+		document.getElementById('elementseffect').innerHTML = getelementseffect();
+		if(player.openelements) document.getElementById('startelements').style['background-color'] = 'red';
+		else document.getElementById('startelements').style['background-color'] = 'black';
+		if(player.openelements) document.getElementById('reactgoal').innerHTML = '元素' + (player.elements + 1);
+	}
+	
+	if(player.permupg.includes(39))
+	{
+		document.getElementById('autochaos').style.display = 'block';
+		if(player.autochaos) document.getElementById('autochaosbutton').innerHTML = '更改自动混沌设置<br>当前状态：开启<br>当前目标：' + notation(player.autochaosgoal);
+		else document.getElementById('autochaosbutton').innerHTML = '更改自动混沌设置<br>当前状态：关闭';
+	}
+	else
+	{
+		document.getElementById('autochaos').style.display = 'none';	
+	}
+	
+	if(player.permupg.includes(55))
+	{
+		document.getElementById('PL4tms').innerHTML = notation(player.PL4tms, 0);
+		document.getElementById('singnow').innerHTML = notation(player.sing, 0);
+		document.getElementById('singcap').innerHTML = notation(getsingcap());
+		if(player.opensupp) document.getElementById('blackhole').innerHTML = '已禁用';
+		else document.getElementById('blackhole').innerHTML = notation(player.blackhole, 2);
+		document.getElementById('bheffect').innerHTML = getbheffect();
+		if(player.opensupp) document.getElementById('bhbutton').style['border-color'] = 'red';
+		else if(player.openbh) document.getElementById('bhbutton').style['border-color'] = 'gold';
+		else document.getElementById('bhbutton').style['border-color'] = 'white';
+	}
+	
+	if(player.exchal[5].gte(2))
+	{
+		document.getElementById('colldata').innerHTML = notation(player.colldata, 0);
+		document.getElementById('colleffect').innerHTML = getcolleffect();
+		document.getElementById('suppdata').innerHTML = notation(player.suppdata, 0);
+		if(player.opensupp)
+		{
+			document.getElementById('suppweaken').style.display = 'none';
+			document.getElementById('suppget').innerHTML = '+' + notation(getcollget()) + ' 压制数据';
+			document.getElementById('suppget').style.display = 'block';
+			document.getElementById('opensupp').style['box-shadow'] = '0px 0px 30px silver';
+		}
+		else 
+		{
+			document.getElementById('suppweaken').style.display = 'block';
+			document.getElementById('suppget').style.display = 'none';
+			document.getElementById('opensupp').style['box-shadow'] = '0px 0px 10px silver';
 		}
 	}
 }
@@ -3335,7 +4363,6 @@ var playerTemp = player;
 data_input();
 
 let playerLen = Object.keys(player).length;
-console.log(playerLen);
 
 const bKeys = Object.keys(playerTemp);
 
@@ -3348,9 +4375,14 @@ bKeys.forEach(key =>
 });
 
 if('mag' in player.entropy) player.entropy = [N(0), N(0), N(0), N(0)];
+for(let i = 1;i < exchal.length;i++)
+{
+	if(!player.exchal[i]) player.exchal[i] = N(0);
+}
 
 dis_permupgui();
 dis_chalui();
+dis_exchalui();
 
 //滚动新闻
 var news = {
@@ -3403,6 +4435,7 @@ setInterval(GUI, 40);
 setInterval(data_print, 400);
 setInterval(build_permupgui, 100);
 setInterval(build_chalui, 100);
+setInterval(build_exchalui, 100);
 setInterval(newsscroll, 40);
 		</script>
 	</body>
