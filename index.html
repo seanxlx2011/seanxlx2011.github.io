@@ -2394,10 +2394,10 @@ function getgnx()
 	for(let i = 0;i < 8;i++)
 	{
 		base[i] = base[i].mul(getbuygnx().pow(player.buygn[i]));
-		if(player.permupg.includes(4)) base[i] = base[i].mul(player.PL2info.add(10).div(1e40).log10().max(1));
+		if(player.permupg.includes(4)) base[i] = base[i].mul(player.PL2info.div(1e40).add(10).log10().max(1));
 		if(player.permupg.includes(13)) base[i] = base[i].mul(N(1.1).pow(player.boost3));
-		if(player.openchal && player.chalpara.includes(8)) base[i] = N(0);
 		if(getexchalopen().includes(5)) base[i] = N(10).pow(base[i].log10().pow(0.25));
+		if(player.openchal && player.chalpara.includes(8)) base[i] = N(0);
 	}
 	return base;
 }
