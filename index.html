@@ -395,7 +395,7 @@
 	<body style="background-color: #000000; font-family: MonospaceTypewriter, monospace ">
 		<script type="text/javascript" src="break_eternity.js"></script>
 		
-		<title>数据增量重制版(C2)</title>
+		<title>数据增量重制版(C2B)</title>
 		<br>
 		
 		<div style="width: 100%; height: 100%; overflow-y: auto; overflow-x: auto">
@@ -1000,23 +1000,35 @@
 					<tr>
 					<td><div class="button-wrapper"><button class="ach" id="ach30">30<br>生于混沌</button><div class="hover-box">混沌重置</div></div></td>
 					<td><div class="button-wrapper"><button class="ach" id="ach31">31<br>无限 III</button><div class="hover-box">达到1.797e308混沌信息</div></div></td>
+					<td><div class="button-wrapper"><button class="ach" id="ach32">32<br>核聚变</button><div class="hover-box">获得混沌质量</div></div></td>
+					<td><div class="button-wrapper"><button class="ach" id="ach33">33<br>广义相对论</button><div class="hover-box">开启黑洞</div></div></td>
+					<td><div class="button-wrapper"><button class="ach" id="ach34">34<br>时速紊乱</button><div class="hover-box">混沌以前全局速度达到×1000</div></div></td>
+					<td><div class="button-wrapper"><button class="ach" id="ach35">35<br>对折</button><div class="hover-box">获得折叠数据</div></div></td>
+					<td><div class="button-wrapper"><button class="ach" id="ach36">36<br>多元混沌</button><div class="hover-box">达到1000混沌重置</div></div></td>
+					<td><div class="button-wrapper"><button class="ach" id="ach37">37<br>再次提升的干扰</button><div class="hover-box">完成奇异挑战8</div></div></td>
+					<td><div class="button-wrapper"><button class="ach" id="ach38">38<br>无能为力</button><div class="hover-box">完成100次奇异挑战1</div></div></td>
+					<td><div class="button-wrapper"><button class="ach" id="ach39">39<br>等待心雪融化</button><div class="hover-box">达到e1.797e308数据</div></div></td>
 				</table>
 			</div>
 			<div id="spage2_11" align="center">
 				<p class="ftsz2">
 					<span class="ftsz4">数据增量重制版 - Incremental Data Rewritten</span>
 					<br>
-					<span class="ftsz3">作者：seanxlx<br>当前版本：C2<br></span>
+					<span class="ftsz3">作者：seanxlx<br>当前版本：C2B<br></span>
 					<br>
 					<span class="ftsz2">
 						版本更新记录：
-						<br>
+						<br><br>
+						C2B - 平衡修复<br>
+						修复部分bug。<br>
+						修改了跃迁的一些奖励，提升了平衡性<br>
+						<br><br>
 						C2 - 混沌更新第二弹<br>
 						增加了混沌层级的部分内容。<br>
-						Endgame: 至少ee36数据。
-						<br>
+						Endgame: 至少ee36数据。<br>
+						<br><br>
 						C-News - 新闻更新<br>
-						增加了滚动新闻。
+						增加了滚动新闻。<br>
 						<br><br>
 						C1 - 混沌更新<br>
 						增加了混沌层级的部分内容。<br>
@@ -1449,7 +1461,7 @@ function getjdx()
 		if(player.boost2.gte(1)) base[i] = base[i].mul(3);
 		if(player.boost2.gte(3)) base[i] = base[i].mul(player.boost2.add(1).mul(1.25).pow(3.5));
 		if(player.boost2.gte(12)) base[i] = base[i].mul(player.PL1info.add(1).mul(0.5).pow(0.25).min('e100000'));
-		if(player.boost.gte(9) && !player.boost.gte(52)) base[i] = base[i].mul(player.boost);
+		if(player.boost.gte(3) && !player.boost.gte(52)) base[i] = base[i].mul(player.boost);
 		if(player.boost.gte(52)) base[i] = base[i].mul(player.boost.pow(2));
 		if(player.boost3.gte(8)) base[i] = base[i].mul(N(2).pow(player.boost.pow(1.35)).min('e5000'));
 		if(player.boost3.gte(9)) base[i] = base[i].mul(player.PL2info.add(1).pow(45));
@@ -1514,9 +1526,9 @@ function buyjd(num)
 
 function buymaxjd(num)
 {
-	let jdunlock = [N(1), N(2), N(3), N(4), N(5), N(6), N(7), N(8)];
+	let jdunlock = [N(1), N(2), N(4), N(5), N(11), N(12), N(13), N(14)];
 	num = num - 1;
-	let base = [N(10), N(1000), N(1e5), N(1e7), N(1e9), N(1e11), N(1e13), N(1e15)];
+	let base = [N(1), N(100), N(1e4), N(1e6), N(1e8), N(1e10), N(1e12), N(1e14)];
 	let basex = [N(10), N(100), N(1000), N(1e4), N(1e5), N(1e6), N(1e7), N(1e8)];
 	let cost = getjdprice();
 	if(player.data.gte(cost[num]) && player.boost.gte(jdunlock[num]))
@@ -1581,8 +1593,8 @@ function getboost3cost()
 	return base;
 }
 
-var boosteffectlist = [N(1), N(2), N(3), N(4), N(5), N(6), N(7), N(8)
-, N(9), N(15), N(16), N(20), N(21), N(52), N(55), N(65)
+var boosteffectlist = [N(1), N(2), N(3), N(4), N(5), N(11), N(12), N(13)
+, N(14), N(15), N(16), N(20), N(21), N(52), N(55), N(65)
 , N(67), N(95), N(120), N(315), N(888)];
 var boosteffectnum = 21;
 
@@ -1598,31 +1610,31 @@ function getboosteffect(b)
 	}
 	else if(!b.gte(3))
 	{
-		return '在3跃迁，解锁3号传输节点。';
+		return '在3跃迁，节点产能增加等同于跃迁数量的倍数。';
 	}
 	else if(!b.gte(4))
 	{
-		return '在4跃迁，解锁4号传输节点。';
+		return '在4跃迁，解锁3号传输节点。';
 	}
 	else if(!b.gte(5))
 	{
-		return '在5跃迁，解锁5号传输节点。';
+		return '在5跃迁，解锁4号传输节点。';
 	}
-	else if(!b.gte(6))
+	else if(!b.gte(11))
 	{
-		return '在6跃迁，解锁6号传输节点。';
+		return '在11跃迁，解锁5号传输节点。';
 	}
-	else if(!b.gte(7))
+	else if(!b.gte(12))
 	{
-		return '在7跃迁，解锁7号传输节点。';
+		return '在12跃迁，解锁6号传输节点。';
 	}
-	else if(!b.gte(8))
+	else if(!b.gte(13))
 	{
-		return '在8跃迁，解锁8号传输节点。';
+		return '在13跃迁，解锁7号传输节点。';
 	}
-	else if(!b.gte(9))
+	else if(!b.gte(14))
 	{
-		return '在9跃迁，节点产能增加等同于跃迁数量的倍数。';
+		return '在14跃迁，解锁8号传输节点。';
 	}
 	else if(!b.gte(15))
 	{
@@ -1642,7 +1654,7 @@ function getboosteffect(b)
 	}
 	else if(!b.gte(52))
 	{
-		return '在52跃迁，9跃迁的效果改为增加等同于跃迁数量的平方的倍数';
+		return '在52跃迁，3跃迁的效果改为增加等同于跃迁数量的平方的倍数';
 	}
 	else if(!b.gte(55))
 	{
@@ -3607,7 +3619,7 @@ function produce()
 	
 	let jdprice = getjdprice();
 	let jdx = getjdx();
-	let jdunlock = [N(1), N(2), N(3), N(4), N(5), N(6), N(7), N(8)];
+	let jdunlock = [N(1), N(2), N(4), N(5), N(11), N(12), N(13), N(14)];
 	
 	let PL3globalspeed = getPL3globalspeed();
 	
@@ -3795,6 +3807,14 @@ function update_ach()
 	if(!player.ach.includes(29) && player.PL2info.gte('e10000')){othershine = true; player.ach.push(29);}
 	if(!player.ach.includes(30) && player.PL3unlock){othershine = true; player.ach.push(30);}
 	if(!player.ach.includes(31) && player.PL3info.gte('1.797e308')){othershine = true; player.ach.push(31);}
+	if(!player.ach.includes(32) && player.chaosmass.gte(1)){othershine = true; player.ach.push(32);}
+	if(!player.ach.includes(33) && player.openbh){othershine = true; player.ach.push(33);}
+	if(!player.ach.includes(34) && getPL3globalspeed().gte(1000)){othershine = true; player.ach.push(34);}
+	if(!player.ach.includes(35) && player.colldata.gte(1)){othershine = true; player.ach.push(35);}
+	if(!player.ach.includes(36) && player.PL3tms.gte(1000)){othershine = true; player.ach.push(36);}
+	if(!player.ach.includes(37) && player.exchal[8].gte(1)){othershine = true; player.ach.push(37);}
+	if(!player.ach.includes(38) && player.exchal[1].gte(100)){othershine = true; player.ach.push(38);}
+	if(!player.ach.includes(39) && player.data.gte('e1.797e308')){othershine = true; player.ach.push(39);}
 }
 
 var othershine = false;
@@ -4000,7 +4020,7 @@ function GUI()
 	let boost2cost = getboost2cost();
 	let boost3cost = getboost3cost();
 	let jdcost = getjdprice();
-	let jdunlock = [N(1), N(2), N(3), N(4), N(5), N(6), N(7), N(8)];
+	let jdunlock = [N(1), N(2), N(4), N(5), N(11), N(12), N(13), N(14)];
 	document.getElementById('boosteffect').innerHTML = getboosteffect(player.boost);
 	document.getElementById('boost2effect').innerHTML = getboost2effect(player.boost2);
 	document.getElementById('boost3effect').innerHTML = getboost3effect(player.boost3);
