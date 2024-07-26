@@ -1422,7 +1422,7 @@ function data_print()
 function data_input()
 {
 	if (!localStorage.IDRgamesave) return;
-	if(localStorage.IDRgamesave[0] == 'e') player = JSON.parse(btoa(localStorage.IDRgamesave));
+	if(localStorage.IDRgamesave[0] == 'e') player = JSON.parse(atob(localStorage.IDRgamesave));
 	else player = JSON.parse(formatsave.decode(localStorage.IDRgamesave));
 	transformToDecimal(player);
 }
