@@ -257,6 +257,18 @@
 			float: center;
 		}
 		
+		.PL4bt {
+			background-color: white;
+			height: 150px;
+			width: 200px;
+			border: 3px solid grey;
+			color: black;
+			padding: 10px;
+			text-align: center;
+			font-size: 14px;
+			float: center;
+		}
+		
 		.slicebt {
 			background-color: black;
 			height: 150px;
@@ -389,13 +401,25 @@
 			background-color: grey;
 			font-size: 20px;
 		}
+		
+		.suppupgbt {
+			background-color: black;
+			height: 125px;
+			width: 150px;
+			border: 3px solid white;
+			color: white;
+			padding: 5px;
+			text-align: center;
+			font-size: 11px;
+		}
 		</style>
 	</head>
 
 	<body style="background-color: #000000; font-family: MonospaceTypewriter, monospace ">
 		<script type="text/javascript" src="break_eternity.js"></script>
+		<script type="text/javascript" src="pako.js"></script>
 		
-		<title>数据增量重制版(C2B)</title>
+		<title>数据增量重制版(C3)</title>
 		<br>
 		
 		<div style="width: 100%; height: 100%; overflow-y: auto; overflow-x: auto">
@@ -418,8 +442,10 @@
 		<div align="center" class="news">
 			<span class="newstext" id="newstext">这是一条不滚动新闻</span>
 		</div>
-		<p align="center" class="ftsz3"><span>你有</span><span id="data"></span><span>数据</span></p>
+		<p align="center" class="ftsz3"><span>你有</span><span id="data"></span><span>数据</span><br>
+		<span class="ftsz2 spill" id="dataspill"></span></p>
 		<p align="center" class="ftsz2"><span>混沌以前全局速度：×</span><span id="PL3globalspeed"></span></p>
+		<p align="center" class="ftsz2" id="offline"></p>
 		<p align="center">
 		</p>
 		
@@ -459,6 +485,7 @@
 					<button class="buymaxjd" onclick="allmaxjd()">全部最大化</button>
 					<button class="buymaxjd" onclick="export_save()">导出存档到剪贴板</button>
 					<button class="buymaxjd" onclick="import_save()">导入存档</button>
+					<button class="buymaxjd" onclick="player.openoffline = !player.openoffline; if(getofflinelimit() == 0) player.openoffline = false;" id="offlinebt"></button>
 				</p>
 				
 				<div id="algor">
@@ -579,22 +606,28 @@
 			</p>
 			<div id="spage1_2" align="center">
 				<table align="center">
-					<td style="width: 500px; float: center;">
+					<td style="width: 500px;">
 						<span class="ftsz3">你拥有 </span><span class="ftsz4" id="PL1info"></span><span class="ftsz3"> 世界信息</span>
 						<br/>
 						<button class="PL1bt" onclick="buyPL1()">世界重置：重置之前的所有内容，但获得世界信息。<br/>+ <span id="PL1infoget"></span> 世界信息。<br/>需要e80数据</button>
 					</td>
-					<td style="width: 500px; float: center;" id="PL2bt">
+					<td style="width: 500px;" id="PL2bt">
 						<span class="ftsz3">你拥有 </span><span class="ftsz4" id="PL2info"></span><span class="ftsz3"> 宇宙信息</span>
 						<br/>
 						<button class="PL2bt" onclick="buyPL2()">宇宙重置：重置之前的所有内容，但获得宇宙信息。<br/>+ <span id="PL2infoget"></span> 宇宙信息。<br/>需要e7000世界信息</button>
 					</td>
 					<tr>
-					<td style="width: 500px; float: center;" id="PL3bt">
+					<td style="width: 500px;" id="PL3bt">
 						<span class="ftsz3">你拥有 </span><span class="ftsz4" id="PL3info"></span><span class="ftsz3"> 混沌信息</span>
 						<br/>
 						<button class="PL3bt" onclick="buyPL3()">混沌重置：重置之前的所有内容，但获得混沌信息。<br/>+ <span id="PL3infoget"></span> 混沌信息。<br/>需要e10000宇宙信息</button>
 					</td>
+					<td style="width: 500px;" id="PL4bt">
+						<span class="ftsz3">你拥有 0 虚空信息</span>
+						<br>
+						<button class="PL4bt" onclick="alert('请等待游戏更新')">虚空重置：+ 0 虚空信息。<br>虚空数据产量：0/秒→0/秒<br>需要e1.798e308数据</button>
+					</td>
+					<tr>
 				</table>
 			</div>
 			<div id="spage2_2" align="center">
@@ -637,6 +670,7 @@
 				</p>
 			</div>
 			<div id="spage2_3" align="center"><span class="ftsz2" style="color: red;">超过10跃迁之后，跃迁将超级折算！当前强度：^</span><span class="ftsz2" id="boostscalingeffect" style="color: red;"></span><br>
+												<div id="boostscal2"><span class="ftsz2" style="color: orange;">超过20000跃迁之后，跃迁将究极折算！当前强度：^</span><span class="ftsz2" id="boostscaling2effect" style="color: orange;"></span><br></div>
 												<span class="ftsz2" id="boosteffectlist"></span></div>
 			<div id="spage3_3" align="center"><span class="ftsz2" id="boost2effectlist"></span></div>
 			<div id="spage4_3" align="center"><span class="ftsz2" id="boost3effectlist"></span></div>
@@ -941,11 +975,13 @@
 				<p class="ftsz3">当前你有 <span style="color: silver;" id="suppdata"></span> 压制数据</p>
 				<p class="ftsz3">压制数据生产了 <span style="color: silver;"id="colldata"></span> 折叠数据</p>
 				<span class="ftsz2" style="color: lightblue;" id="colleffect"></span>
-				<button class="chalpara" style="height: 160px; width: 80%; border-color: silver; box-shadow: 0px 0px 10px silver;" id="opensupp" onclick="opensupp()">
+				<div align="center"><button class="chalpara" style="height: 160px; width: 80%; border-color: silver; box-shadow: 0px 0px 10px silver;" id="opensupp" onclick="opensupp()">
 					<span class="ftsz3" style="color: silver">开启/关闭数据压制<br></span>
 					<span class="ftsz3" id="suppget">+0 压制数据<br></span>
 					<span id="suppweaken">启动数据压制之后，黑洞失效，强制开启奇异挑战1~4，但传输节点指数^1.5。</span>
-				</button>
+				</button></div>
+				<br><br><span class="ftsz2">达到 e1.000e38 数据解锁数据压制升级。</span>
+				<br>
 				<div style="width: 80%" id="suppupg_detail"></div>
 			</div>
 		</div>
@@ -1014,14 +1050,18 @@
 				<p class="ftsz2">
 					<span class="ftsz4">数据增量重制版 - Incremental Data Rewritten</span>
 					<br>
-					<span class="ftsz3">作者：seanxlx<br>当前版本：C2B<br></span>
+					<span class="ftsz3">作者：seanxlx<br>当前版本：C3<br></span>
 					<br>
 					<span class="ftsz2">
 						版本更新记录：
 						<br><br>
+						C3 - 混沌更新收尾<br>
+						完成了混沌层级的全部内容。<br>
+						Endgame: e1.798e308数据。<br>
+						<br><br>
 						C2B - 平衡修复<br>
 						修复部分bug。<br>
-						修改了跃迁的一些奖励，提升了平衡性<br>
+						修改了跃迁的一些奖励，提升了平衡性.<br>
 						<br><br>
 						C2 - 混沌更新第二弹<br>
 						增加了混沌层级的部分内容。<br>
@@ -1171,6 +1211,9 @@ function init()
 		
 		//otherwise
 		ach: [],
+		last_update: Date.now(),
+		offlinetime: 0,
+		openoffline: false,
 	};
 }
 
@@ -1253,8 +1296,8 @@ function format(decimal, precision = 3, small) {
     if (decimal.mag == Number.POSITIVE_INFINITY) return "Infinity"
     if (decimal.gte("eeee1000")) {
         var slog = decimal.slog()
-        if (slog.gte(1e6)) return "F" + format(slog.floor())
-        else return Decimal.pow(10, slog.sub(slog.floor())).toStringWithDecimalPlaces(3) + "F" + commaFormat(slog.floor(), 0)
+        if (slog.gte(1e6)) return "f" + format(slog.floor())
+        else return Decimal.pow(10, slog.sub(slog.floor())).toStringWithDecimalPlaces(3) + "f" + commaFormat(slog.floor(), 0)
     }
     else if (decimal.gte("1e1000000")) return exponentialFormat(decimal, 2, false)
     else if (decimal.gte("1e10000")) return exponentialFormat(decimal, 2)
@@ -1320,6 +1363,48 @@ function invertOOM(x){
 //NOTATION ------------------------------------------------------------------------------------------------------------------------------------
 //NOTATION ------------------------------------------------------------------------------------------------------------------------------------
 
+var formatsave = {
+  encoder: new TextEncoder(),
+  decoder: new TextDecoder(),
+  startString: 'IncrementalDataRewrittenSaveFormat',
+  endString: 'EndOfSaveFile',
+  steps: [{
+      encode: JSON.stringify,
+      decode: JSON.parse
+    },
+    {
+      encode: x => formatsave.encoder.encode(x),
+      decode: x => formatsave.decoder.decode(x)
+    },
+    {
+      encode: x => pako.deflate(x),
+      decode: x => pako.inflate(x)
+    },
+    {
+      encode: x => Array.from(x).map(i => String.fromCharCode(i)).join(""),
+      decode: x => Uint8Array.from(Array.from(x).map(i => i.charCodeAt(0)))
+    },
+    {
+      encode: x => btoa(x),
+      decode: x => atob(x)
+    },
+    {
+      encode: x => x.replace(/=+$/g, "").replace(/0/g, "0a").replace(/\+/g, "0b").replace(/\//g, "0c"),
+      decode: x => x.replace(/0b/g, "+").replace(/0c/g, "/").replace(/0a/g, "0")
+    },
+    {
+      encode: x => formatsave.startString + x + formatsave.endString,
+      decode: x => x.slice(formatsave.startString.length, -formatsave.endString.length),
+    }
+  ],
+  encode(s) {
+    return this.steps.reduce((x, f) => f.encode(x), s);
+  },
+  decode(s) {
+    return this.steps.reduceRight((x, f) => f.decode(x), s);
+  },
+}
+
 function transformToDecimal(object)
 {
 	for (i in object) {
@@ -1331,13 +1416,14 @@ function transformToDecimal(object)
 
 function data_print()
 {
-	localStorage.IDRgamesave = btoa(JSON.stringify(player));
+	localStorage.IDRgamesave = formatsave.encode(JSON.stringify(player));
 }
 
 function data_input()
 {
 	if (!localStorage.IDRgamesave) return;
-	player = JSON.parse(atob(localStorage.IDRgamesave));
+	if(localStorage.IDRgamesave[0] == 'e') player = JSON.parse(btoa(localStorage.IDRgamesave));
+	else player = JSON.parse(formatsave.decode(localStorage.IDRgamesave));
 	transformToDecimal(player);
 }
 
@@ -1352,14 +1438,15 @@ async function jtb(text) {
 
 function export_save()
 {
-	jtb(btoa(JSON.stringify(player)));
+	jtb(formatsave.encode(JSON.stringify(player)));
 }
 
 function import_save()
 {
 	let userInput = prompt("导入：", "输入存档");
 	if (userInput != null && userInput !== "") {
-		player = JSON.parse(atob(userInput));
+		if(userInput[0] == 'e') player = JSON.parse(atob(userInput));
+		else player = JSON.parse(formatsave.decode(userInput));
 		transformToDecimal(player);
 		data_print();
 		location.reload();
@@ -1383,6 +1470,7 @@ function getjdscs(i)
 	if(player.boost3.gte(3)) {base[0] = N(Infinity); base[0].layer = Infinity;}
 	if(player.boost3.gte(12)) {base[1] = N(Infinity); base[1].layer = Infinity;}
 	if(player.boost3.gte(13)) {base[2] = N(Infinity); base[2].layer = Infinity;}
+	if(player.boost3.gte(80)) {base[3] = N(Infinity); base[3].layer = Infinity;}
 	return base;
 }
 
@@ -1409,8 +1497,10 @@ function getjdscx(i)
 	if(player.boost2.gte(470)) base[3] = base[3].mul(0.7);
 	if(player.permupg.includes(28)) base[3] = base[3].mul(0.5);
 	if(player.permupg.includes(40)) base[6] = base[6].mul(0.6);
+	if(hassuppupg(91)) base[6] = base[6].mul(suppupgeffect(91));
 	//delete
 	if(player.permupg.includes(51)) {base[4] = N(0);}
+	if(player.exchal[6].gte(17)) {base[5] = N(0);}
 	for(let i = 0;i < 8;i++) base[i] = N(1).div(base[i].add(1));
 	return base;
 }
@@ -1490,6 +1580,9 @@ function getjdx()
 		if(player.exchal[1].gte(1)) base[i] = base[i].pow(exchal[1].effect());
 		if(player.colldata.gte(1e18)) base[i] = base[i].pow(player.colldata.div(1e18).root(1.5).iteratedlog(10, 0.75).add(0.75));
 		if(player.colldata.gte(1e54)) base[i] = base[i].pow(player.colldata.mul(player.star.add(1).root(1000)).div(1e54).add(9).log10());
+		if(hassuppupg(4)) base[i] = base[i].pow(suppupgeffect(4));
+		if(hassuppupg(80)) base[i] = base[i].pow(suppupgeffect(80));
+		if(hassuppupg(97)) base[i] = base[i].pow(suppupgeffect(97));
 		//dil
 		if(player.openentropy)
 		{
@@ -1500,6 +1593,9 @@ function getjdx()
 		if(player.openchal && player.chalpara.includes(5)) base[i] = N(10).pow(base[i].log10().pow(1.3)).max(1);
 		if(getexchalopen().includes(3)) base[i] = N(10).pow(base[i].log10().pow(0.5)).max(1);
 		if(player.opensupp) base[i] = N(10).pow(base[i].log10().pow(1.5)).max(1);
+		if(hassuppupg(84)) base[i] = N(10).pow(base[i].log10().pow(suppupgeffect(84))).max(1);
+		if(hassuppupg(24)) base[i] = N(10).pow(base[i].log10().pow(suppupgeffect(24))).max(1);
+		if(player.colldata.gte(1e160)) base[i] = N(10).pow(base[i].log10().pow(player.colldata.div(1e160).root(40).mul(1e11).iteratedlog(10, 2).root(3))).max(1);
 		for(let j = 4;j < 8;j++)
 		{
 			if(base[i].gte(N(10).pow(scs[j])))
@@ -1510,6 +1606,19 @@ function getjdx()
 	}
 	return base;
 }
+
+function getdataspillstart()
+{
+	let base = N(10).pow(N(2).pow(1024));
+	return base;
+}
+
+function getdataspillroot(gen)
+{
+	let start = getdataspillstart();
+	if(start.gte(gen)) return;
+	return gen.log10().div(start.log10()).root(1.01);
+};
 
 function buyjd(num)
 {
@@ -1567,6 +1676,12 @@ function getboostzs1x()
 	return base;
 }
 
+function getboostzs2x()
+{
+	let base = N(3);
+	return base;
+}
+
 function getboostcost()
 {
 	let base = N(10).pow(player.boost);
@@ -1574,6 +1689,12 @@ function getboostcost()
 	{
 		let zsx = getboostzs1x();
 		base = N(10).pow(10).mul(N(10).pow(N(zsx).pow(player.boost.sub(10))));
+	}
+	if(player.boost.gte(20000))
+	{
+		let zsx1 = getboostzs1x();
+		let zsx2 = getboostzs2x();
+		base = N(10).pow(10).mul(N(10).pow(N(zsx1).pow(N(20000).add(player.boost.sub(20000).pow(zsx2)).sub(10))));
 	}
 	return base;
 }
@@ -1757,8 +1878,8 @@ function getboost2effect(b)
 }
 
 var boost3effectlist = [N(1), N(2), N(3), N(4), N(8), N(9), N(12), N(13)
-, N(52)];
-var boost3effectnum = 9;
+, N(52), N(80)];
+var boost3effectnum = 10;
 
 function getboost3effect(b)
 {
@@ -1797,6 +1918,10 @@ function getboost3effect(b)
 	else if(!b.gte(52))
 	{
 		return '在52三重跃迁，跃迁以指数增幅节点产能。当前：^' + notation(player.boost.add(1).log10().div(3).add(1).root(2));
+	}
+	else if(!b.gte(80))
+	{
+		return '在80三重跃迁，移除节点四阶软上限。';
 	}
 	else return '';
 }
@@ -1892,6 +2017,7 @@ function buymaxboost()
 	else
 	{
 		ans = ((player.data.div(1e10)).log10().log(zs1x)).floor().add(11);
+		if(ans.gte(20000)) ans = N(20000).add(ans.sub(20000).root(getboostzs2x())).floor().add(1);
 	}
 	
 	if(ans.gte(player.boost))
@@ -2900,6 +3026,7 @@ function getalgorbase()
 	if(player.permupg.includes(52)) base = base.add(player.algordata.add(1).log10().root(5).div(3));
 	if(player.permupg.includes(54)) base = base.add(0.5);
 	if(player.permupg.includes(56)) base = base.add(player.godnode[7].add(1).log10().add(1).log10().root(4));
+	if(hassuppupg(14)) base = base.add(suppupgeffect(14));
 	return base;
 }
 
@@ -2979,6 +3106,9 @@ function getalgordataspillstart()
 	//mul
 	if(player.permupg.includes(46)) base = base.mul(player.data.add(10).log10().add(9).log10().root(5));
 	if(player.chalcomp.gte(10)) base = base.mul(player.chalcomp.mul(50).sub(499).root(2));
+	if(hassuppupg(95)) base = base.mul(suppupgeffect(95));
+	if(hassuppupg(96)) base = base.mul(suppupgeffect(96));
+	if(player.colldata.gte(1e210)) base = base.mul(player.colldata.div(1e210).pow(2).add(9).iteratedlog(10, 1.5).add(0.5).pow(2));
 	//pow
 	if(player.openchal && player.chalpara.includes(7)) base = base.pow(0.25);
 	return base;
@@ -3258,7 +3388,7 @@ var exchal = [
 		name: '极端折算',
 		layer: 'chaos',
 		description: '节点所有软上限不可削弱或移除。<br>',
-		effectdisplay(){return '增幅混沌以前全局速度。当前：×' + notation(this.effect()) + '。<br>第1次完成本挑战时，解锁奇异挑战7。';},
+		effectdisplay(){return '增幅混沌以前全局速度。当前：×' + notation(this.effect()) + '。<br>第1次完成本挑战时，解锁奇异挑战7。<br>第17次完成本挑战时，移除节点六阶软上限。';},
 		effect()
 		{
 			if(player.exchal[6].gte(1)) return player.exchal[6].add(1).mul(2).pow(1.5);
@@ -3308,7 +3438,7 @@ var exchal = [
 		name: '混沌终章',
 		layer: 'chaos',
 		description: '同时开启奇异挑战1~7。<br>',
-		effectdisplay(){return '数据增幅折叠数据获取量。当前：×' + notation(this.effect()) + '。<br>第16次完成本挑战时，解锁<span style="color: white;">虚空</span>重置。';},
+		effectdisplay(){return '数据增幅折叠数据获取量。当前：×' + notation(this.effect()) + '。<br>第25次完成本挑战时，解锁<span style="color: white;">虚空</span>重置。';},
 		effect()
 		{
 			if(player.exchal[8].gte(1)) return player.data.add(1e10).log10().log10().root(1.5).pow(player.exchal[8].mul(2).root(2));
@@ -3473,15 +3603,19 @@ function getcolleffect()
 	if(player.colldata.gte(1e9)) e += '算法数据加成指数+' + notation(player.colldata.div(1e9).log10().root(5).div(10).min(N(0.12).add(player.colldata.log10().root(50).div(1000)))) + '<br>';
 	if(player.colldata.gte(1e18)) e += '传输节点产能^' + notation(player.colldata.div(1e18).root(1.5).iteratedlog(10, 0.75).add(0.75)) + '<br>';
 	if(player.colldata.gte(1e54)) e += '基于折叠数据和星辰，传输节点和星辰节点产能^' + notation(player.colldata.mul(player.star.add(1).root(1000)).div(1e54).add(9).log10()) + '<br>';
+	if(player.colldata.gte(1e160)) e += '传输节点产能指数^' + notation(player.colldata.div(1e160).root(40).mul(1e11).iteratedlog(10, 2).root(3)) + '<br>';
+	if(player.colldata.gte(1e210)) e += '延迟算法数据溢出×' + notation(player.colldata.div(1e210).pow(2).add(9).iteratedlog(10, 1.5).add(0.5).pow(2)) + '<br>';
 	
-	if(player.suppdata.gte(1e20)) e += '<span style="color: red">压制数据超过 1.000e20 后触发软上限。</span><br>';
 	if(!player.colldata.gte(10)) e += '到达 10.00 折叠数据解锁折叠第一效果<br>';
 	else if(!player.colldata.gte(1e6)) e += '到达 1.000e6 折叠数据解锁折叠第二效果<br>';
 	else if(!player.colldata.gte(1e9)) e += '到达 1.000e9 折叠数据解锁折叠第三效果<br>';
 	else if(!player.colldata.gte(1e18)) e += '到达 1.000e18 折叠数据解锁折叠第四效果<br>';
 	else if(!player.colldata.gte(1e54)) e += '到达 1.000e54 折叠数据解锁折叠第五效果<br>';
+	else if(!player.colldata.gte(1e160)) e += '到达 1.000e160 折叠数据解锁折叠第六效果<br>';
+	else if(!player.colldata.gte(1e210)) e += '到达 1.000e210 折叠数据解锁折叠第七效果<br>';
 	
-	if(!player.colldata.gte(1e20)) e += '<span style="color: red">到达 1.000e20 压制数据后触发软上限</span><br>';
+	e += '<span style="color: red">到达 1.000e20 压制数据后触发软上限。强度：^0.8</span><br>';
+	if(player.suppdata.gte(1e20)) e += '<span style="color: orange">到达 1.000e75 压制数据后触发二阶软上限。强度：^0.4</span><br>';
 	return e;
 }
 
@@ -3492,6 +3626,7 @@ function getcollget()
 	if(player.colldata.gte(1e6)) get = get.mul(N(2).pow(player.colldata.div(2e5).log(5).floor()));
 	if(player.PL3info.gte(1e14)) get = get.mul(player.PL3infottl.log10().mul(14).sub(195));
 	if(get.gte(1e20)) get = N(1e20).mul(get.div(1e20).pow(0.8));
+	if(get.gte(1e75)) get = N(1e75).mul(get.div(1e75).pow(0.4));
 	return get.sub(player.suppdata).max(0);
 }
 
@@ -3520,6 +3655,985 @@ function opensupp()
 		player.PL2upg = [true, true, true, true];
 	}
 	player.opensupp = !player.opensupp;
+}
+
+var suppupg = [
+	/*
+	{
+		id: 0,
+		name: '',
+		color: '',
+		type: 0,
+		gain()
+		{
+		},
+		unlocked() {},
+	},
+	{
+		id: 0,
+		name: '',
+		color: '',
+		type: 1,
+		cost: N(0),
+		effect()
+		{
+		},
+		money: '',
+		moneyname: '',
+		description(){},
+		unlocked() {},
+	},
+	{
+		id: 0,
+		name: '',
+		color: '';
+		type: 2,
+		basecost: N(0),
+		scal: N(0),
+		effect(x)
+		{
+		},
+		description(){},
+		money: '',
+		moneyname: '',
+		extralevel()
+		{
+		},
+		autobuy(){},
+		unlocked() {},
+	},
+	*/
+	{
+		id: 0,
+		name: '基础物质',
+		color: '#333333',
+		type: 0, //0为不可操作，1为单次购买，2为多次购买
+		gain()
+		{
+			let base = player.data.add(10).log10().add(10).log10().sub(37).max(0);
+			if(hassuppupg(1)) base = base.mul(suppupgeffect(1));
+			if(hassuppupg(3)) base = base.mul(suppupgeffect(3));
+			if(hassuppupg(6)) base = base.mul(suppupgeffect(6));
+			if(hassuppupg(11)) base = base.mul(suppupgeffect(11));
+			if(hassuppupg(13)) base = base.mul(suppupgeffect(13));
+			if(hassuppupg(18)) base = base.mul(suppupgeffect(18));
+			if(hassuppupg(85)) base = base.mul(suppupgeffect(85));
+			if(hassuppupg(86)) base = base.mul(player.suppupg[5].pow(0.5));
+			if(hassuppupg(88)) base = base.mul(suppupgeffect(88));
+			if(hassuppupg(21)) base = base.mul(suppupgeffect(21));
+			if(hassuppupg(92)) base = base.mul(suppupgeffect(92));
+			if(hassuppupg(99)) base = base.mul(suppupgeffect(99));
+			if(hassuppupg(2)) base = base.pow(suppupgeffect(2));
+			if(hassuppupg(34)) base = base.pow(suppupgeffect(34));
+			return base;
+		},
+		unlocked(){return player.data.gte('ee38') || player.suppupg[0].gte(0.01);},
+	},
+	{
+		id: 1,
+		name: '基础物质收集器',
+		color: '#333333',
+		type: 2,
+		basecost: N(10),
+		scal: N(5),
+		effect(x)
+		{
+			let base = N(2);
+			if(hassuppupg(9)) base = base.add(suppupgeffect(9));
+			let ans = N(base).pow(x);
+			if(ans.gte(1e15)) ans = N(1e15).mul(ans.div(1e15).root(4));
+			if(ans.gte(1e35)) ans = N(1e34).mul(N(10).pow(ans.div(1e34).log10().pow(0.6)));
+			return ans;
+		},
+		description()
+		{
+			return '倍增基础物质获取。当前：×'
+			+ notation(this.effect(suppupglevel(this.id)))
+			+ (this.effect(suppupglevel(this.id)).gte(1e15) ? (this.effect(suppupglevel(this.id)).gte(1e35) ? '(受二重软上限限制)' : '(受软上限限制)') : '');
+		},
+		money: 0,
+		moneyname: '基础物质',
+		extralevel()
+		{
+			let base = N(0);
+			if(hassuppupg(19)) base = base.add(suppupgeffect(19));
+			if(hassuppupg(81)) base = base.add(suppupgeffect(81));
+			return base;
+		},
+		autobuy(){return hassuppupg(87);},
+		unlocked(){return player.data.gte('ee38') || player.suppupg[0].gte(0.01);},
+	},
+	{
+		id: 2,
+		name: '基础物质增幅器',
+		color: '#333333',
+		type: 2,
+		basecost: N(1000),
+		scal: N(50),
+		effect(x){return N(1).add(x.mul(10).max(1).log10().mul(0.1));},
+		description(){return '指数增幅基础物质获取。当前：^' + notation(this.effect(suppupglevel(this.id)));},
+		money: 0,
+		moneyname: '基础物质',
+		extralevel(){return N(0);},
+		autobuy(){return hassuppupg(87);},
+		unlocked(){return player.data.gte('ee38') || player.suppupg[0].gte(0.01);},
+	},
+	{
+		id: 3,
+		name: '物质绽放',
+		color: '#333333',
+		type: 1,
+		cost: N(2500),
+		effect(){return player.suppupg[0].add(10).log10();},
+		description(){return '基础物质倍增基础物质获取。当前：×' + notation(this.effect());},
+		money: 0,
+		moneyname: '基础物质',
+		unlocked(){return player.data.gte('ee38') || player.suppupg[0].gte(0.01);},
+	},
+	{
+		id: 4,
+		name: '物质扫描',
+		color: '#333333',
+		type: 1,
+		cost: N(10000),
+		effect()
+		{
+			let base = player.suppupg[0].add(10).log10();
+			if(hassuppupg(83)) base = base.pow(suppupgeffect(83));
+			return base;
+		},
+		description(){return '基础物质增幅传输节点产能。当前：^' + notation(this.effect());},
+		money: 0,
+		moneyname: '基础物质',
+		unlocked(){return player.data.gte('ee38') || player.suppupg[0].gte(0.01);},
+	},
+	{
+		id: 5,
+		name: '暗物质',
+		color: '#222222',
+		type: 0, //0为不可操作，1为单次购买，2为多次购买
+		gain()
+		{
+			let base = player.suppupg[0].div(10000).max(1).iteratedlog(10, 0.5).add(0.5).max(0);
+			if(hassuppupg(6)) base = base.mul(suppupgeffect(6));
+			if(hassuppupg(13)) base = base.mul(suppupgeffect(13));
+			if(hassuppupg(18)) base = base.mul(suppupgeffect(18));
+			if(hassuppupg(86)) base = base.mul(player.suppupg[0].pow(0.1));
+			if(hassuppupg(86)) base = base.mul(player.suppupg[10].pow(0.5));
+			if(hassuppupg(21)) base = base.mul(suppupgeffect(21));
+			if(hassuppupg(7)) base = base.pow(suppupgeffect(7));
+			return base;
+		},
+		unlocked(){return player.suppupg[0].gte(10000) || player.suppupg[5].gte(0.01);},
+	},
+	{
+		id: 6,
+		name: '暗物质收集器',
+		color: '#222222',
+		type: 2,
+		basecost: N(10),
+		scal: N(10),
+		effect(x)
+		{
+			let base = N(1.75).pow(x);
+			if(base.gte(1e20)) base = N(1e19).mul(N(10).pow(base.div(1e19).log10().pow(0.2)));
+			return base;
+		},
+		description(){return '倍增暗物质和基础物质获取。当前：×' + notation(this.effect(suppupglevel(this.id)))
+		+ (this.effect(suppupglevel(this.id)).gte(1e20) ? '(受软上限限制)' : '');},
+		money: 5,
+		moneyname: '暗物质',
+		extralevel()
+		{
+			let base = N(0);
+			if(hassuppupg(19)) base = base.add(suppupgeffect(19));
+			if(hassuppupg(81)) base = base.add(suppupgeffect(81));
+			return base;
+		},
+		autobuy(){return hassuppupg(87);},
+		unlocked(){return player.suppupg[0].gte(10000) || player.suppupg[5].gte(0.01);},
+	},
+	{
+		id: 7,
+		name: '暗物质增幅器',
+		color: '#222222',
+		type: 2,
+		basecost: N(1000),
+		scal: N(100),
+		effect(x){return N(1).add(x.mul(10).max(1).log10().mul(0.09));},
+		description(){return '指数增幅暗物质获取。当前：^' + notation(this.effect(suppupglevel(this.id)));},
+		money: 5,
+		moneyname: '暗物质',
+		extralevel(){return N(0);},
+		autobuy(){return hassuppupg(87);},
+		unlocked(){return player.suppupg[0].gte(10000) || player.suppupg[5].gte(0.01);},
+	},
+	{
+		id: 8,
+		name: '时间洪流怀表',
+		color: '#222222',
+		type: 1,
+		cost: N(5000),
+		effect(){return N(0);},
+		description(){return '开始积累离线时间。游戏会消耗离线时间增幅超越以前全局速度。';},
+		money: 5,
+		moneyname: '暗物质',
+		unlocked(){return player.suppupg[0].gte(10000) || player.suppupg[5].gte(0.01);},
+	},
+	{
+		id: 9,
+		name: '扫描重构',
+		color: '#222222',
+		type: 1,
+		cost: N(1e8),
+		effect(){return player.suppupg[5].add(10).log10().div(9).root(1.5);},
+		description(){return '暗物质增幅基础物质收集器底数。当前：+' + notation(this.effect());},
+		money: 5,
+		moneyname: '暗物质',
+		unlocked(){return player.suppupg[0].gte(10000) || player.suppupg[5].gte(0.01);},
+	},
+	{
+		id: 10,
+		name: '红物质',
+		color: '#440000',
+		type: 0, //0为不可操作，1为单次购买，2为多次购买
+		gain()
+		{
+			let base = player.suppupg[0].div(1e8).max(1).pow(2).iteratedlog(10, 0.5).add(0.5).max(0);
+			if(hassuppupg(11)) base = base.mul(suppupgeffect(11));
+			if(hassuppupg(13)) base = base.mul(suppupgeffect(13));
+			if(hassuppupg(86)) base = base.mul(player.suppupg[5].pow(0.1));
+			if(hassuppupg(86)) base = base.mul(player.suppupg[15].pow(0.5));
+			if(hassuppupg(21)) base = base.mul(suppupgeffect(21));
+			if(hassuppupg(12)) base = base.pow(suppupgeffect(12));
+			return base;
+		},
+		unlocked(){return player.suppupg[5].gte(1e8) || player.suppupg[10].gte(0.01);},
+	},
+	{
+		id: 11,
+		name: '红物质收集器',
+		color: '#440000',
+		type: 2,
+		basecost: N(10),
+		scal: N(10),
+		effect(x)
+		{
+			let base = N(1.6).pow(x);
+			if(base.gte(1e20)) base = N(1e19).mul(N(10).pow(base.div(1e19).log10().pow(0.2)));
+			return base;
+		},
+		description(){return '倍增红物质和基础物质获取。当前：×' + notation(this.effect(suppupglevel(this.id)))
+		+ (this.effect(suppupglevel(this.id)).gte(1e20) ? '(受软上限限制)' : '');},
+		money: 10,
+		moneyname: '红物质',
+		extralevel()
+		{
+			let base = N(0);
+			if(hassuppupg(19)) base = base.add(suppupgeffect(19));
+			if(hassuppupg(81)) base = base.add(suppupgeffect(81));
+			return base;
+		},
+		autobuy(){return hassuppupg(87);},
+		unlocked(){return player.suppupg[5].gte(1e8) || player.suppupg[10].gte(0.01);},
+	},
+	{
+		id: 12,
+		name: '红物质增幅器',
+		color: '#440000',
+		type: 2,
+		basecost: N(1000),
+		scal: N(100),
+		effect(x){return N(1).add(x.mul(10).max(1).log10().mul(0.085));},
+		description(){return '指数增幅红物质获取。当前：^' + notation(this.effect(suppupglevel(this.id)));},
+		money: 10,
+		moneyname: '红物质',
+		extralevel(){return N(0);},
+		autobuy(){return hassuppupg(87);},
+		unlocked(){return player.suppupg[5].gte(1e8) || player.suppupg[10].gte(0.01);},
+	},
+	{
+		id: 13,
+		name: '高压转化',
+		color: '#440000',
+		type: 1,
+		cost: N(2e7),
+		effect(){return player.colldata.add(10).log10().mul(3).root(1.25);},
+		description(){return '折叠数据增幅基础物质、暗物质和红物质获取。当前：×' + notation(this.effect());},
+		money: 10,
+		moneyname: '红物质',
+		unlocked(){return player.suppupg[5].gte(1e8) || player.suppupg[10].gte(0.01);},
+	},
+	{
+		id: 14,
+		name: '算力增长',
+		color: '#440000',
+		type: 1,
+		cost: N(1e12),
+		effect(){return player.suppupg[10].add(10).log10().root(1.5).div(2);},
+		description(){return '红物质增幅算法底数。当前：+' + notation(this.effect());},
+		money: 10,
+		moneyname: '红物质',
+		unlocked(){return player.suppupg[5].gte(1e8) || player.suppupg[10].gte(0.01);},
+	},
+	{
+		id: 15,
+		name: '品红物质',
+		color: '#8b008b',
+		type: 0, //0为不可操作，1为单次购买，2为多次购买
+		gain()
+		{
+			let base = player.suppupg[0].div(1e12).max(1).iteratedlog(10, 0.5).add(0.5).max(0);
+			if(hassuppupg(11)) base = base.mul(suppupgeffect(16));
+			if(hassuppupg(86)) base = base.mul(player.suppupg[10].pow(0.1));
+			if(hassuppupg(21)) base = base.mul(suppupgeffect(21));
+			if(hassuppupg(12)) base = base.pow(suppupgeffect(17));
+			return base;
+		},
+		unlocked(){return player.suppupg[10].gte(1e12) || player.suppupg[15].gte(0.01);},
+	},
+	{
+		id: 16,
+		name: '品红物质收集器',
+		color: '#8b008b',
+		type: 2,
+		basecost: N(10),
+		scal: N(10),
+		effect(x)
+		{
+			let base = N(1.5).pow(x);
+			if(base.gte(1e20)) base = N(1e19).mul(N(10).pow(base.div(1e19).log10().pow(0.2)));
+			return base;
+		},
+		description(){return '倍增品红物质获取。当前：×' + notation(this.effect(suppupglevel(this.id)))
+		+ (this.effect(suppupglevel(this.id)).gte(1e20) ? '(受软上限限制)' : '');},
+		money: 15,
+		moneyname: '品红物质',
+		extralevel()
+		{
+			let base = N(0);
+			if(hassuppupg(19)) base = base.add(suppupgeffect(19));
+			if(hassuppupg(81)) base = base.add(suppupgeffect(81));
+			return base;
+		},
+		autobuy(){return hassuppupg(87);},
+		unlocked(){return player.suppupg[10].gte(1e12) || player.suppupg[15].gte(0.01);},
+	},
+	{
+		id: 17,
+		name: '品红物质增幅器',
+		color: '#8b008b',
+		type: 2,
+		basecost: N(1000),
+		scal: N(100),
+		effect(x){return N(1).add(x.mul(10).max(1).log10().mul(0.08));},
+		description(){return '指数增幅品红物质获取。当前：^' + notation(this.effect(suppupglevel(this.id)));},
+		money: 15,
+		moneyname: '品红物质',
+		extralevel(){return N(0);},
+		autobuy(){return hassuppupg(87);},
+		unlocked(){return player.suppupg[10].gte(1e12) || player.suppupg[15].gte(0.01);},
+	},
+	{
+		id: 18,
+		name: '黑暗助推',
+		color: '#8b008b',
+		type: 1,
+		cost: N(1e8),
+		effect()
+		{
+			let base = player.suppdata.root(1.25).add(1).iteratedlog(10, 0.5).add(0.5);
+			if(hassuppupg(23)) base = base.pow(suppupgeffect(23));
+			return base;
+		},
+		description(){return '压制数据增幅基础物质和暗物质获取。当前：×' + notation(this.effect());},
+		money: 15,
+		moneyname: '品红物质',
+		unlocked(){return player.suppupg[10].gte(1e12) || player.suppupg[15].gte(0.01);},
+	},
+	{
+		id: 19,
+		name: '全面增幅',
+		color: '#8b008b',
+		type: 1,
+		cost: N(6e9),
+		effect(x){return player.suppupg[15].add(1).log10().root(2).mul(3);},
+		description(){return '品红物质增加前四个物质收集器等级。当前：+' + notation(this.effect());},
+		money: 15,
+		moneyname: '品红物质',
+		unlocked(){return player.suppupg[10].gte(1e12) || player.suppupg[15].gte(0.01);},
+	},
+	{
+		id: 20,
+		name: '粉物质',
+		color: '#ffaaaa',
+		type: 0, //0为不可操作，1为单次购买，2为多次购买
+		gain()
+		{
+			let base = player.suppupg[0].mul(player.suppupg[5]).mul(player.suppupg[10]).mul(player.suppupg[15]).root(8).add(1).log10();
+			if(hassuppupg(90)) base = base.mul(suppupgeffect(90));
+			if(hassuppupg(28)) base = base.mul(suppupgeffect(28));
+			if(hassuppupg(93)) base = base.mul(suppupgeffect(93));
+			if(hassuppupg(98)) base = base.mul(suppupgeffect(98));
+			if(hassuppupg(22)) base = base.pow(suppupgeffect(22));
+			return base;
+		},
+		unlocked(){return hassuppupg(89);},
+	},
+	{
+		id: 21,
+		name: '粉物质收集器',
+		color: '#ffaaaa',
+		type: 2,
+		basecost: N(10),
+		scal: N(10),
+		effect(x)
+		{
+			let base = N(10);
+			if(hassuppupg(26)) base = base.mul(suppupgeffect(26));
+			if(hassuppupg(31)) base = base.mul(suppupgeffect(31));
+			let ans = base.pow(x);
+			if(ans.gte(1e50)) ans = N(10).pow(ans.div(1e49).log10().pow(0.75)).mul(1e49);
+			return ans;
+		},
+		description(){return '倍增前四种物质获取。当前：×' + notation(this.effect(suppupglevel(this.id)))
+		+ (this.effect(suppupglevel(this.id)).gte(1e50) ? '(受软上限限制)' : '');},
+		money: 20,
+		moneyname: '粉物质',
+		extralevel()
+		{
+			let base = N(0);
+			return base;
+		},
+		autobuy(){return false;},
+		unlocked(){return hassuppupg(89);},
+	},
+	{
+		id: 22,
+		name: '粉物质增幅器',
+		color: '#ffaaaa',
+		type: 2,
+		basecost: N(1000),
+		scal: N(100),
+		effect(x){return N(1).add(x.mul(10).max(1).log10().mul(0.075));},
+		description(){return '指数增幅粉物质获取。当前：^' + notation(this.effect(suppupglevel(this.id)));},
+		money: 20,
+		moneyname: '粉物质',
+		extralevel(){return N(0);},
+		autobuy(){return false;},
+		unlocked(){return hassuppupg(89);},
+	},
+	{
+		id: 23,
+		name: '强化助推',
+		color: '#ffaaaa',
+		type: 1,
+		cost: N(40000),
+		effect(){return player.suppupg[5].add(1).log10().div(200).root(2).mul(2.3).add(1);},
+		description(){return '暗物质增幅 黑暗助推 效果。当前：^' + notation(this.effect());},
+		money: 20,
+		moneyname: '粉物质',
+		unlocked(){return hassuppupg(89);},
+	},
+	{
+		id: 24,
+		name: '指数指数',
+		color: '#ffaaaa',
+		type: 1,
+		cost: N(80000),
+		effect()
+		{
+			let base = player.suppupg[5].add(1).log10().add(1).iteratedlog(10, 0.5).sub(0.5).div(100).add(1).root(4).add(0.01);
+			if(hassuppupg(29)) base = base.mul(suppupgeffect(29));
+			return base;
+		},
+		description(){return '暗物质增幅传输节点产能指数。当前：^' + notation(this.effect());},
+		money: 20,
+		moneyname: '粉物质',
+		unlocked(){return hassuppupg(89);},
+	},
+	{
+		id: 25,
+		name: '紫物质',
+		color: '#440044',
+		type: 0, //0为不可操作，1为单次购买，2为多次购买
+		gain()
+		{
+			let base = player.suppupg[20].div(50000).mul(suppupg[20].gain().div(100)).root(5);
+			if(hassuppupg(27)) base = base.pow(suppupgeffect(27));
+			return base;
+		},
+		unlocked(){return player.suppupg[20].gte(50000) || player.suppupg[25].gte(0.01);},
+	},
+	{
+		id: 26,
+		name: '紫物质收集器',
+		color: '#440044',
+		type: 2,
+		basecost: N(10),
+		scal: N(10),
+		effect(x)
+		{
+			let base = N(1).add(x.mul(2));
+			return base;
+		},
+		description(){return '增加粉物质收集器底数。当前：×' + notation(this.effect(suppupglevel(this.id)));},
+		money: 25,
+		moneyname: '紫物质',
+		extralevel()
+		{
+			let base = N(0);
+			return base;
+		},
+		autobuy(){return false;},
+		unlocked(){return player.suppupg[20].gte(50000) || player.suppupg[25].gte(0.01);},
+	},
+	{
+		id: 27,
+		name: '紫物质增幅器',
+		color: '#440044',
+		type: 2,
+		basecost: N(1000),
+		scal: N(100),
+		effect(x){return N(1).add(x.mul(10).max(1).log10().mul(0.07));},
+		description(){return '指数增幅紫物质获取。当前：^' + notation(this.effect(suppupglevel(this.id)));},
+		money: 25,
+		moneyname: '紫物质',
+		extralevel(){return N(0);},
+		autobuy(){return false;},
+		unlocked(){return player.suppupg[20].gte(50000) || player.suppupg[25].gte(0.01);},
+	},
+	{
+		id: 28,
+		name: '色彩转化',
+		color: '#440044',
+		type: 1,
+		cost: N(5000),
+		effect(){return player.suppupg[25].add(1).root(1.5);},
+		description(){return '紫物质增幅粉物质获取。当前：×' + notation(this.effect());},
+		money: 25,
+		moneyname: '紫物质',
+		unlocked(){return player.suppupg[20].gte(50000) || player.suppupg[25].gte(0.01);},
+	},
+	{
+		id: 29,
+		name: '高能差异',
+		color: '#440044',
+		type: 1,
+		cost: N(90000),
+		effect(){return player.suppupg[25].add(10).log10().add(1).log10().add(1).root(10);},
+		description(){return '紫物质增幅 指数指数 效果。当前：×' + notation(this.effect())},
+		money: 25,
+		moneyname: '紫物质',
+		unlocked(){return player.suppupg[20].gte(50000) || player.suppupg[25].gte(0.01);},
+	},
+	{
+		id: 30,
+		name: '淡紫物质',
+		color: '#880088',
+		type: 0, //0为不可操作，1为单次购买，2为多次购买
+		gain()
+		{
+			let base = player.suppupg[25].div(1e6).mul(suppupg[25].gain().div(1000)).root(5);
+			if(hassuppupg(32)) base = base.pow(suppupgeffect(32));
+			return base;
+		},
+		unlocked(){return player.suppupg[25].gte(1e6) || player.suppupg[30].gte(0.01);},
+	},
+	{
+		id: 31,
+		name: '淡紫物质收集器',
+		color: '#880088',
+		type: 2,
+		basecost: N(10),
+		scal: N(10),
+		effect(x)
+		{
+			let base = N(1).add(x.mul(1.8));
+			return base;
+		},
+		description(){return '增加粉物质收集器底数。当前：×' + notation(this.effect(suppupglevel(this.id)));},
+		money: 30,
+		moneyname: '淡紫物质',
+		extralevel()
+		{
+			let base = N(0);
+			return base;
+		},
+		autobuy(){return false;},
+		unlocked(){return player.suppupg[25].gte(1e6) || player.suppupg[30].gte(0.01);},
+	},
+	{
+		id: 32,
+		name: '淡紫物质增幅器',
+		color: '#880088',
+		type: 2,
+		basecost: N(1000),
+		scal: N(100),
+		effect(x){return N(1).add(x.mul(10).max(1).log10().mul(0.065));},
+		description(){return '指数增幅淡紫物质获取。当前：^' + notation(this.effect(suppupglevel(this.id)));},
+		money: 30,
+		moneyname: '淡紫物质',
+		extralevel(){return N(0);},
+		autobuy(){return false;},
+		unlocked(){return player.suppupg[25].gte(1e6) || player.suppupg[30].gte(0.01);},
+	},
+	{
+		id: 33,
+		name: '黑暗吞没',
+		color: '#880088',
+		type: 1,
+		cost: N(10000),
+		effect(){return player.suppupg[5].add(10).log10().add(9).log10();},
+		description(){return '暗物质增幅奇点获取。当前：^' + notation(this.effect());},
+		money: 30,
+		moneyname: '淡紫物质',
+		unlocked(){return player.suppupg[25].gte(1e6) || player.suppupg[30].gte(0.01);},
+	},
+	{
+		id: 34,
+		name: '物质扩张',
+		color: '#880088',
+		type: 1,
+		cost: N(1e7),
+		effect(){return N(1.075);},
+		description(){return '基础物质获取量^1.075。';},
+		money: 30,
+		moneyname: '淡紫物质',
+		unlocked(){return player.suppupg[25].gte(1e6) || player.suppupg[30].gte(0.01);},
+	},
+];
+
+suppupg.length = 80;
+
+var extra = [
+	{
+		id: 80,
+		name: '数据压制 I',
+		type: 2,
+		basecost: N(1e60),
+		scal: N(1e30),
+		effect(x)
+		{
+			let base = N(2).pow(x.add(1).iteratedlog(10, 0.5).add(0.5)).pow(1.5).mul(2).sub(2);
+			if(hassuppupg(94)) base = base.mul(suppupgeffect(94));
+			return base;
+		},
+		description(){return '增幅传输节点产能。当前：^' + notation(this.effect(suppupglevel(this.id)));},
+		extralevel(){return N(0);},
+		autobuy(){return false;},
+	},
+	{
+		id: 81,
+		name: '数据压制 II',
+		type: 2,
+		basecost: N(1e100),
+		scal: N(1e50),
+		effect(x)
+		{
+			let base = x.mul(10);
+			if(base.gte(30)) base = N(29).add(base.sub(29).log10().add(1).pow(2).sub(1));
+			return base;
+		},
+		description(){return '增幅前四种收集器等级。当前：+' + notation(this.effect(suppupglevel(this.id)))
+		+ (this.effect(suppupglevel(this.id)).gte(30) ? '(受软上限限制)' : '');},
+		extralevel(){return N(0);},
+		autobuy(){return false;},
+	},
+	{
+		id: 82,
+		name: '数据压制 III',
+		type: 2,
+		basecost: N(1e240),
+		scal: N(1e120),
+		effect(x){return N(1e5).pow(x);},
+		description(){return '增幅折叠数据获取。当前：×' + notation(this.effect(suppupglevel(this.id)));},
+		extralevel(){return N(0);},
+		autobuy(){return false;},
+	},
+	{
+		id: 83,
+		name: '数据压制 IV',
+		type: 2,
+		basecost: N(1e300),
+		scal: N(1e150),
+		effect(x){return N(1).add(x.mul(0.05));},
+		description(){return '增幅 物质扫描 效果。当前：^' + notation(this.effect(suppupglevel(this.id)));},
+		extralevel(){return N(0);},
+		autobuy(){return false;},
+	},
+	{
+		id: 84,
+		name: '数据压制 V',
+		type: 2,
+		basecost: N('e320'),
+		scal: N('e160'),
+		effect(x){return N(1).add(x.add(1).log10().add(1).log10().div(6)).root(1.5);},
+		description(){return '增幅传输节点产能的指数。当前：指数^' + notation(this.effect(suppupglevel(this.id)));},
+		extralevel(){return N(0);},
+		autobuy(){return false;},
+	},
+	{
+		id: 85,
+		name: '数据压制 VI',
+		type: 1,
+		cost: N(1e69),
+		effect(x){return player.suppupg[0].mul(player.suppupg[5]).mul(player.suppupg[10]).mul(player.suppupg[15]).add(1).iteratedlog(10, 0.25).add(0.25);},
+		description(){return '基于前四种物质的乘积，增幅基础物质获取。当前：×' + notation(this.effect());},
+	},
+	{
+		id: 86,
+		name: '数据压制 VII',
+		type: 1,
+		cost: N(5.14e114),
+		effect(x){return N(0);},
+		description(){return '对于前四种物质，每种物质^0.5增幅上一种物质获取，^0.1增幅下一种物质获取。';},
+	},
+	{
+		id: 87,
+		name: '数据压制 VIII',
+		type: 1,
+		cost: N(1e250),
+		effect(x){return N(0);},
+		description(){return '自动购买前四种物质的收集器和增幅器。';},
+	},
+	{
+		id: 88,
+		name: '数据压制 IX',
+		type: 1,
+		cost: N(1e260),
+		effect(x){return player.data.add(10).log10().root(2.75);},
+		description(){return '基于数据增幅基础物质产量。当前：×' + notation(this.effect());},
+	},
+	{
+		id: 89,
+		name: '数据压制 X',
+		type: 1,
+		cost: N(1e300),
+		effect(x){return N(0);},
+		description(){return '解锁新的物质。';},
+	},
+	{
+		id: 90,
+		name: '数据压制 XI',
+		type: 1,
+		cost: N('e380'),
+		effect(x){return N(1000);},
+		description(){return '粉物质获取速度×1000。';},
+	},
+	{
+		id: 91,
+		name: '数据压制 XII',
+		type: 1,
+		cost: N('e410'),
+		effect(x){return N(0.85);},
+		description(){return '节点七阶软上限弱化15%';},
+	},
+	{
+		id: 92,
+		name: '数据压制 XIII',
+		type: 1,
+		cost: N('e530'),
+		effect(x){return player.suppupg[30].add(1).pow(10);},
+		description(){return '淡紫物质增幅基础物质获取。当前：×' + notation(this.effect());},
+	},
+	{
+		id: 93,
+		name: '数据压制 XIV',
+		type: 1,
+		cost: N(2).pow(2048),
+		effect(x){return player.exchal[8].sub(15).max(1).pow(8);},
+		description(){return '完成奇异挑战8的次数≥16次后倍增粉物质获取。当前：×' + notation(this.effect());},
+	},
+	{
+		id: 94,
+		name: '数据压制 XV',
+		type: 1,
+		cost: N('e750'),
+		effect(x){return player.suppupg[80];},
+		description(){return '数据压制 I 的数量增幅 数据压制 I 效果。当前：×' + notation(this.effect());},
+	},
+	{
+		id: 95,
+		name: '数据压制 XVI',
+		type: 1,
+		cost: N('e790'),
+		effect(x){return player.suppupg[20].add(10).log10().pow(2);},
+		description(){return '粉物质延迟算法数据溢出。当前：×' + notation(this.effect());},
+	},
+	{
+		id: 96,
+		name: '数据压制 XVII',
+		type: 1,
+		cost: N('e830'),
+		effect(x){return player.suppupg[5].add(10).log10().pow(2).add(10).log10().pow(2);},
+		description(){return '暗物质延迟算法数据溢出。当前：×' + notation(this.effect());},
+	},
+	{
+		id: 97,
+		name: '数据压制 XVIII',
+		type: 1,
+		cost: N('e870'),
+		effect(x){return player.suppupg[0].add(10).log10();},
+		description(){return '基础物质增幅传输节点产能。当前：^' + notation(this.effect());},
+	},
+	{
+		id: 98,
+		name: '数据压制 XIX',
+		type: 1,
+		cost: N('e900'),
+		effect(x){return player.suppupg[30].add(1).iteratedlog(10, 0.5).add(0.5).pow(1.25);},
+		description(){return '淡紫物质增幅粉物质获取。当前：×' + notation(this.effect());},
+	},
+	{
+		id: 99,
+		name: '数据压制 XX',
+		type: 1,
+		cost: N('e960'),
+		effect(x){return player.PL3info.root(5).div(1e6).add(1).iteratedlog(10, 0.3).add(0.3).min(1e100);},
+		description(){return '混沌信息增幅基础物质产量。当前：×' + notation(this.effect());},
+	},
+];
+
+for(let i = 0;i < extra.length;i++)
+{
+	suppupg[80 + i] = extra[i];
+	suppupg[80 + i].color = '#333333';
+	suppupg[80 + i].money = 0;
+	suppupg[80 + i].moneyname = '基础物质';
+	if(i <= 9) suppupg[80 + i].unlocked = (function(){return player.suppupg[0].gte(0.01);});
+	else suppupg[80 + i].unlocked = (function(){return hassuppupg(89);});
+}
+
+function hassuppupg(id)
+{
+	if(suppupg[id].type == 0) return false;
+	else if(suppupg[id].type == 1) return player.suppupg[id];
+	else return suppupglevel(id).gte(1);
+}
+
+function suppupglevel(id)
+{
+	if(suppupg[id].type == 0) return N(0);
+	else if(suppupg[id].type == 1) return player.suppupg[id];
+	else return player.suppupg[id].add(suppupg[id].extralevel());
+}
+
+function suppupgeffect(id)
+{
+	if(suppupg[id].type == 0) return N(0);
+	else if(suppupg[id].type == 1) return suppupg[id].effect();
+	else return suppupg[id].effect(player.suppupg[id].add(suppupg[id].extralevel()));
+}
+
+function suppupgcost(id)
+{
+	if(suppupg[id].type == 0) return N(0);
+	else if(suppupg[id].type == 1) return suppupg[id].cost;
+	else return suppupg[id].basecost.mul(suppupg[id].scal.pow(player.suppupg[id]));
+}
+
+function suppupgcanbuy(id)
+{
+	if(suppupg[id].type == 0) return false;
+	else if(suppupg[id].type == 1)
+	{
+		if(!player.suppupg[id] && player.suppupg[suppupg[id].money].gte(suppupgcost(id))) return true;
+		else return false;
+	}
+	else
+	{
+		if(player.suppupg[suppupg[id].money].gte(suppupg[id].basecost)) return player.suppupg[suppupg[id].money].div(suppupg[id].basecost).log(suppupg[id].scal).add(1).floor();
+		else return N(0);
+	}
+}
+
+function buysuppupg(id)
+{
+	if(suppupg[id].type == 0) return;
+	else if(suppupg[id].type == 1)
+	{
+		if(player.suppupg[suppupg[id].money].gte(suppupgcost(id)) && !player.suppupg[id])
+		{
+			player.suppupg[suppupg[id].money] = player.suppupg[suppupg[id].money].sub(suppupgcost(id));
+			player.suppupg[id] = true;
+		}
+	}
+	else
+	{
+		if(suppupgcanbuy(id).sub(player.suppupg[id]).gte(1))
+		{
+			let canbuy = suppupgcanbuy(id);
+			player.suppupg[suppupg[id].money] = player.suppupg[suppupg[id].money].sub(suppupgcost(id));
+			player.suppupg[id] = player.suppupg[id].add(1);
+		}
+	}
+}
+
+function buymaxsuppupg(id)
+{
+	if(suppupg[id].type < 2) return;
+	else if(player.suppupg[suppupg[id].money].gte(suppupg[id].basecost))
+	{
+		let ans = player.suppupg[suppupg[id].money].div(suppupg[id].basecost).log(suppupg[id].scal).add(1).floor();
+		if(ans.gte(player.suppupg[id])) player.suppupg[id] = ans;
+	}
+}
+
+function dis_suppui()
+{
+	let ui = '<table>';
+	for(let i = 0;i < suppupg.length;i++)
+	{
+		if(suppupg[i] != undefined)
+		{
+			ui += '<td id="suppupgtd' + i + '"><button class="suppupgbt" id="suppupg' + i + '" onclick="buysuppupg(' + i + ')" style="border-color: ' + (suppupg[i].color == 'black' ? 'white' : suppupg[i].color) + '">';
+			ui += '</button></td>';
+			
+			if(player.suppupg[i] == undefined)
+			{
+				if(suppupg[i].type == 0 || suppupg[i].type == 2) player.suppupg[i] = N(0);
+				else player.suppupg[i] = false;
+			}
+		}
+		if(i % 5 == 4)
+		{
+			let flag = false;
+			for(let j = 1;j <= 5;j++)
+			{
+				if(suppupg[i + j] != undefined) flag = true;
+			}
+			if(flag) ui += '<tr>';
+		}
+	}
+	ui += '</table>';
+	document.getElementById('suppupg_detail').innerHTML = ui;
+}
+
+function build_suppui()
+{
+	for(let i = 0;i < suppupg.length;i++)
+	{
+		if(suppupg[i] != undefined)
+		{
+			if(suppupg[i].unlocked()) document.getElementById('suppupgtd' + i).style.display = 'inline-block';
+			else document.getElementById('suppupgtd' + i).style.display = 'none';
+			document.getElementById('suppupg' + i).style['background-color'] = (!hassuppupg(i)
+			? (suppupg[i].type == 2 ? (suppupgcanbuy(i).sub(player.suppupg[i]).gte(1) ? 'grey' : 'black') : (suppupgcanbuy(i) ? 'grey' : 'black'))
+			: (suppupg[i].type == 2 ? (suppupgcanbuy(i).sub(player.suppupg[i]).gte(1) ? 'grey' : 'black') : suppupg[i].color));
+			if(document.getElementById('suppupg' + i).style['background-color'] == 'white') document.getElementById('suppupg' + i).style['color'] = 'black';
+			else document.getElementById('suppupg' + i).style['color'] = 'white';
+			if(suppupg[i].type == 2) document.getElementById('suppupg' + i).innerHTML = (suppupg[i].name + '<br>' + suppupg[i].description()
+			+ '<br>等级' + notation(suppupglevel(i), 0) + (suppupg[i].extralevel().gte(0.01) ? ('+' + notation(suppupg[i].extralevel())) : '') + '<br>价格 ' + notation(suppupgcost(i)) + suppupg[i].moneyname);
+			else if(suppupg[i].type == 1) document.getElementById('suppupg' + i).innerHTML = (suppupg[i].name + '<br>' + suppupg[i].description()
+			+ '<br>价格 ' + notation(suppupgcost(i)) + suppupg[i].moneyname);
+			else document.getElementById('suppupg' + i).innerHTML = (suppupg[i].name + '<br>' + notation(player.suppupg[i]) + '<br>+' + notation(suppupg[i].gain()) + '/s');
+			if(suppupg[i].type == 2 && suppupg[i].autobuy())
+			{
+				buymaxsuppupg(i);
+			}
+		}
+	}
 }
 
 function automation()
@@ -3598,8 +4712,6 @@ function automation()
 	if(player.permupg.includes(39) && player.autochaos && PL3infoget.gte(player.autochaosgoal)) buyPL3();
 }
 
-var last_update = Date.now();
-
 function produce()
 {
 	if(getexchalopen().includes(1)) player.boost = N(1), player.boost2 = N(0), player.boost3 = N(0);
@@ -3612,8 +4724,33 @@ function produce()
 		player.openbh = false;
 	}
 	
-	let tickmult = (Date.now() - last_update) / 100;
-	last_update = Date.now();
+	let tickmult = (Date.now() - player.last_update) / 100;
+
+	if(getofflinelimit() > 0)
+	{
+		if(Date.now() >= player.last_update + 10000)
+		{
+			if(player.openoffline) player.offlinetime += (Date.now() - player.last_update);
+			player.last_update = Date.now();
+			if(player.offlinetime > getofflinelimit()) player.offlinetime = getofflinelimit();
+			return;
+		}
+	}
+	
+	if(tickmult > 0) player.last_update = Date.now();
+	if(tickmult < 0)
+	{
+		tickmult = 0;
+	}
+	
+	if(player.offlinetime >= 1000 && player.openoffline)
+	{
+		let otickmult = tickmult;
+		tickmult += (player.offlinetime * (1 - Math.pow(0.99488380310817629886, tickmult)) + otickmult * 100) / 100;
+		player.offlinetime *= Math.pow(0.99488380310817629886, tickmult);
+		player.offlinetime -= otickmult * 100;
+	}
+	else player.offlinetime = 0;
 	
 	updatePLinfoget();
 	
@@ -3632,7 +4769,9 @@ function produce()
 	}
 	if(player.boost.gte(jdunlock[0]))
 	{
-		player.data = player.data.add(player.jdnum[0].mul(jdx[0]).div(10).mul(PL3globalspeed).mul(tickmult));
+		let datagen = player.jdnum[0].mul(jdx[0]);
+		if(datagen.gte(getdataspillstart())) datagen = datagen.root(getdataspillroot(datagen));
+		player.data = player.data.add(datagen.div(10).mul(PL3globalspeed).mul(tickmult));
 	}
 	if(player.PL2unlock)
 	{
@@ -3755,7 +4894,9 @@ function produce()
 		}
 		else
 		{
-			player.sing = player.sing.add(player.blackhole.div(10));
+			let sig = player.blackhole;
+			if(hassuppupg(33)) sig = sig.pow(suppupgeffect(33));
+			player.sing = player.sing.add(sig.div(10));
 			if(!player.permupg.includes(59)) player.blackhole = player.blackhole.pow(0.99).mul(0.975).sub(0.1);
 			if(!player.blackhole.gte(1)) player.openbh = false;
 		}
@@ -3765,7 +4906,19 @@ function produce()
 	{
 		let cdg = player.suppdata.pow(2);
 		if(player.exchal[8].gte(1)) cdg = cdg.mul(exchal[8].effect());
+		if(hassuppupg(82)) cdg = cdg.mul(suppupgeffect(82));
 		player.colldata = player.colldata.add(cdg.div(10).mul(tickmult));
+	}
+	
+	if(player.data.gte('ee38') || player.suppupg[0].gte(0.01))
+	{
+		for(let i = 0;i < suppupg.length;i++)
+		{
+			if(suppupg[i] != undefined && suppupg[i].type == 0 && suppupg[i].unlocked())
+			{
+				player.suppupg[i] = player.suppupg[i].add(suppupg[i].gain().div(10).mul(tickmult));
+			}
+		}
 	}
 	
 	getentropy();
@@ -3905,6 +5058,8 @@ function GUI()
 	else document.getElementById('PL2bt').style.display = 'none';
 	if(player.permupg.includes(29)) document.getElementById('PL3bt').style.display = 'block';
 	else document.getElementById('PL3bt').style.display = 'none';
+	if(player.exchal[8].gte(25)) document.getElementById('PL4bt').style.display = 'auto';
+	else document.getElementById('PL4bt').style.display = 'none';
 	
 	if(player.PL1upg[7]) document.getElementById('spagebt2_4').style.display = 'inline-block';
 	else document.getElementById('spagebt2_4').style.display = 'none';
@@ -3947,6 +5102,25 @@ function GUI()
 	document.getElementById('PL3infoget').innerHTML = notation(PL3infoget, 0);
 	
 	document.getElementById('PL3globalspeed').innerHTML = notation(getPL3globalspeed(), 2);
+	if(getofflinelimit() > 0 && player.offlinetime >= 1000)
+	{
+		document.getElementById('offline').style.display = 'block';
+		document.getElementById('offline').innerHTML = '离线时间正在加成超越以前全局速度，当前剩余' + timeshow(Math.floor(player.offlinetime / 1000)) + '(上限在' + timeshow(Math.floor(getofflinelimit() / 1000)) + ')离线时间。';
+	}
+	else document.getElementById('offline').style.display = 'none';
+	
+	if(getofflinelimit() > 0)
+	{
+		if(player.openoffline) document.getElementById('offlinebt').innerHTML = '离线进度已开启';
+		else document.getElementById('offlinebt').innerHTML = '离线进度已关闭';
+	}
+	else document.getElementById('offlinebt').innerHTML = '暂未解锁离线进度';
+	
+	if(Date.now() < player.last_update)
+	{
+		document.getElementById('offline').style.display = 'block';
+		document.getElementById('offline').innerHTML = '<span style="color: red; text-shadow: 6px 6px 10px red; -6px -6px 10px red;">您从' + timeshow(Math.floor((player.last_update - Date.now()) / 1000)) + '后穿越了回来！';
+	}
 	
 	document.getElementById('data').innerHTML = notation(player.data, 0);
 	document.getElementById('data2').innerHTML = notation(player.data, 0);
@@ -3960,6 +5134,18 @@ function GUI()
 	document.getElementById('PL3tms').innerHTML = notation(player.PL3tms, 0);
 	//document.getElementById('PL4tms').innerHTML = notation(player.PL4tms);
 	
+	let jdx = getjdx();
+	let datagen = player.jdnum[0].mul(jdx[0]);
+	if(datagen.gte(getdataspillstart()))
+	{
+		document.getElementById('dataspill').style.display = 'block';
+		document.getElementById('dataspill').innerHTML = '在达到 ' + notation(getdataspillstart()) + ' 数据后，数据将溢出！获取速度变为' + notation(getdataspillroot(datagen)) + '次方根';
+	}
+	else
+	{
+		document.getElementById('dataspill').style.display = 'none';
+	}
+	
 	document.getElementById('slice').innerHTML = notation(player.slice, 0);
 	document.getElementById('slice_effect').innerHTML = notation(getsliceeffect());
 	for(let i = 0;i < 3;i++)
@@ -3972,9 +5158,13 @@ function GUI()
 	document.getElementById('boostnum').innerHTML = notation(player.boost, 0);
 	document.getElementById('boost2num').innerHTML = notation(player.boost2, 0);
 	document.getElementById('boost3num').innerHTML = notation(player.boost3, 0);
-	if(player.boost.gte(10)) document.getElementById('boostscaling').innerHTML = '超级折算|';
+	if(player.boost.gte(20000)) document.getElementById('boostscaling').innerHTML = '究极折算|';
+	else if(player.boost.gte(10)) document.getElementById('boostscaling').innerHTML = '超级折算|';
 	else document.getElementById('boostscaling').innerHTML = '';
 	document.getElementById('boostscalingeffect').innerHTML = notation(getboostzs1x(), 3);
+	document.getElementById('boostscaling2effect').innerHTML = notation(getboostzs2x(), 3);
+	if(player.boost.gte(20000)) document.getElementById('boostscal2').style.display = 'block';
+	else document.getElementById('boostscal2').style.display = 'none';
 	document.getElementById('unlock_origin').style.display = (player.unlock_origin ? 'block' : 'none');
 	document.getElementById('uunlock_origin').style.display = (!player.unlock_origin ? 'block' : 'none');
 	document.getElementById('origin_data').innerHTML = notation(player.origin_data, 0);
@@ -4015,7 +5205,6 @@ function GUI()
 	document.getElementById('chalcompnow').innerHTML = notation(getchalparacomp());
 	document.getElementById('chalcompeffect').innerHTML = getchalcompeffect();
 	
-	let jdx = getjdx();
 	let boostcost = getboostcost();
 	let boost2cost = getboost2cost();
 	let boost3cost = getboost3cost();
@@ -4403,6 +5592,17 @@ for(let i = 1;i < exchal.length;i++)
 dis_permupgui();
 dis_chalui();
 dis_exchalui();
+dis_suppui();
+
+function getofflinelimit() //ms
+{
+	if(!hassuppupg(8)) return 0;
+	else
+	{
+		let base = 600000;
+		return base;
+	}
+}
 
 //滚动新闻
 var news = {
@@ -4456,6 +5656,7 @@ setInterval(data_print, 400);
 setInterval(build_permupgui, 100);
 setInterval(build_chalui, 100);
 setInterval(build_exchalui, 100);
+setInterval(build_suppui, 100);
 setInterval(newsscroll, 40);
 		</script>
 	</body>
