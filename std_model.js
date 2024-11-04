@@ -786,7 +786,7 @@ function build_particle()
 {
 	for(let i = 0;i < std_model.length;i++)
 	{
-		if(!player.unlstdmod[i] && std_model[i].unlock()) player.unlstdmod[i] = true;
+		if(!player.unlstdmod[i] && std_model[i].unlock() && player.openstdmod) player.unlstdmod[i] = true;
 		if(player.unlstdmod[i] || std_model[i].show()) document.getElementById('particle' + i).style.display = 'block';
 		else document.getElementById('particle' + i).style.display = 'none';
 		if(player.unlstdmod[i]) document.getElementById('particle' + i).style.opacity = '100%';
