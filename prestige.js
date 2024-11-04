@@ -9,17 +9,24 @@ function updatePLinfoget()
 	}
 	else PL1infoget = N(0);
 	
-	//mul
-	if(player.boost2.gte(10)) PL1infoget = PL1infoget.mul(player.boost.add(1).mul(1.5).pow(0.75));
-	if(player.permupg.includes(0)) PL1infoget = PL1infoget.mul(getsliceeffect().pow(0.4));
-	if(player.origin_data.gte(1e90) && !(player.openchal && player.chalpara.includes(2))) PL1infoget = PL1infoget.mul(player.origin_data.div(1e80).pow(540).min('e220000'));
-	//pow
-	if(player.permupg.includes(22) && player.openentropy) PL1infoget = PL1infoget.mul(player.PL1info.add(1).pow(5).min('e35000'));
-	if(player.permupg.includes(23)) PL1infoget = PL1infoget.pow(1.02);
-	//dil
-	if(player.openchal && player.chalpara.includes(3)) PL1infoget = N(10).pow(PL1infoget.add(1).log10().pow(0.4)).max(1);
-	if(player.openchal && player.chalpara.includes(5)) PL1infoget = N(10).pow(PL1infoget.add(1).log10().pow(1.3)).max(1);
-	if(player.openchal && player.chalpara.includes(6)) PL1infoget = N(10).pow(PL1infoget.add(1).log10().pow(1.7)).max(1);
+	if(!player.openstdmod)
+	{
+		//mul
+		if(player.boost2.gte(10)) PL1infoget = PL1infoget.mul(player.boost.add(1).mul(1.5).pow(0.75));
+		if(player.permupg.includes(0)) PL1infoget = PL1infoget.mul(getsliceeffect().pow(0.4));
+		if(player.origin_data.gte(1e90) && !(player.openchal && player.chalpara.includes(2))) PL1infoget = PL1infoget.mul(player.origin_data.div(1e80).pow(540).min('e220000'));
+		//pow
+		if(player.permupg.includes(22) && player.openentropy) PL1infoget = PL1infoget.mul(player.PL1info.add(1).pow(5).min('e35000'));
+		if(player.permupg.includes(23)) PL1infoget = PL1infoget.pow(1.02);
+		//dil
+		if(player.openchal && player.chalpara.includes(3)) PL1infoget = N(10).pow(PL1infoget.add(1).log10().pow(0.4)).max(1);
+		if(player.openchal && player.chalpara.includes(5)) PL1infoget = N(10).pow(PL1infoget.add(1).log10().pow(1.3)).max(1);
+		if(player.openchal && player.chalpara.includes(6)) PL1infoget = N(10).pow(PL1infoget.add(1).log10().pow(1.7)).max(1);
+	}
+	if(player.openstdmod)
+	{
+		if(player.unlstdmod[5]) PL1infoget = PL1infoget.mul(std_model[5].effect(player.stdmod[5]));
+	}
 	PL1infoget = PL1infoget.floor();
 	
 	if(player.PL1info.gte('e7000'))
@@ -28,8 +35,11 @@ function updatePLinfoget()
 		else PL2infoget = player.PL1info.root(3500).div(100);
 	}
 	else PL2infoget = N(0);
-	if(player.permupg.includes(53)) PL2infoget = PL2infoget.pow(2);
 	
+	if(!player.openstdmod)
+	{
+		if(player.permupg.includes(53)) PL2infoget = PL2infoget.pow(2);
+	}
 	PL2infoget = PL2infoget.floor();
 	
 	if(player.PL2info.gte('e10000'))

@@ -3,24 +3,34 @@ var subpage = 1;
 var sbc = [255, 255, 255];
 var sbct = [-3, -2, -1];
 var player;
+var flashLock = false;
+
 
 var PL1upgcost = [N(1), N(2), N(6), N(40), N(2500), N(10000), N(30000), N(50000)];
 var PL2upgcost = [N(1e12), N(1e13), N(1e32), N(1e75)];
 var sliceupgcost = [N(5), N(6), N(7), N(8), N(300), N(15000), N(1e10), N(1e111)];
 var insupgcostb = [N(300), N(50), N(300), N(50), N(300), N(50)];
 var insupgcostx = [N(100), N(6), N(100), N(6), N(100), N(6)];
-var voidupgcost = [N(10), N(100), N(1000), N(10000), N(1e5), N(1e6), N(1e7), N(1e8), N(1e10), N(1e100), N(1e100), N(1e100)];
+var voidupgcost = [N(10), N(100), N(1000), N(10000), N(1e5), N(1e6), N(1e7), N(1e8), N(1e10), N(1e15), N(1e100), N(1e100)];
 var bhupgcost = [N(3000), N(2500), N(6000), N(10000)];
 var bhupgcostx = [N(3), N(2), N(3), N(10)];
+var ancost = [N(10), N(10000), N(1e20), N(1e30), N(1e45), N(1e80), N(1e120), N('1e300000')];
+var ancostx = [N(10), N(30), N(60), N(100), N(150), N(250), N(350), N(1e256)];
+var ancdbase = [N(1), N(4), N(8), N(16), N(32), N(64), N(128), N(256)];
+var ancdcost = [N(10), N(1e5), N(1e20), N(1e30), N(1e45), N(1e80), N(1e120), N('1e300000')];
+var ancdcostx = [N(10), N(20), N(40), N(80), N(160), N(320), N(640), N(1280)];
+var unlan = [5, 7, 11, 14, 17, 24, 26, 100];
 
 function chpage(p)
 {
+	if(flashLock) return;
 	page = p;
 	subpage = 1;
 }
 
 function chspage(p)
 {
+	if(flashLock) return;
 	subpage = p;
 }
 
@@ -247,4 +257,30 @@ function import_save()
 		location.reload();
 	} else {
 	}
+}
+
+function getRandomColor()
+{
+	const letters = '0123456789ABCDEF';
+	let color = '#';
+	for(let i = 0; i < 6; i++)
+	{
+		color += letters[Math.floor(Math.random() * 16)];
+	}
+	return color;
+}
+
+function stdmodScreenFlash(ms) {
+	flashLock = true;
+	if(ms == 0)
+	{
+		document.getElementById('mainbody').style['background-color'] = '';
+		document.getElementById('textbody').style.opacity = '100%';
+		flashLock = false;
+		PL4reset();player.openstdmod = !player.openstdmod;
+		return;
+	}
+	document.getElementById('mainbody').style['background-color'] = getRandomColor();
+	document.getElementById('textbody').style.opacity = (ms * ms / 100) + '%';
+	setTimeout(function(){stdmodScreenFlash(ms - 1)}, ms);
 }

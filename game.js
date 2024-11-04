@@ -80,6 +80,23 @@ function init()
 		voidarea: N(0),
 		voidupgbits: 0,
 		bhupg: [N(0), N(0), N(0), N(0)],
+		stdmod: [],
+		openstdmod: false,
+		firstopenstdmod: true,
+		unlstdmod: [],
+		SMupg: -1,
+		arraydata: N(0),
+		arraynode: [N(0), N(0), N(0), N(0), N(0), N(0), N(0), N(0)],
+		buyan: [N(0), N(0), N(0), N(0), N(0), N(0), N(0), N(0)],
+		buyancd: [N(0), N(0), N(0), N(0), N(0), N(0), N(0), N(0)],
+		ancd: [N(0), N(0), N(0), N(0), N(0), N(0), N(0), N(0)],
+		antier: [N(0), N(0), N(0), N(0), N(0), N(0), N(0), N(0)],
+		asshard: [N(0), N(0), N(0)],
+		astree: [],
+		openft: 0,
+		unlft: 0,
+		ft: {
+		},
 		
 		//theorem
 		
@@ -92,6 +109,21 @@ function init()
 		last_update: Date.now(),
 		offlinetime: 0,
 		openoffline: false,
+	};
+	for(let i = 0;i < 17;i++)
+	{
+		player.stdmod.push(N(0));
+		player.unlstdmod.push(false);
+	}
+	ftinit(0);
+}
+
+function ftinit(i, save = {})
+{
+	player.ft[i] = {
+		energy: (save.energy == true ? player.ft[i].energy : N(0)),
+		upg: (save.upg == true ? player.ft[i].upg : 0),
+		buyables: (save.buyables == true ? player.ft[i].buyables : {}),
 	};
 }
 
@@ -191,6 +223,7 @@ function getjdx()
 				base[i] = scs[j].mul(base[i].div(scs[j]).pow(scx[j]));
 			}
 		}
+		//pre Std Model Mult-Pow-Dil
 		//mult
 		if(player.boost2.gte(1)) base[i] = base[i].mul(3);
 		if(player.boost2.gte(3)) base[i] = base[i].mul(player.boost2.add(1).mul(1.25).pow(3.5));
@@ -201,57 +234,80 @@ function getjdx()
 		if(player.boost3.gte(9)) base[i] = base[i].mul(player.PL2info.add(1).pow(45));
 		if(player.PL1upg[2]) base[i] = base[i].mul(player.boost.add(1).pow(1.5));
 		if(player.PL1upg[7]) base[i] = base[i].mul(getsliceeffect());
-		if(player.origin_data.gte(1e5) && !(player.openchal && player.chalpara.includes(2))) base[i] = base[i].mul(player.origin_data.div(100).sub(1000).max(1).pow(20));
+		if(player.origin_data.gte(1e5) && !(player.openchal && player.chalpara.includes(2)) && !player.openstdmod) base[i] = base[i].mul(player.origin_data.div(100).sub(1000).max(1).pow(20));
 		if(player.entropy[2].gte(1)) base[i] = base[i].mul(N(100).pow(player.entropy[2].add(3).pow(4)).min('e8192'));
 		if(player.PL2upg[2] && !player.permupg.includes(11)) base[i] = base[i].mul(N(10).pow(player.godstar.mul(60).root(1.8).min(N(2000).add(player.godstar.root(2.1))).min(N(10000).add(player.godstar.root(4))).min(N(20000).add(player.godstar.log10().mul(45)))).min('e1e12'));
 		if(player.PL3infottl.gte(6.666)) base[i] = base[i].mul(player.PL3infottl.pow(100));
+		//SM mult log
+		if(player.openstdmod)
+		{
+			base[i] = base[i].max(1).log10();
+		}
 		//pow
-		if(player.boost.gte(65)) base[i] = base[i].pow(N(1).add(player.boost.root(10).div(15)));
-		if(player.boost3.gte(4))
+		if(!player.openstdmod)
 		{
-			let power = player.PL2info.add(1).log10().div(40).add(1);
-			if(power.gte(1.1)) power = N(1.1).mul(power.div(1.1).pow(0.4));
-			base[i] = base[i].pow(power.min(1.3));
-		}
-		if(player.PL1upg[7]) base[i] = base[i].pow(N(1).add(player.sliceupg_rep[0].mul(0.005)));
-		if(player.permupg.includes(8)) base[i] = base[i].pow(player.PL2info.add(1).log10().add(10).log10().root(4).min(1.4));
-		if(player.PL2upg[2] && player.permupg.includes(11)) base[i] = base[i].pow(player.godstar.add(10).log10().add(10).log10().root(3));
-		if(player.permupg.includes(12)) base[i] = base[i].pow(player.star.add(10).log10().add(10).log10().root(6));
-		if(player.chalcomp.gte(1.5)) base[i] = base[i].pow(N(1).add(player.chalcomp.log(1.5).root(7).log(2)));
-		if(player.PL3unlock) base[i] = base[i].pow(player.PL3infottl.add(10).log10().root(2));
-		if(player.boost3.gte(52)) base[i] = base[i].pow(player.boost.add(1).log10().div(3).add(1).root(2));
-		if(player.elements >= 5) base[i] = base[i].pow(1.9 - 0.1 * i);
-		if(player.exchal[1].gte(1)) base[i] = base[i].pow(exchal[1].effect());
-		if(player.colldata.gte(1e18)) base[i] = base[i].pow(player.colldata.div(1e18).root(1.5).iteratedlog(10, 0.75).add(0.75));
-		if(player.colldata.gte(1e54)) base[i] = base[i].pow(player.colldata.mul(player.star.add(1).root(1000)).div(1e54).add(9).log10());
-		if(hassuppupg(4) && !getexchalopen().includes(11)) base[i] = base[i].pow(suppupgeffect(4));
-		if(hassuppupg(80) && !getexchalopen().includes(11)) base[i] = base[i].pow(suppupgeffect(80));
-		if(hassuppupg(97) && !getexchalopen().includes(11)) base[i] = base[i].pow(suppupgeffect(97));
-		if(player.star.gte('e81000')) base[i] = base[i].pow(player.star.add(10).log10().sub(80500).div(500).pow(1.1));
-		if(hassuppupg(38) && i == 0 && !getexchalopen().includes(11)) base[i] = base[i].pow(suppupgeffect(38));
-		if(player.colldata.gte(1e250)) base[i] = base[i].pow(player.colldata.div(1e250).add(10).log10().pow(1.5).mul(player.PL3info.add(10).log10().pow(2)).div(4).add(1).root(1.75));
-		if(player.exchal[10].gte(1)) base[i] = base[i].pow(exchal[10].effect());
-		//dil
-		if(player.openentropy)
-		{
-			base[i] = N(10).pow(base[i].log10().pow(0.9)).max(1);
-		}
-		if(player.openchal && player.chalpara.includes(0)) base[i] = N(10).pow(base[i].log10().pow(0.4)).max(1);
-		if(player.openchal && player.chalpara.includes(4)) base[i] = N(10).pow(base[i].log10().pow(1.7)).max(1);
-		if(player.openchal && player.chalpara.includes(5)) base[i] = N(10).pow(base[i].log10().pow(1.3)).max(1);
-		if(getexchalopen().includes(3)) base[i] = N(10).pow(base[i].log10().pow(0.5)).max(1);
-		if(player.opensupp) base[i] = N(10).pow(base[i].log10().pow(1.5)).max(1);
-		if(hassuppupg(84) && !getexchalopen().includes(11)) base[i] = N(10).pow(base[i].log10().pow(suppupgeffect(84))).max(1);
-		if(hassuppupg(24) && !getexchalopen().includes(11)) base[i] = N(10).pow(base[i].log10().pow(suppupgeffect(24))).max(1);
-		if(player.colldata.gte(1e160)) base[i] = N(10).pow(base[i].log10().pow(player.colldata.div(1e160).root(40).mul(1e11).iteratedlog(10, 2).root(3))).max(1);
-		if(getexchalopen().includes(11)) base[i] = N(10).pow(base[i].log10().pow(0.831)).max(1);
-		for(let j = 4;j < 8;j++)
-		{
-			if(base[i].gte(N(10).pow(scs[j])))
+			if(player.boost.gte(65)) base[i] = base[i].pow(N(1).add(player.boost.root(10).div(15)));
+			if(player.boost3.gte(4))
 			{
-				base[i] = (N(10).pow(scs[j])).mul(N(10).pow(base[i].log10().sub(scs[j]).pow(scx[j])));
+				let power = player.PL2info.add(1).log10().div(40).add(1);
+				if(power.gte(1.1)) power = N(1.1).mul(power.div(1.1).pow(0.4));
+				base[i] = base[i].pow(power.min(1.3));
+			}
+			if(player.PL1upg[7]) base[i] = base[i].pow(N(1).add(player.sliceupg_rep[0].mul(0.005)));
+			if(player.permupg.includes(8)) base[i] = base[i].pow(player.PL2info.add(1).log10().add(10).log10().root(4).min(1.4));
+			if(player.PL2upg[2] && player.permupg.includes(11)) base[i] = base[i].pow(player.godstar.add(10).log10().add(10).log10().root(3));
+			if(player.permupg.includes(12)) base[i] = base[i].pow(player.star.add(10).log10().add(10).log10().root(6));
+			if(player.chalcomp.gte(1.5)) base[i] = base[i].pow(N(1).add(player.chalcomp.log(1.5).root(7).log(2)));
+			if(player.PL3unlock) base[i] = base[i].pow(player.PL3infottl.add(10).log10().root(2));
+			if(player.boost3.gte(52)) base[i] = base[i].pow(player.boost.add(1).log10().div(3).add(1).root(2));
+			if(player.elements >= 5) base[i] = base[i].pow(1.9 - 0.1 * i);
+			if(player.exchal[1].gte(1)) base[i] = base[i].pow(exchal[1].effect());
+			if(player.colldata.gte(1e18)) base[i] = base[i].pow(player.colldata.div(1e18).root(1.5).iteratedlog(10, 0.75).add(0.75));
+			if(player.colldata.gte(1e54)) base[i] = base[i].pow(player.colldata.mul(player.star.add(1).root(1000)).div(1e54).add(9).log10());
+			if(hassuppupg(4) && !getexchalopen().includes(11)) base[i] = base[i].pow(suppupgeffect(4));
+			if(hassuppupg(80) && !getexchalopen().includes(11)) base[i] = base[i].pow(suppupgeffect(80));
+			if(hassuppupg(97) && !getexchalopen().includes(11)) base[i] = base[i].pow(suppupgeffect(97));
+			if(player.star.gte('e81000')) base[i] = base[i].pow(player.star.add(10).log10().sub(80500).div(500).pow(1.1));
+			if(hassuppupg(38) && i == 0 && !getexchalopen().includes(11)) base[i] = base[i].pow(suppupgeffect(38));
+			if(player.colldata.gte(1e250)) base[i] = base[i].pow(player.colldata.div(1e250).add(10).log10().pow(1.5).mul(player.PL3info.add(10).log10().pow(2)).div(4).add(1).root(1.75));
+			if(player.exchal[10].gte(1)) base[i] = base[i].pow(exchal[10].effect());
+		}
+		//dil
+		if(!player.openstdmod)
+		{
+			if(player.openentropy)
+			{
+				base[i] = N(10).pow(base[i].log10().pow(0.9)).max(1);
+			}
+			if(player.openchal && player.chalpara.includes(0)) base[i] = N(10).pow(base[i].log10().pow(0.4)).max(1);
+			if(player.openchal && player.chalpara.includes(4)) base[i] = N(10).pow(base[i].log10().pow(1.7)).max(1);
+			if(player.openchal && player.chalpara.includes(5)) base[i] = N(10).pow(base[i].log10().pow(1.3)).max(1);
+			if(getexchalopen().includes(3)) base[i] = N(10).pow(base[i].log10().pow(0.5)).max(1);
+			if(player.opensupp) base[i] = N(10).pow(base[i].log10().pow(1.5)).max(1);
+			if(hassuppupg(84) && !getexchalopen().includes(11)) base[i] = N(10).pow(base[i].log10().pow(suppupgeffect(84))).max(1);
+			if(hassuppupg(24) && !getexchalopen().includes(11)) base[i] = N(10).pow(base[i].log10().pow(suppupgeffect(24))).max(1);
+			if(player.colldata.gte(1e160)) base[i] = N(10).pow(base[i].log10().pow(player.colldata.div(1e160).root(40).mul(1e11).iteratedlog(10, 2).root(3))).max(1);
+			if(getexchalopen().includes(11)) base[i] = N(10).pow(base[i].log10().pow(0.831)).max(1);
+			for(let j = 4;j < 8;j++)
+			{
+				if(base[i].gte(N(10).pow(scs[j])))
+				{
+					base[i] = (N(10).pow(scs[j])).mul(N(10).pow(base[i].log10().sub(scs[j]).pow(scx[j])));
+				}
 			}
 		}
+		//after Std Model
+		if(player.openstdmod)
+		{
+			base[i] = base[i].mul(std_model[0].effect(player.stdmod[0]));
+			if(player.unlstdmod[1]) base[i] = base[i].mul(std_model[1].effect(player.stdmod[1]).pow(player.buyjd[i]));
+			if(player.unlstdmod[2]) base[i] = base[i].mul(std_model[2].effect(player.stdmod[2]).pow(player.boost2));
+			if(player.SMupg >= 2) base[i] = base[i].mul(player.PL1info.add(1).root(8));
+			if(player.SMupg >= 3) base[i] = base[i].mul(N(100).pow(player.PL4info.sub(5).max(0)));
+			if(player.arraydata.gte(1)) base[i] = base[i].mul(player.arraydata.max(1).pow(getarraydatatranspower()));
+		}
+		if(!player.openstdmod && player.SMupg >= 9) base[i] = base[i].pow(player.arraydata.max(1).min(N(9e15).mul(player.arraydata.sub(9e15).max(1).root(2))));
+		if(!player.openstdmod && player.astree.includes(22) && i == 0) base[i] = base[i].pow(ascend_tree[22].effect());
 	}
 	return base;
 }
@@ -343,6 +399,7 @@ function getsliceeffect()
 	
 	let effect = player.slice.pow(p).max(1);
 	if(player.openchal && player.chalpara.includes(1)) effect = N(1);
+	if(player.openstdmod) effect = N(1);
 	return effect;
 }
 
@@ -804,7 +861,10 @@ function getpermupgeffect(num)
 	else if(num == 63) return '黑洞永久开启，开启黑洞时仍然能够充能。解锁黑洞升级。';
 	else if(num == 64) return '混沌信息降低黑洞升级的价格。当前：÷' + notation(player.PL3info.add(1).log10().sub(200).max(0).add(1).root(3));
 	else if(num == 65) return '黑洞增幅混沌以前全局速度的公式变得更好。';
-	else if(num == 66) return '解锁???。';
+	else if(num == 66) return '解锁标准模型。(在虚空选项卡内)';
+	else if(num == 67) return '虚空信息增幅所有矩阵节点产能。当前：×' + notation(player.PL4info.add(1));
+	else if(num == 68) return '虚空信息增幅虚空数据产量。当前：×' + notation(N(1.5).pow(player.PL4info.sub(10).max(0)));
+	else if(num == 69) return '解锁飞升。(在虚空选项卡内)';
 	else return '无效升级';
 }
 
@@ -814,14 +874,14 @@ var permupgcost = [N(1e75), N(1e78), N(1e19), N(1e82), N(1e85), N(3e23), N(1e88)
 , N(1), N(1), N(2), N(2), N(3), N(4), N(5), N(6), N(7), N(10000)
 , N('e70000'), N('e120000'), N('e4.6e6'), N(9.7), N(4e9), N('e9.4e6'), N(400), N('e1.18e7'), N('e2.18e7'), N('e2.7e7')
 , N('e1e8'), N('e2.5e8'), N(1e13), N('e6e8'), N('e2.1e9'), N(1e6), N('e5e9'), N('e2e10'), N('e3e11'), N(1e14)
-, N(1e7), N('ee365'), N(1e190), N(1e10), N(1e200), N('ee393'), N('ee400')];
+, N(1e7), N('ee365'), N(1e190), N(1e10), N(1e200), N('ee393'), N('ee400'), N('ee410'), N('e2e428'), N(1e225)];
 var permupgcosttype = [0, 0, 1, 0, 0, 1, 0, 1, 0, 1
 , 1, 0, 1, 1, 0, 1, 0, 1, 0, 1
 , 0, 2, 0, 2, 1, 1, 0, 0, 0, 0
 , 3, 3, 3, 3, 3, 3, 3, 3, 3, 3
 , 0, 1, 0, 2, 4, 0, 3, 1, 0, 1
 , 0, 0, 4, 1, 1, 3, 0, 1, 1, 3
-, 5, 0, 3, 5, 3, 0, 0];
+, 5, 0, 3, 5, 3, 0, 0, 0, 1, 3];
 var permupgnum = permupgcosttype.length;
 var permupgcosttypename = ['宇宙信息', '神星', '挑战复杂度纪录', '混沌信息', '混沌质量', '虚空数据'];
 var permupgcosttypeinternal = ['PL2info', 'godstar', 'chalcomp_temp', 'PL3info', 'chaosmass', 'PL4data'];
@@ -843,6 +903,7 @@ function permupgcanblock(num)
 	if(num == 29 && (!player.permupg.includes(14) && !player.PL3unlock)) return false;
 	if(num >= 30 && !player.PL3unlock) return false;
 	if(num >= 60 && !hasvoidupg(6)) return false;
+	if(num >= 67 && !player.permupg.includes(66)) return false;
 	return true;
 }
 
@@ -1092,7 +1153,9 @@ function buymaxalgor()
 
 function getalgorrebuyscalx()
 {
-	let base = N(1.05);
+	let base = N(0.05);
+	if(player.astree.includes(33)) base = base.mul(ascend_tree[33].effect());
+	base = base.add(1);
 	return base;
 }
 
@@ -1306,13 +1369,22 @@ function getsingcap()
 	return ans;
 }
 
+function getbhgsx()
+{
+	let gsx = N(1);
+	if(!player.permupg.includes(65)) gsx = player.blackhole.mul(player.sing.add(10).log10());
+	else gsx = N(1.001).pow(player.blackhole).mul(player.sing.add(10).log10());
+	if(gsx.gte(9e15)) gsx = N(9e15).mul(gsx.div(9e15).pow(0.25));
+	return gsx;
+}
+
 function getbheffect()
 {
 	let e = '';
 	if(player.openbh) e = e + '(加成已获得)<br>';
 	else e = e + '(开启黑洞以获得加成)<br>';
-	if(!player.permupg.includes(65)) e = e + '基于黑洞和奇点，混沌以前全局速度×' + notation(player.blackhole.mul(player.sing.add(10).log10())) + '<br>';
-	else e = e + '基于黑洞和奇点，混沌以前全局速度×' + notation(N(1.001).pow(player.blackhole).mul(player.sing.add(10).log10())) + '<br>';
+	let gsx = getbhgsx();
+	e = e + '基于黑洞和奇点，混沌以前全局速度×' + notation(gsx) + (gsx.gte(9e15) ? '(受软上限限制)' : '') + '<br>';
 	if(player.sing.gte(1e19) && player.permupg.includes(63)) e = e + '基于奇点，黑洞充能×' + notation(player.sing.div(1e18).log10().root(10)) + '<br>';
 	if(!player.sing.gte(1e19) && player.permupg.includes(63)) e = e + '到达 1.000e19 奇点凝聚进度解锁黑洞第二效果<br>';
 	return e;
@@ -1324,15 +1396,13 @@ function getPL3globalspeed()
 	if(!player.PL3unlock) return N(1);
 	else
 	{
-		if(player.openbh)
-		{
-			if(!player.permupg.includes(65)) s = s.mul(player.blackhole.mul(player.sing.add(10).log10()));
-			else s = s.mul(N(1.001).pow(player.blackhole).mul(player.sing.add(10).log10()));
-		}
+		if(player.openbh) s = s.mul(getbhgsx());
 	}
 	if(player.exchal[6].gte(1)) s = s.mul(exchal[6].effect());
 	if(player.elements >= 9) s = s.mul(player.elements - 7);
 	if(getexchalopen().includes(9)) s = s.div(1e300);
+	if(player.astree.includes(44)) s = s.mul(ascend_tree[44].effect());
+	if(player.openstdmod) s = s.max(1).log10();
 	return s;
 }
 
@@ -1646,6 +1716,7 @@ function getexchalopen()
 	{
 		for(let i = 1;i <= 7;i++) open.push(i);
 	}
+	if(player.openstdmod) open = open.filter(item => item !== 10)
 	let uni = [...new Set(open)];
 	return uni;
 }
@@ -1791,6 +1862,9 @@ function gvd(ps)
 {
 	let base = ps.pow(4).mul(10);
 	if(hassuppupg(103)) base = base.mul(suppupgeffect(103));
+	if(player.permupg.includes(68)) base = base.mul(N(1.5).pow(player.PL4info.sub(10).max(0)));
+	if(player.astree.includes(42)) base = base.mul(ascend_tree[42].effect());
+	if(player.astree.includes(43)) base = base.mul(ascend_tree[43].effect());
 	return base;
 }
 
@@ -1832,6 +1906,7 @@ function getvoidupgdescribe(id)
 	else if(id == 6) {return '解锁新的永久升级。';}
 	else if(id == 7) {return '每秒自动获得10%重置时可获得的混沌信息。当前：' + notation(getvoidupgeffect(id)) + '/s';}
 	else if(id == 8) {return '虚空重置不重置压制数据。';}
+	else if(id == 9) {return '总矩阵阶层倍增基础物质产量。当前：×' + notation(getvoidupgeffect(id));}
 	else return '';
 }
 
@@ -1843,6 +1918,7 @@ function getvoidupgeffect(id)
 	else if(id == 4) {return getcollget().pow(0.66);}
 	else if(id == 5) {return player.PL4data.add(10).log10().pow(5);}
 	else if(id == 7) {updatePLinfoget(); return PL3infoget.mul(0.1);}
+	else if(id == 9) {return N(1e50).pow(getantiersum());}
 	else {return N(0);}
 }
 
@@ -1948,6 +2024,20 @@ function automation()
 	}
 	
 	if(player.permupg.includes(39) && player.autochaos && PL3infoget.gte(player.autochaosgoal)) buyPL3();
+	
+	if(player.SMupg >= 25 && player.openstdmod)
+	{
+		for(let layer in player.ft)
+		{
+			for(let id in ftbuyables)
+			{
+				if(ftbuyables[id].unlock(layer) && ftbuyables[id].auto(layer))
+				{
+					autoftb(layer, id);
+				}
+			}
+		}
+	}
 }
 
 var tickmult;
@@ -2139,6 +2229,7 @@ function produce()
 				let bhn = player.data.add(10).log10().add(10).log10().mul(10);
 				if(player.bhupg[0].gte(1)) bhn = bhn.mul(getbhupgeff(0));
 				if(player.sing.gte(1e19)) bhn = bhn.mul(player.sing.div(1e18).log10().root(10));
+				if(player.astree.includes(32)) bhn = bhn.mul(ascend_tree[32].effect());
 				player.blackhole = bhn.max(player.blackhole);
 			}
 		}
@@ -2185,12 +2276,52 @@ function produce()
 	
 	getentropy();
 	
+	if(player.openstdmod && player.SMupg >= 5)
+	{
+		for(let i = 0;i < 8;i++)
+		{
+			if(player.SMupg >= unlan[i])
+			{
+				if(player.arraynode[i].lt(1)) player.arraynode[i] = N(1);
+				player.ancd[i] = player.ancd[i].add(N(0.1).mul(tickmult));
+				if(player.ancd[i].gte(getancd(i)))
+				{
+					if(i != 0)
+					{
+						player.arraynode[i - 1] = player.arraynode[i - 1].add(player.arraynode[i].mul(getanx(i)).mul(player.ancd[i].div(getancd(i))));
+					}
+					else
+					{
+						player.arraydata = player.arraydata.add(player.arraynode[i].mul(getanx(i)).mul(player.ancd[i].div(getancd(i))));
+					}
+					player.ancd[i] = N(0);
+				}
+			}
+		}
+		
+		for(let i = 0;i < std_model.length;i++)
+		{
+			if(player.openstdmod && std_model[i].auto != undefined)
+			{
+				player.stdmod[i] = player.stdmod[i].add(std_model[i].canget().mul(std_model[i].auto()).div(10).mul(tickmult)).min(getpartcap());
+			}
+		}
+		
+		if(player.SMupg >= 25)
+		{
+			for(let i in player.ft)
+			{
+				player.ft[i].energy = player.ft[i].energy.add(getftg(i).div(10).mul(tickmult));
+			}
+		}
+	}
+	
 	automation();
 }
 
 function is_endgame()
 {
-	if(player.permupg.includes(66)) return true;
+	if(player.SMupg >= 27) return true;
 	else return false;
 }
 
@@ -2285,6 +2416,9 @@ dis_chalui();
 dis_exchalui();
 dis_suppui();
 dis_achievementui();
+dis_particleui();
+dis_SMupgui();
+dis_ascendtreeui();
 
 function getofflinelimit() //ms
 {
@@ -2341,14 +2475,20 @@ function newsscroll()
 	}
 	document.getElementById('newstext').style.left = newsleft + '%';
 }
-
-setInterval(produce, 100);
-setInterval(GUI, 40);
+function mainloop()
+{
+	produce();
+	GUI();
+	build_permupgui();
+	build_chalui();
+	build_exchalui();
+	build_suppui();
+	build_particle();
+	build_SMupg();
+	build_ascendtree();
+}
 setInterval(data_print, 400);
-setInterval(build_permupgui, 100);
-setInterval(build_chalui, 100);
-setInterval(build_exchalui, 100);
-setInterval(build_suppui, 100);
 setInterval(newsscroll, 40);
+setInterval(mainloop, 100);
 
 loadVue();

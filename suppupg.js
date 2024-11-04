@@ -65,6 +65,7 @@ const suppupg = [
 			if(hassuppupg(92)) base = base.mul(suppupgeffect(92));
 			if(hassuppupg(99)) base = base.mul(suppupgeffect(99));
 			if(hassuppupg(100)) base = base.mul(suppupgeffect(100));
+			if(hasvoidupg(9)) base = base.mul(getvoidupgeffect(9));
 			if(hassuppupg(2)) base = base.pow(suppupgeffect(2));
 			if(hassuppupg(34)) base = base.pow(suppupgeffect(34));
 			if(hasvoidupg(1)) base = base.pow(getvoidupgeffect(1));
@@ -916,7 +917,7 @@ var extra = [
 		name: '数据压制 XIX',
 		type: 1,
 		cost: N('e900'),
-		effect(x){return player.suppupg[30].add(1).iteratedlog(10, 0.5).add(0.5).pow(1.25);},
+		effect(x){return N(player.suppupg[30].add(1)).iteratedlog(10, 0.5).add(0.5).pow(1.25);},
 		description(){return '淡紫物质增幅粉物质获取。当前：×' + notation(this.effect());},
 	},
 	{
@@ -966,7 +967,7 @@ var extra = [
 		name: '数据压制 XXIV',
 		type: 1,
 		cost: N('e1550'),
-		effect(x){return player.suppupg[0].add(10).log10().sub(1500).div(10);},
+		effect(x){return player.suppupg[0].add(10).log10().sub(1500).div(10).max(1);},
 		description(){return '基础物质增幅虚空数据获取。当前：×' + notation(this.effect());},
 	},
 	{
@@ -992,6 +993,7 @@ for(let i = 0;i < extra.length;i++)
 
 function hassuppupg(id)
 {
+	if(player.openstdmod && suppupg[id].type == 2) return false;
 	if(suppupg[id].type == 0) return false;
 	else if(suppupg[id].type == 1) return player.suppupg[id];
 	else return suppupglevel(id).gte(1);

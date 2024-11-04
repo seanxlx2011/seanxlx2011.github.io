@@ -209,7 +209,229 @@ const achievement = [
 		description: '虚空重置',
 		done(){return player.PL4unlock;},
 	},
+	{
+		name: '无限 IV',
+		description: '达到1.798e308虚空信息',
+		done(){return player.PL4info.gte(N(2).pow(1024));},
+	},
+	{
+		name: '当一切归于湮灭',
+		description: '开启粒子加速器',
+		done(){return player.openstdmod;},
+	},
+	{
+		name: '线性代数',
+		description: '解锁矩阵',
+		done(){return player.SMupg >= 5;},
+	},
+	{
+		name: '大厦崩塌',
+		description: '坍缩一次因子',
+		done(){return player.unlft > 0;},
+	},
+	{
+		name: '[数据删除]',
+		description: '？？？(Coming Soon)',
+		done(){return false;},
+	},
+	{
+		name: '[数据删除]',
+		description: '？？？(Coming Soon)',
+		done(){return false;},
+	},
+	{
+		name: '[数据删除]',
+		description: '？？？(Coming Soon)',
+		done(){return false;},
+	},
+	{
+		name: '[数据删除]',
+		description: '？？？(Coming Soon)',
+		done(){return false;},
+	},
+	{
+		name: '你每次离开家',
+		description: '？？？(Coming Soon)',
+		done(){return false;},
+	},
+	//50~59 Theorem
+	{
+		name: '窥得天光',
+		description: '？？？(Coming Soon)',
+		done(){return false;},
+	},
+	{
+		name: '[数据删除]',
+		description: '？？？(Coming Soon)',
+		done(){return false;},
+	},
+	{
+		name: '[数据删除]',
+		description: '？？？(Coming Soon)',
+		done(){return false;},
+	},
+	{
+		name: '[数据删除]',
+		description: '？？？(Coming Soon)',
+		done(){return false;},
+	},
+	{
+		name: '[数据删除]',
+		description: '？？？(Coming Soon)',
+		done(){return false;},
+	},
+	{
+		name: '[数据删除]',
+		description: '？？？(Coming Soon)',
+		done(){return false;},
+	},
+	{
+		name: '[数据删除]',
+		description: '？？？(Coming Soon)',
+		done(){return false;},
+	},
+	{
+		name: '[数据删除]',
+		description: '？？？(Coming Soon)',
+		done(){return false;},
+	},
+	{
+		name: '[数据删除]',
+		description: '？？？(Coming Soon)',
+		done(){return false;},
+	},
+	{
+		name: '带着远方的牵挂',
+		description: '？？？(Coming Soon)',
+		done(){return false;},
+	},
+	//60~69 Reality
+	{
+		name: '虚幻骰子',
+		description: '？？？(Coming Soon)',
+		done(){return false;},
+	},
+	{
+		name: '[数据删除]',
+		description: '？？？(Coming Soon)',
+		done(){return false;},
+	},
+	{
+		name: '[数据删除]',
+		description: '？？？(Coming Soon)',
+		done(){return false;},
+	},
+	{
+		name: '[数据删除]',
+		description: '？？？(Coming Soon)',
+		done(){return false;},
+	},
+	{
+		name: '[数据删除]',
+		description: '？？？(Coming Soon)',
+		done(){return false;},
+	},
+	{
+		name: '[数据删除]',
+		description: '？？？(Coming Soon)',
+		done(){return false;},
+	},
+	{
+		name: '[数据删除]',
+		description: '？？？(Coming Soon)',
+		done(){return false;},
+	},
+	{
+		name: '[数据删除]',
+		description: '？？？(Coming Soon)',
+		done(){return false;},
+	},
+	{
+		name: '[数据删除]',
+		description: '？？？(Coming Soon)',
+		done(){return false;},
+	},
+	{
+		name: '那城市的繁华',
+		description: '？？？(Coming Soon)',
+		done(){return false;},
+	},
+	//70~79 Beyond
+	{
+		name: '最后终焉',
+		description: '？？？(Coming Soon)',
+		done(){return false;},
+	},
+	{
+		name: '[数据删除]',
+		description: '？？？(Coming Soon)',
+		done(){return false;},
+	},
+	{
+		name: '[数据删除]',
+		description: '？？？(Coming Soon)',
+		done(){return false;},
+	},
+	{
+		name: '[数据删除]',
+		description: '？？？(Coming Soon)',
+		done(){return false;},
+	},
+	{
+		name: '[数据删除]',
+		description: '？？？(Coming Soon)',
+		done(){return false;},
+	},
+	{
+		name: '生与灭',
+		description: '？？？(Coming Soon)',
+		done(){return false;},
+	},
+	{
+		name: '轮回不止',
+		description: '？？？(Coming Soon)',
+		done(){return false;},
+	},
+	{
+		name: '你与我',
+		description: '？？？(Coming Soon)',
+		done(){return false;},
+	},
+	{
+		name: '渡向无限',
+		description: '？？？(Coming Soon)',
+		done(){return false;},
+	},
+	{
+		name: '盖住了月牙......',
+		description: '[???????]',
+		done(){return false;},
+	},
 ];
+function predictableRandom(x) {
+	let start = Math.pow(x % 97, 4.3) * 232344573;
+	const a = 15485863;
+	const b = 521791;
+	start = (start * a) % b;
+	for (let i = 0; i < (x * x) % 90 + 90; i++) {
+		start = (start * a) % b;
+	}
+	return start / b;
+}
+
+function randomSymbol() {
+	return String.fromCharCode(Math.floor(Math.random() * 50) + 192);
+}
+
+function randomCrossWords(str, frac = 0.7) {
+	if (frac <= 0) return str;
+	const x = str.split("");
+	for (let i = 0; i < x.length * frac; i++) {
+	const randomIndex = Math.floor(predictableRandom(Math.floor(Date.now() / 500) % 964372 + 1.618 * i) * x.length);
+		x[randomIndex] = randomSymbol();
+	}
+	return x.join("");
+}
 
 function dis_achievementui()
 {
@@ -218,7 +440,11 @@ function dis_achievementui()
 	{
 		num++;
 		ui += '<td><div class="button-wrapper"><button class="ach" id="ach' + (num - 1) + '">' + (num - 1);
-		ui += '<br>' + achievement[num - 1].name + '</button><div class="hover-box">' + achievement[num - 1].description + '</div></div></td>';
+		if(num <= 70) ui += '<br>' + achievement[num - 1].name + '</button><div class="hover-box">' + achievement[num - 1].description + '</div></div></td>';
+		else
+		{
+			ui += '<br>{{randomCrossWords(achievement[' + (num - 1) + '].name, ' + (num - 70) / 10 + ')}}</button><div class="hover-box">{{randomCrossWords(achievement[' + (num - 1) + '].description, ' + (num - 70) / 10 + ')}}</div></div></td>';
+		}
 		if(num % 10 == 0) ui += '<tr>';
 	}
 	ui += '</table>';

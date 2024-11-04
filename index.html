@@ -8,12 +8,24 @@
 	</head>
 
 	<body style="background-color: #000000; font-family: MonospaceTypewriter, monospace ">	
-	<title>数据增量重制版(V1)</title>
 	<br>
-	<div id="app">
+	<div id="app"><div id="mainbody" class="mask">
+		<title v-if="!player.PL1unlock">数据增量重制版(V2) - {{notation(player.data)}}数据</title>
+		<title v-if="player.PL1unlock && !player.PL2unlock">数据增量重制版(V2) - {{notation(player.PL1info)}}世界信息</title>
+		<title v-if="player.PL2unlock && !player.PL2upg[2]">数据增量重制版(V2) - {{notation(player.PL2info)}}宇宙信息</title>
+		<title v-if="player.PL2upg[2] && !player.permupg.includes(29)">数据增量重制版(V2) - {{notation(player.godstar)}}神星</title>
+		<title v-if="player.permupg.includes(27) && !player.PL3unlock">数据增量重制版(V2) - {{notation(player.PL2info)}}宇宙信息</title>
+		<title v-if="player.PL3unlock && !player.permupg.includes(39)">数据增量重制版(V2) - {{notation(player.data)}}数据</title>
+		<title v-if="player.permupg.includes(39) && (!player.data.gte('ee38') && !player.openstdmod)">数据增量重制版(V2) - {{notation(player.PL3info)}}混沌信息</title>
+		<title v-if="player.data.gte('ee38') && !player.PL4unlock">数据增量重制版(V2) - {{notation(player.suppupg[0])}}基础物质</title>
+		<title v-if="player.PL4unlock && !player.openstdmod">数据增量重制版(V2) - {{notation(player.PL4data)}}虚空数据</title>
+		<title v-if="player.openstdmod">数据增量重制版(V2) - {{notation(player.data)}}数据</title>
+		
+		
 		<div style="width: 100%; height: 100%; overflow-y: auto; overflow-x: auto">
 		<div style="width: 15%; height: 100%; overflow-y: auto; overflow-x: hidden; position: absolute; top: 0; left: 0%;">
 			<button class="pagebt" onclick="chpage(1)">传输节点</button>
+			<button class="pagebt" onclick="chpage(13)" id="Stdmodpbt">模型</button>
 			<button class="pagebt" onclick="chpage(2)">层级</button>
 			<button class="pagebt" onclick="chpage(3)">统计</button>
 			<button class="pagebt" onclick="chpage(4)" style="background-color: blue;" id="PL1pbt">世界</button>
@@ -24,10 +36,10 @@
 			<button class="pagebt" onclick="chpage(9)" style="background-color: green; " id="PL6pbt">现实</button>
 			<button class="pagebt" onclick="chpage(10)" style="background-image: url('beyond.jpg');
 			background-size: cover;
-			background-position: center; color: black; font-weight: bold;" id="PL7pbt">超越</button>
+			background-position: center; color: black; font-weight: bold;" onclick="chpage(12)" id="PL7pbt">超越</button>
 			<button class="pagebt" onclick="chpage(11)" id="pagebt11">杂项</button>
 		</div>
-		<div style="width: 85%; height: 100%; overflow-y: auto; overflow-x: auto; position: absolute; top: 0; left: 15%;">
+		<div style="width: 85%; height: 100%; overflow-y: auto; overflow-x: auto; position: absolute; top: 0; left: 15%;" id="textbody">
 		<div align="center" class="news">
 			<span class="newstext" id="newstext">这是一条不滚动新闻</span>
 		</div>
@@ -220,7 +232,7 @@
 					<td style="width: 500px;" id="PL4bt">
 						<span class="ftsz3">你拥有 </span><span class="ftsz4">{{notation(player.PL4info, 0)}}</span><span class="ftsz3"> 虚空信息</span>
 						<br>
-						<button class="PL4bt" onclick="buyPL4()">虚空重置：+ {{notation(PL4infoget, 0)}} 虚空信息。<br>虚空数据产量：{{notation(getvdataps(), 0)}}/秒→{{notation(getvdatapsnew(), 0)}}/秒<br><span id="PL4infonext">需要{{notation(getPL4infonext(), 0)}}数据</span></button>
+						<button class="PL4bt" onclick="buyPL4()">虚空重置：+ {{notation(PL4infoget, 0)}} 虚空信息。<br>虚空数据产量：{{notation(getvdataps(), 0)}}/秒→{{notation(getvdatapsnew(PL4infoget), 0)}}/秒<br><span id="PL4infonext">需要{{notation(getPL4infonext(), 0)}}数据</span></button>
 					</td>
 					<tr>
 				</table>
@@ -599,6 +611,8 @@
 		<div id="page7">
 			<p align="center">
 				<button class="spagebt" onclick="chspage(1)">虚空升级</button>
+				<button class="spagebt" onclick="chspage(2)" id="spagebt2_7">标准模型</button>
+				<button class="spagebt" onclick="chspage(3)" v-if="player.permupg.includes(69)"><span class="ascendtext">飞升</span></button>
 			</p>
 			<div id="spage1_7" align="center">
 				<table align="center">
@@ -618,6 +632,50 @@
 					<td><button class="voidupg" onclick="buyvoidupg(12)" id="voidupg12"></button></td>
 				</table>
 			</div>
+			<div id="spage2_7" align="center">
+				<span class="ftsz4">标准模型</span>
+				<br>
+				<span class="ftsz2">开启粒子加速器后：<br>
+				<span class="ftsz2" style="color: red;">
+				所有标准模型以前的传输节点指数和膨胀将被禁用。<br>
+				标准模型以前的传输节点倍数变为log10(x)。<br>
+				标准模型以前的世界信息、宇宙信息倍数、指数和膨胀将被禁用。<br>
+				混沌以前全局速度变为log10(x)。<br>
+				位面切片效果锁定为×1。<br>
+				本源第二效果禁用。<br>
+				所有可重复购买的数据压制升级都失去效果。<br>
+				不能进入奇异挑战10。<br></span>
+				<span class="ftsz2" style="color: green;">
+				将解锁17种标准模型粒子，在开启粒子加速器时为游戏带来加成。<br>
+				解锁大量标准模型升级，在任何时候为游戏带来加成。<br></span>
+				</span>
+				<button class="voidupg" onclick="openstdmodel()" id="openstdmodelbt">开启/关闭粒子加速器</button>
+			</div>
+			<div id="spage3_7" align="center">
+				<span class="ftsz3 ascendtext">
+				飞升<br>
+				<span class="ftsz2 ascendtext">
+				你的数据、混沌信息、粒子加速器内数据可以以一定比例兑换为飞升碎片。<br>
+				飞升碎片用于购买飞升升级。<br>
+				飞升升级以树状排列，部分升级之间互相排斥。<br>
+				飞升碎片数量有限，这意味着你需要在不同情况下做出不同购买选择。<br>
+				</span>
+				</span>
+				<div style="width: 100%" align="center">
+					<div align="center" class="particle" style="overflow-x: auto; overflow-y: auto;">
+						<span class="ftsz3" align="center">飞升碎片[总计{{notation(player.asshard[0], 0)}}+{{notation(player.asshard[1], 0)}}+{{notation(player.asshard[2], 0)}}={{notation(player.asshard[0].add(player.asshard[1]).add(player.asshard[2]), 0)}}]</span>
+						<br><span class="ftsz2" align="center">可用：[{{notation(gettotasshard(), 0)}}]</span>
+						<table align="center" style="width: 100%;">
+							<td><button class="chalpara" id="assbuy0" onclick="buyass(0)">[数据 已兑换{{notation(player.asshard[0], 0)}}]<br>价格：{{notation(getasscost(0), 0)}}数据</td>
+							<td><button class="chalpara" id="assbuy1" onclick="buyass(1)">[混沌信息 已兑换{{notation(player.asshard[1], 0)}}]<br>价格：{{notation(getasscost(1), 0)}}混沌信息</td>
+							<td><button class="chalpara" id="assbuy2" onclick="buyass(2)">[粒子加速器内数据 已兑换{{notation(player.asshard[2], 0)}}]<br>价格：{{notation(getasscost(2), 0)}}粒子加速器内数据</td>
+							<td><button class="chalpara" id="assbuy3" onclick="buyass(3)">回退飞升碎片和购买的飞升升级，但进行虚空重置。</td>
+						</table>
+					</div>
+				</div>
+				<div id="ascend_tree" align="center" style="width: 600px; position: relative;">
+				</div>
+			</div>
 		</div>
 		<div id="page8">
 		</div>
@@ -636,10 +694,22 @@
 				<p class="ftsz2">
 					<span class="ftsz4">数据增量重制版 - Incremental Data Rewritten</span>
 					<br>
-					<span class="ftsz3">作者：seanxlx<br>当前版本：V1<br></span>
+					<span class="ftsz3">
+						作者：seanxlx<br>当前版本：V2<br>
+					</span>
+					<br>
+					<span class="ftsz2" style="width: 100%; background-color: #444444">
+						本游戏使用break_eternity.js处理大数字，上限约为10^^1.798e308。<br>
+						支持所有序数增量吧吧友。<br>
+						如有疑问，请加QQ群 951232913 。<br>
+					</span>
 					<br>
 					<span class="ftsz2">
 						版本更新记录：
+						<br><br>
+						V2 - (2024/11/4)虚空更新第二弹<br>
+						更新了虚空层级的前半部分内容。<br>
+						Endgame: e2.445e6数据(在粒子加速器中)，28虚空信息，购买矩阵升级28。<br>
 						<br><br>
 						V1 - (2024/9/16)虚空更新<br>
 						更新了虚空层级的一点内容。<br>
@@ -673,7 +743,7 @@
 			</div>
 			<div id="spage3_11" align="center">
 				<p class="ftsz3">
-					你有<span id="data2"></span>数据<br>
+					你有{{notation(player.data, 0)}}数据<br>
 					<span class="ftsz2"id="datashow"></span>
 				</p>
 				<table align="center">
@@ -681,24 +751,106 @@
 					<td><button class="buymaxjd" onclick="window.open('https://0i00000000a7.github.io/IDR-savebank/', '_blank');">访问存档银行</button></td>
 					<td></td>
 					<tr>
+					<td><button class="buymaxjd" onclick="window.open('https://veryrrdefine.github.io/MdVI-rewritten/', '_blank');">多维体积增量</button></td>
 					<td><button class="buymaxjd" onclick="window.open('https://dlsdl.github.io/wind_spirit_creation/', '_blank');">风灵作成</button></td>
 					<td><button class="buymaxjd" onclick="window.open('https://0i00000000a7.github.io/points-incremental-rewritten/', '_blank');">点数增量重制版</button></td>
-					<td><button class="buymaxjd" onclick="window.open('https://g1tyx.github.io/antimatter-dimensions/new/', '_blank');">反物质维度</button></td>
 					<tr>
-					<td><button class="buymaxjd" onclick="window.open('https://g8hh.github.io/incremental-mass-rewritten/', '_blank');">质量增量重制版</button></td>
+					<td><button class="buymaxjd" onclick="window.open('https://hypcos.github.io/too-many-layers/', '_blank');">太多层级</button></td>
+					<td><button class="buymaxjd" onclick="window.open('https://goldenapple125.github.io/RBN/', '_blank');">大数之路</button></td>
 					<td><button class="buymaxjd" onclick="window.open('https://liuliu66686.github.io/The-Periodic-Elements-Incemental-Tree/TMTR/index.html', '_blank');">元素周期增量树</button></td>
+					<tr>
+					<td><button class="buymaxjd" onclick="window.open('https://g1tyx.github.io/antimatter-dimensions/new/', '_blank');">反物质维度</button></td>
+					<td><button class="buymaxjd" onclick="window.open('https://www.minecraft.net/zh-hans', '_blank');">我的世界</button></td>
 					<td><button class="buymaxjd" onclick="window.open('https://g8hh.github.io/c0v1d-modding-tree/', '_blank');">病毒树</button></td>
 					<tr>
-					<td><button class="buymaxjd" onclick="window.open('https://www.minecraft.net/zh-hans', '_blank');">我的世界</button></td>
 					<td><button class="buymaxjd" onclick="window.open('https://mrredshark77.github.io/shark-incremental/', '_blank');">鲨鱼增量</button></td>
-					<td><button class="buymaxjd" onclick="window.open('https://ys.mihoyo.com/?utm_source=adbdsem&from_channel=adbdsem#/', '_blank');">原神</button></td>
+					<td><button class="buymaxjd" onclick="window.open('https://g8hh.github.io/incremental-mass-rewritten/', '_blank');">质量增量重制版</button></td>
+					<td><button class="buymaxjd" onclick="window.open('https://qqqe308.github.io/The-Rhythm-Game-Tree/', '_blank');">音乐游戏树</button></td>
+					<tr>
+					<td><button class="buymaxjd" onclick="window.open('https://hydrogenated233.github.io/TI/', '_blank');">植树增量</button></td>
+					<td><button class="buymaxjd" onclick="window.open('https://patcailmemer.github.io/Ordinal-Markup/', '_blank');">序数增量</button></td>
+					<td><button class="buymaxjd" onclick="window.open('https://ys.mihoyo.com/', '_blank');">原神</button></td>
+					
 				</table>
+			</div>
+		</div>
+		<div id="page12">
+		</div>
+		<div id="page13">
+			<p align="center">
+				<button class="spagebt" onclick="chspage(1)">粒子</button>
+				<button class="spagebt" onclick="chspage(2)">粒子升级</button>
+				<button class="spagebt" onclick="chspage(3)" v-if="player.SMupg >= 4">矩阵</button>
+				<button class="spagebt" onclick="chspage(4)" v-if="player.SMupg >= 25">因子</button>
+			</p>
+			<div id="spage1_13">
+				<div id="particle"></div>
+			</div>
+			<div id="spage2_13">
+				<div id="SMupg">
+				</div>
+			</div>
+			<div id="spage3_13">
+				<div class="ftsz2" align="center">你有{{notation(player.arraydata, 0)}}矩阵数据</div>
+				<div class="ftsz2" align="center" style="color: lightblue;" v-html="getarraydataeffect()"></div>
+				<table id="array" style="width: 100%">
+					<tr v-for="i in arraynode" style="width: 100%">
+						<td style="width: 100%" align="center" v-if="player.SMupg >= unlan[i]">
+							<div align="center" class="particle" style="overflow-x: auto; overflow-y: auto;">
+								<span class="ftsz3" align="center">第{{(i + 1)}}矩阵节点</span><br>({{notation(player.ancd[i], 2)}}s/{{notation(getancd(i), 2)}}s)[{{notation(player.arraynode[i]), 0}}]×{{notation(getanx(i))}}
+								<table align="center" style="width: 100%;">
+									<td><button class="chalpara" :id="'anbuy1' + i" :onclick="'buyan(' + i + ')'">[产能增加 等级{{notation(player.buyan[i], 0)}}]<br>提升节点产能+{{notation(getanbuybase(i))}}<br>价格：{{notation(getarraynodecost(i), 0)}}矩阵数据</td>
+									<td><button class="chalpara" :id="'anbuy2' + i" :onclick="'buyancd(' + i + ')'">[冷却加速 等级{{notation(player.buyancd[i], 0)}}]<br>降低节点冷却速度÷{{notation(getancdbuybase(i))}}<br>价格：{{notation(getarraynodecdcost(i), 0)}}矩阵数据</td>
+									<td><button class="chalpara" :id="'antier' + i" :onclick="'buyantier(' + i + ')'" v-if="player.SMupg >= 12">[等阶{{notation(player.antier[i], 0)}}]<br>产能×{{notation(getantierbase(), 0)}}，但冷却时间×{{notation(getantiercdbase(), 0)}}<br>提升等阶需要矩阵冷却＜0.1秒</td>
+								</table>
+							</div>
+						</td>
+						<td style="width: 100%" align="center" v-if="player.SMupg < unlan[i]">
+							<div align="center" class="particle">
+								<span class="ftsz3" align="center">待解锁</span>
+							</div>
+						</td>
+					</tr>
+				</table>
+			</div>
+			<div id="spage4_13">
+				<div style="width: 100%; float: center; background-color: #333333" align="center">
+					<button class="chalpara" style="height: 45px" onclick="changeft(-1)">←</button>
+					<span class="ftsz3">因子层级：{{notation(player.openft, 0)}}/{{notation(player.unlft, 0)}}</span>
+					<button class="chalpara" style="height: 45px" onclick="changeft(1)">→</button>
+				</div>
+				<div style="border: 3px solid white; width: 90%; height: 500px; float: center; background-color: #222222; position: relative;" align="center">
+					<div class="chalpara" style="position: absolute; top: 0; left: 2%; width: 45%; height: 150px; overflow-x: auto; overflow-y: auto;">
+						<span class="ftsz3">能量：{{notation(player.ft[player.openft].energy, 0)}}(+{{notation(getftg(player.openft), 0)}}/s)</span><br>
+						<button class="boostbt" style="width: 80%; height: 70px; float: center;" v-if="player.ft[player.openft].energy.lt(getftcrcost()) && player.unlft >= 1">
+							<span class="ftsz2">需要 {{notation(getftcrcost(), 0)}} 能量以坍缩</span><br>
+						</button>
+						<button class="boostbt" style="width: 80%; height: 70px; float: center;" v-if="player.ft[player.openft].energy.lt(getftcrcost()) && player.unlft == 0">
+							<span class="ftsz2">达到 {{notation(getftcrcost(), 0)}} 能量后……</span><br>
+						</button>
+						<button class="boostbt ftsz2" style="width: 80%; height: 70px; float: center" v-if="player.ft[player.openft].energy.gte(getftcrcost()) && player.unlft > player.openft" onclick="ftcr(player.openft)">
+							坍缩(+{{notation(getftcrg(player.openft), 0)}})。<br>
+							重置进度，但获得{{player.openft + 1}}阶因子能量。<br>
+							<span v-if="player.unlft == player.openft">坍缩后，将解锁新的因子层级。</span><br>
+						</button>
+					</div>
+					<div class="chalpara" style="position: absolute; top: 0; left: 53%; width: 45%; height: 150px; overflow-x: auto; overflow-y: auto;">
+						<table style="width: 100%; overflow-x: auto; overflow-y: auto;">
+							<td v-for="i in ftu" style="float: left;"><button v-if="getftuunlock(player.openft, i.id)" class="suppupgbt" :onclick="'buyftu(player.openft, ' + i.id + ')'" :style="getftustyle(player.openft, i.id)" v-html="i.title + '<br>' + ftu[i.id].description(player.openft) + '<br>' + notation(ftu[i.id].cost(player.openft)) + ' ' + player.openft + '阶因子能量'"></button></td>
+						</table>
+					</div>
+					<div class="chalpara" style="position: absolute; top: 160px; left: 2%; width: 45%; height: 150px; overflow-x: auto; overflow-y: auto;">
+						<table style="width: 100%; overflow-x: auto; overflow-y: auto;">
+							<td v-for="i in ftbuyables" style="float: left;"><button v-if="getftbunlock(player.openft, i.id)" class="suppupgbt" :onclick="'buyftb(player.openft, ' + i.id + ')'" :style="getftbstyle(player.openft, i.id)">{{getftbscaltitle(player.openft, i.id)}}{{i.title}}[{{(!ftbdefined(player.openft, i.id) ? '0' : notation(player.ft[player.openft].buyables[i.id]))}}]<br><span v-html="ftbuyables[i.id].description(player.openft)"></span><br>{{notation(ftbcost(player.openft, i.id))}} {{player.openft}}阶因子能量</button></td>
+						</table>
+					</div>
+				</div>
 			</div>
 		</div>
 		</div>
 		
 		</div>
-		</div>
+		</div></div>
 		
 		<script type="text/javascript" src="break_eternity.js"></script>
 		<script type="text/javascript" src="pako.js"></script>
@@ -710,6 +862,8 @@
 		<script type="text/javascript" src="achievement.js"></script>
 		<script type="text/javascript" src="prestige.js"></script>
 		<script type="text/javascript" src="suppupg.js"></script>
+		<script type="text/javascript" src="std_model.js"></script>
+		<script type="text/javascript" src="ascend.js"></script>
 		
 		<script type="text/javascript" src="game.js"></script>
 	</body>

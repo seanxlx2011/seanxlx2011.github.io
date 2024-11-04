@@ -230,10 +230,9 @@ function GUI()
 	update_ach();
 	updatePLinfoget();
 	
-	let page_has_spage = [3, 3, 4, 3, 4, 5, 1, 0, 0, 0, 3];
 	let max_page_has_spage = 5;
 	
-	for(let i = 1;i <= 11;i++)
+	for(let i = 1;i <= 13;i++)
 	{
 		if(page == i) document.getElementById('page' + i).style.display = 'block';
 		else document.getElementById('page' + i).style.display = 'none';
@@ -245,13 +244,12 @@ function GUI()
 	
 	for(let i = 1;i <= max_page_has_spage;i++)
 	{
-		if(page_has_spage[page - 1] >= i)
+		if(document.getElementById('spage' + i + '_' + page) != undefined)
 		{
 			if(subpage == i) document.getElementById('spage' + i + '_' + page).style.display = 'block';
 			else document.getElementById('spage' + i + '_' + page).style.display = 'none';
 		}	
 	}
-	
 	if(player.PL1unlock) document.getElementById('PL1pbt').style.display = 'inline-block';
 	else document.getElementById('PL1pbt').style.display = 'none';
 	if(player.PL2unlock) document.getElementById('PL2pbt').style.display = 'inline-block';
@@ -263,6 +261,8 @@ function GUI()
 	document.getElementById('PL5pbt').style.display = 'none';
 	document.getElementById('PL6pbt').style.display = 'none';
 	document.getElementById('PL7pbt').style.display = 'none';
+	if(player.openstdmod) document.getElementById('Stdmodpbt').style.display = 'inline-block';
+	else document.getElementById('Stdmodpbt').style.display = 'none';
 	if(player.sliceupg[3]) document.getElementById('PL2bt').style.display = 'block';
 	else document.getElementById('PL2bt').style.display = 'none';
 	if(player.permupg.includes(29)) document.getElementById('PL3bt').style.display = 'block';
@@ -305,6 +305,9 @@ function GUI()
 	
 	if(player.exchal[5].gte(2)) document.getElementById('spagebt5_6').style.display = 'inline-block';
 	else document.getElementById('spagebt5_6').style.display = 'none';
+	
+	if(player.permupg.includes(66)) document.getElementById('spagebt2_7').style.display = 'inline-block';
+	else document.getElementById('spagebt2_7').style.display = 'none';
 	
 	if(getofflinelimit() > 0 && player.offlinetime >= 1000)
 	{
@@ -761,5 +764,40 @@ function GUI()
 	if(player.permupg.includes(63))
 	{
 		for(let i = 0;i < 4;i++) document.getElementById('bhupg' + i).style['border-color'] = (player.blackhole.gte(getbhupgcost(i)) ? 'gold' : 'grey');
+	}
+	
+	if(player.permupg.includes(66))
+	{
+		if(player.openstdmod)
+		{
+			document.getElementById('openstdmodelbt').style['background-color'] = 'white';
+		}
+		else
+		{
+			document.getElementById('openstdmodelbt').style['background-color'] = 'grey';
+		}
+	}
+	
+	if(player.SMupg >= 5)
+	{
+		for(let i = 0;i < 8;i++)
+		{
+			if(player.SMupg >= unlan[i])
+			{
+				if(player.arraydata.gte(getarraynodecost(i))) document.getElementById('anbuy1' + i).style['background-color'] = '#666666';
+				else document.getElementById('anbuy1' + i).style['background-color'] = 'black';
+				if(player.arraydata.gte(getarraynodecdcost(i))) document.getElementById('anbuy2' + i).style['background-color'] = '#666666';
+				else document.getElementById('anbuy2' + i).style['background-color'] = 'black';
+				if(getancd(i).lt(0.1)) document.getElementById('antier' + i).style['background-color'] = '#666666';
+				else document.getElementById('antier' + i).style['background-color'] = 'black';
+			}
+		}
+	}
+	
+	if(player.permupg.includes(69))
+	{
+		document.getElementById('assbuy0').style['background-color'] = (player.data.gte(getasscost(0)) ? '#666666' : 'black');
+		document.getElementById('assbuy1').style['background-color'] = (player.PL3info.gte(getasscost(1)) ? '#666666' : 'black');
+		document.getElementById('assbuy2').style['background-color'] = (player.data.gte(getasscost(2)) && player.openstdmod ? '#666666' : 'black');
 	}
 }
