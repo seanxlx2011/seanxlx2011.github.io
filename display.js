@@ -788,8 +788,11 @@ function GUI()
 				else document.getElementById('anbuy1' + i).style['background-color'] = 'black';
 				if(player.arraydata.gte(getarraynodecdcost(i))) document.getElementById('anbuy2' + i).style['background-color'] = '#666666';
 				else document.getElementById('anbuy2' + i).style['background-color'] = 'black';
-				if(getancd(i).lt(0.1)) document.getElementById('antier' + i).style['background-color'] = '#666666';
-				else document.getElementById('antier' + i).style['background-color'] = 'black';
+				if(player.SMupg >= 12)
+				{
+					if(getancd(i).lt(0.1)) document.getElementById('antier' + i).style['background-color'] = '#666666';
+					else document.getElementById('antier' + i).style['background-color'] = 'black';
+				}
 			}
 		}
 	}
