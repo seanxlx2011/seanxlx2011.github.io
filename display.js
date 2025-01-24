@@ -267,7 +267,7 @@ function GUI()
 	else document.getElementById('PL2bt').style.display = 'none';
 	if(player.permupg.includes(29)) document.getElementById('PL3bt').style.display = 'block';
 	else document.getElementById('PL3bt').style.display = 'none';
-	if(player.exchal[8].gte(25) || player.PL4unlock) document.getElementById('PL4bt').style.display = 'auto';
+	if(player.exchal[8].gte(25) || player.PL4unlock) document.getElementById('PL4bt').style.display = 'block';
 	else document.getElementById('PL4bt').style.display = 'none';
 	
 	if(player.PL1upg[7]) document.getElementById('spagebt2_4').style.display = 'inline-block';
