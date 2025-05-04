@@ -1,4 +1,4 @@
-const VERSION = '2.0';
+const VERSION = '2.0.1';
 
 var player;
 

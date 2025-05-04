@@ -99,7 +99,7 @@
 	border: 0px solid black;
 	width: 100px;
 	height: 100px;
-	background-color: black;
+	background-color: rgba(0, 0, 0, 0);
 	color: white;
 	overflow: visible;
 	text-align: center;

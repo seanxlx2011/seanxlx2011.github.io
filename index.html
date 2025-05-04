@@ -7,7 +7,7 @@
 		
 	</head>
 
-	<body style="background-color: #000000; font-family: Inconsolata, monospace ">
+	<body style="background-color: #000000; font-family: Inconsolata, monospace; touch-action: none">
 		<div id="app" style="position: absolute; width: 100%; height: 100%; overflow: hidden">
 			<title>数据增量重制版 2.0</title>
 			<div id="screen" style="position: relative; width: 100%; height: 100%; overflow: hidden">
@@ -19,7 +19,17 @@
 				<div id="canvas" style="width: 100%; height: 100%; z-index: -1; overflow: hidden">
 					<div id="canvas_corner" style="position: absolute; top: 0; left: 0; overflow: visible"></div>
 					<div class="transfer" style="top: 10px; left: 10px" onclick="player.focus_pos = [0, 0];"><span class="node_desc" style="font-size: 20px">数据</span></div>
-					<div class="transfer" style="top: 60px; left: 10px" onclick="player.focus_pos = [-10000, 0];"><span class="node_desc" style="font-size: 20px">关于</span></div>
+					<div class="transfer" v-if="player.tag.unlau == true" style="top: 60px; left: 10px" onclick="player.focus_pos = [-10000, 10000];"><span class="node_desc" style="font-size: 20px">自动化</span></div>
+					<div class="transfer" v-if="player.tag.unlau != true" style="opacity: 0.5; top: 60px; left: 10px"><span class="node_desc" style="font-size: 20px">(锁定)</span></div>
+					<div class="transfer" v-if="player.tag.unlPL1 == true" style="top: 110px; left: 10px; border-color: blue" onclick="player.focus_pos = [0, 10000];"><span class="node_desc" style="font-size: 20px">世界</span></div>
+					<div class="transfer" v-if="player.tag.unlPL1 != true" style="opacity: 0.5; top: 110px; left: 10px; border-color: blue"><span class="node_desc" style="font-size: 20px">(锁定)</span></div>
+					<div class="transfer" v-if="player.tag.unlPL2 != true" style="opacity: 0.5; top: 160px; left: 10px; border-color: purple"><span class="node_desc" style="font-size: 20px">(锁定)</span></div>
+					<div class="transfer" v-if="player.tag.unlPL3 != true" style="opacity: 0.5; top: 210px; left: 10px; border-color: gold"><span class="node_desc" style="font-size: 20px">(锁定)</span></div>
+					<div class="transfer" v-if="player.tag.unlPL4 != true" style="opacity: 0.5; top: 260px; left: 10px; border-color: white; color: black"><span class="node_desc" style="font-size: 20px">(锁定)</span></div>
+					<div class="transfer" v-if="player.tag.unlPL5 != true" style="opacity: 0.5; top: 310px; left: 10px; border-color: red; color: cyan"><span class="node_desc" style="font-size: 20px">(锁定)</span></div>
+					<div class="transfer" v-if="player.tag.unlPL6 != true" style="opacity: 0.5; top: 360px; left: 10px; border-color: green"><span class="node_desc" style="font-size: 20px">(锁定)</span></div>
+					<div class="transfer" v-if="player.tag.unlPL7 != true" style="opacity: 0.5; top: 410px; left: 10px; border-color: lightgreen"><span class="node_desc" style="font-size: 20px">(锁定)</span></div>
+					<div class="transfer" style="top: 460px; left: 10px" onclick="player.focus_pos = [-10000, 0];"><span class="node_desc" style="font-size: 20px">关于</span></div>
 				</div>
 				
 				<div id="infobox" v-if="infobox.exist()" style="z-index: 9999; position: absolute; top: 30%; left: 30%; height: 40%; width: 40%; background-color: #666; border: 4px solid black; padding: 15px; color: white">
