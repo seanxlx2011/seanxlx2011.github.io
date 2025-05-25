@@ -2,7 +2,7 @@ function init()
 {
 	player = {
 		//otherwise
-		last_version: '2.0',
+		last_version: '未知版本',
 		last_update: Date.now(),
 		opened: {},
 		resource: {},

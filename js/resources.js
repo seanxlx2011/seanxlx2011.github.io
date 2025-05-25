@@ -84,6 +84,29 @@ const res = {
 	'PL1info': {
 		init(){return N(0);},
 	},
+	'slice': {
+		init(){return N(0);},
+		produce(diff){res.add('slice', formula.sliceg().mul(diff));},
+	},
+	'slicereal': {
+		init(){return N(0);},
+		produce(diff){res.set('slicereal', res.val('slice').pow(formula.slicep()));},
+	},
+	'insc': {
+		init(){return N(0);},
+	},
+	'insc_alpha': {
+		init(){return N(0);},
+	},
+	'insc_beta': {
+		init(){return N(0);},
+	},
+	'insc_gamma': {
+		init(){return N(0);},
+	},
+	'insc_omega': {
+		init(){return N(0);},
+	},
 	
 	resets: {
 		boost()
@@ -152,6 +175,7 @@ const formula = {
 		if(layer == 1 && res.val('data').gte(N(2).pow(1024)))
 		{
 			ans = res.val('data').root(1024).sub(1);
+			if(ans.gte(10)) ans = ans.sub(10).pow(4);
 		}
 		if(dec) return ans;
 		else return ans.floor();
@@ -181,6 +205,7 @@ const formula = {
 		if(res.val('boost').gte(5)) base = base.add(0.5);
 		if(formula.haswu(0)) base = base.add(0.1);
 		if(formula.haswc(7)) base = base.add(0.2);
+		if(formula.hassliceb(1)) base = base.add(formula.slicebe(1));
 		
 		if(player.tag.inwc == 0) base = base.pow(0.5);
 		if(player.tag.inwc == 7) base = base.pow(0.1);
@@ -210,8 +235,10 @@ const formula = {
 		if(formula.haswu(4)) base = base.mul(formula.wue(4));
 		if(formula.haswu(5)) base = base.mul(formula.wue(5));
 		if(formula.haswc(5) && x != 8) base = base.mul(res.val('dn' + (x + 1)).max(10).log10());
+		if(formula.haswu(8)) base = base.mul(formula.slicee());
 		if(player.tag.inwc == 1) base = base.pow(0.9);
 		if(player.tag.inwc == 5 && x == 7) base = N(0);
+		if(player.tag.inwc == 8 && x != player.tag.lbdb) base = N(0);
 		return base;
 	},
 	boostc()
@@ -265,8 +292,11 @@ const formula = {
 		let base = res.val('boostdata').max(10).div(10).pow(exp);
 		if(res.val('bdeb').gte(1)) base = base.pow(res.val('bdeb').mul(formula.bdebe()).add(1));
 		if(formula.haswc(6)) base = base.pow(1.1);
+		
 		if(player.tag.inwc == 6) base = base.pow(0.1);
 		if(base.gte(N(2).pow(128))) base = N(2).pow(N(127).add(base.max(1).log2().sub(127).pow(0.5)));
+		
+		if(formula.hassliceb(2)) base = base.pow(formula.slicebe(2));
 		return base;
 	},
 	bdebe()
@@ -310,7 +340,7 @@ const formula = {
 		else if(id == 4)
 		{
 			base = res.val('PL1info').mul(100).add(1).root(2);
-			if(formula.haswc(4) && res.val('PL1info').gte(1)) base = base.add(res.val('PL1info').mul(10).div(res.val('PL1info').ln()));
+			if(formula.haswc(4) && res.val('PL1info').gte(1)) base = base.add(res.val('PL1info').mul(10).div(res.val('PL1info').add(Math.E).ln()));
 			if(player.tag.inwc == 7) base = base.pow(1.5);
 			if(formula.haswc(4) && player.tag.inwc == 7) base = base.pow(1.5);
 			
@@ -343,7 +373,7 @@ const formula = {
 		else if(id == 5) return N('1e640');
 		else if(id == 6) return N('1e320');
 		else if(id == 7) return N(1e150);
-		else if(id == 8) return N('1e9000');
+		else if(id == 8) return N('1e15000');
 		else return N('e9e15');
 	},
 	wcrd(id)
@@ -383,4 +413,71 @@ const formula = {
 			}
 		}
 	},
+	sliceg()
+	{
+		if(!formula.haswu(8)) return N(0);
+		if(res.val('data').lt('1e900')) return N(0);
+		let base = res.val('data').root(900).sub(9).mul(10).mul(res.val('PL1info').mul(10).add(1).root(5));
+		if(formula.hassliceb(0)) base = base.mul(formula.slicebe(0));
+		return base;
+	},
+	slicegps()
+	{
+		return (res.val('slice').add(formula.sliceg()).pow(formula.slicep())).sub(res.val('slicereal'));
+	},
+	slicep()
+	{
+		let base = N(0.25);
+		return base;
+	},
+	slicee()
+	{
+		let base = N(1.5);
+		base = res.val('slicereal').pow(7);
+		return base;
+	},
+	hassliceb(id)
+	{
+		if(player.tag.sliceb == undefined) player.tag.sliceb = [N(0), N(0), N(0), N(0), N(0), N(0)];
+		return player.tag.sliceb[id].gte(N(1));
+	},
+	slicebl(id)
+	{
+		if(!formula.hassliceb(id)) return N(0);
+		else return player.tag.sliceb[id];
+	},
+	slicebc(id)
+	{
+		let base = [N(5), N(12.5), N(17.5), N(1e6), N(1e9), N(1e12)];
+		let basex = [N(1.5), N(2), N(4), N(100), N(1000), N(1e4)];
+		return base[id].mul(basex[id].pow(formula.slicebl(id)));
+	},
+	slicebd(id)
+	{
+		let disp = ['增加切片产量。<br>当前：×' + notation(formula.slicebe(0), 1)
+		, '增加节点升级效果。<br>当前：+' + notation(formula.slicebe(1), 1)
+		, '增幅跃迁数据效果<br>(软上限后)。<br>当前：^' + notation(formula.slicebe(2), 2)
+		, '敬请期待'
+		, '敬请期待'
+		, '敬请期待'];
+		return disp[id];
+	},
+	slicebe(id)
+	{
+		let h = formula.hassliceb(id);
+		let base = N(0);
+		if(id == 0)
+		{
+			base = player.tag.sliceb[0].mul(4).add(1).mul(N(1.1).pow(player.tag.sliceb[0]));
+		}
+		else if(id == 1)
+		{
+			base = player.tag.sliceb[1].mul(0.5);
+		}
+		else if(id == 2)
+		{
+			base = N(1.025).pow(player.tag.sliceb[2].mul(4).pow(2).add(1).log(2)).sub(0.025);
+		}
+		return base;
+	}
 }

@@ -18,6 +18,7 @@ var can = {
 		description()
 		{
 			let disp = '更新日志：<br><br>';
+			disp += '2.1(2025/5/25)<br>修复一个bug。<br>加入了位面切片。<br>Endgame: 10000世界信息。<br><br>';
 			disp += '2.0.1(2025/5/4)<br>加入了世界前所有内容、世界阶段前半部分内容。<br>Endgame: 1e880+数据，50+世界信息。<br><br>';
 			disp += '2.0(2025/4/19)<br>加入了数据、前5个传输节点、跃迁。<br>Endgame：1e35数据。<br><br>';
 			return disp;
@@ -187,6 +188,7 @@ var can = {
 				res.func('data', formula.dnbc(1), Decimal.sub);
 				res.add('dn1b', 1);
 				res.add('dn1', 1);
+				if(player.tag.inwc == 8) player.tag.lbdb = 1;
 			}
 		},
 		unlocked(){return true;},
@@ -221,6 +223,7 @@ var can = {
 				res.func('data', formula.dnbc(2), Decimal.sub);
 				res.add('dn2b', 1);
 				res.add('dn2', 1);
+				if(player.tag.inwc == 8) player.tag.lbdb = 2;
 			}
 		},
 		unlocked(){return res.val('boost').gte(1);},
@@ -255,6 +258,7 @@ var can = {
 				res.func('data', formula.dnbc(3), Decimal.sub);
 				res.add('dn3b', 1);
 				res.add('dn3', 1);
+				if(player.tag.inwc == 8) player.tag.lbdb = 3;
 			}
 		},
 		unlocked(){return res.val('boost').gte(2);},
@@ -289,6 +293,7 @@ var can = {
 				res.func('data', formula.dnbc(4), Decimal.sub);
 				res.add('dn4b', 1);
 				res.add('dn4', 1);
+				if(player.tag.inwc == 8) player.tag.lbdb = 4;
 			}
 		},
 		unlocked(){return res.val('boost').gte(3);},
@@ -323,6 +328,7 @@ var can = {
 				res.func('data', formula.dnbc(5), Decimal.sub);
 				res.add('dn5b', 1);
 				res.add('dn5', 1);
+				if(player.tag.inwc == 8) player.tag.lbdb = 5;
 			}
 		},
 		unlocked(){return res.val('boost').gte(5);},
@@ -357,6 +363,7 @@ var can = {
 				res.func('data', formula.dnbc(6), Decimal.sub);
 				res.add('dn6b', 1);
 				res.add('dn6', 1);
+				if(player.tag.inwc == 8) player.tag.lbdb = 6;
 			}
 		},
 		unlocked(){return res.val('boost').gte(10);},
@@ -391,6 +398,7 @@ var can = {
 				res.func('data', formula.dnbc(7), Decimal.sub);
 				res.add('dn7b', 1);
 				res.add('dn7', 1);
+				if(player.tag.inwc == 8) player.tag.lbdb = 7;
 			}
 		},
 		unlocked(){return res.val('boost').gte(15);},
@@ -425,6 +433,7 @@ var can = {
 				res.func('data', formula.dnbc(8), Decimal.sub);
 				res.add('dn8b', 1);
 				res.add('dn8', 1);
+				if(player.tag.inwc == 8) player.tag.lbdb = 8;
 			}
 		},
 		unlocked(){return res.val('boost').gte(16);},
@@ -566,6 +575,55 @@ var can = {
 		},
 		unlocked(){return player.tag['unlPL1'];},
 	},
+	'slice': {
+		corrupted: true,
+		color(){return 'blue';},
+		posx: -400,
+		posy: 9600,
+		branches: ['PL1info'],
+		description()
+		{
+			return '位面切片<br>' + notation(res.val('slicereal'), 1) + (res.val('data').lt('1e900') ? '<br>需1e900数据' : '<br>(+' + notation(formula.slicegps(), 2) + '/s)') + '<br>节点×' + notation(formula.slicee(), 1);
+		},
+		click()
+		{
+		},
+		unlocked(){return formula.haswu(8);},
+	},
+	'insc_unl': {
+		color(){return 'blue';},
+		posx: -400,
+		posy: 10400,
+		branches: ['PL1info'],
+		description()
+		{
+			return '解锁铭刻<br>10000世界信息';
+		},
+		lightning()
+		{
+			return res.val('PL1info').gte(10000);
+		},
+		click()
+		{
+			if(this.lightning())
+			{
+				res.func('PL1info', N(10000), Decimal.sub);
+				player.tag['unlinsc'] = true;
+			}
+		},
+		unlocked(){return !player.tag['unlinsc'] && formula.haswu(8);},
+	},
+	'insc': {
+		color(){return 'blue';},
+		posx: -400,
+		posy: 10400,
+		branches: ['PL1info'],
+		description()
+		{
+			return '铭刻<br>敬请期待';
+		},
+		unlocked(){return player.tag['unlinsc'];},
+	},
 };
 
 var models = {
@@ -638,11 +696,41 @@ var models = {
 				{
 					if(player.tag.inwc == this.id) player.tag.inwc = -1;
 					else player.tag.inwc = this.id;
+					if(this.id == 8) player.tag.lbdb = 1;
 					res.resets.world();
 				},
 				unlocked(){return formula.haswu(7);},
 			};
 			return ['wceb' + x, wceb];
+		},
+	},
+	'sliceb': {
+		list: [0, 1, 2, 3, 4, 5],
+		para(x)
+		{
+			let sliceb = {
+				id: x,
+				corrupted: true,
+				color(){return (res.val('slicereal').gte(formula.slicebc(this.id)) ? 'cyan' : 'blue');},
+				get posx(){return -400 + 200 * Math.cos(((60 * x + Date.now() * 0.005) % 360) / 180 * Math.PI);},
+				get posy(){return 9600 + 200 * Math.sin(((60 * x + Date.now() * 0.005) % 360) / 180 * Math.PI);},
+				branches: ['slice'],
+				description()
+				{
+					return formula.slicebd(this.id) + '<br>价格：' + notation(formula.slicebc(this.id), 1);
+				},
+				click()
+				{
+					if(res.val('slicereal').gte(formula.slicebc(this.id)))
+					{
+						res.set('slice', res.val('slicereal').sub(formula.slicebc(this.id)).root(formula.slicep()));
+						let h = formula.hassliceb(this.id);
+						player.tag.sliceb[this.id] = player.tag.sliceb[this.id].add(1);
+					}
+				},
+				unlocked(){return formula.haswu(8);},
+			};
+			return ['sliceb' + x, sliceb];
 		},
 	},
 };
@@ -731,15 +819,23 @@ function update_can()
 		
 		if(out_of_screen(dx, dy, w, h))
 		{
-			let class_using = 'node';
-			if(can[i].texttype) class_using = 'node_text_type';
-			canvas += '<div id="node_' + i + '" class="' + class_using + '" style="transform: translate(-50%, -50%);';
+			let box_class_using = 'node';
+			if(can[i].texttype) box_class_using = 'node_text_type';
+			let text_class_using = 'node_desc';
+			if(can[i].corrupted) text_class_using += ' corrupted';
+			let text_style = '';
+			if(can[i].corrupted)
+			{
+				text_style += 'animation-delay: -' + (Date.now() % 500) + 'ms;';
+			}
+			
+			canvas += '<div id="node_' + i + '" class="' + box_class_using + '" style="transform: translate(-50%, -50%);';
 			canvas += ' top: ' + (0.5 * height - dy) + 'px; left: ' + (0.5 * width - dx) + 'px';
 			if(can[i].lightning != undefined && can[i].lightning()) canvas += '; box-shadow: 0px 0px 10px ' + color + ', 0px 0px 5px ' + color;
 			canvas += '; border-color: ' + color;
 			canvas += '"';
 			if(can[i].click != undefined) canvas += ' onmousedown="can[\'' + i + '\'].click()"';
-			canvas += '><span class="node_desc">' + can[i].description() + '</span></div>';
+			canvas += '><span class="' + text_class_using + '" style="' + text_style + '">' + can[i].description() + '</span></div>';
 		}
 	}
 	document.getElementById('canvas_corner').innerHTML = canvas;

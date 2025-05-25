@@ -109,8 +109,7 @@
 .node_conn {
 	position: absolute;
 	border: 2px solid white;
-	width: 2px;
-	background-color: white;
+	width: 1px;
 	z-index: -10;
 }
 
@@ -140,4 +139,27 @@
 
 .transfer:hover {
 	transform: scale(1.05);
+}
+
+@keyframes corrupted_text {
+	0%,100% {
+		text-shadow: -7px -7px 7px #5555ff, 4px 4px 4px #ff5555;
+		color: white;
+	}
+	25% {
+		text-shadow: -7px 7px 7px #5555ff, 4px -4px 4px #ff5555;
+		color: #eeddff;
+	}
+	50% {
+		text-shadow: 7px 7px 7px #5555ff, -4px -4px 4px #ff5555;
+		color: white;
+	}
+	75% {
+		text-shadow: 7px -7px 7px #5555ff, -4px 4px 4px #ff5555;
+		color: #ffddee;
+	}
+}
+
+.corrupted {
+	animation: corrupted_text 0.5s cubic-bezier(0.37, 0, 0.63, 1) infinite;
 }

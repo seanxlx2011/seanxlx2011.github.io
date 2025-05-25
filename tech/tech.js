@@ -1,4 +1,4 @@
-const VERSION = '2.0.1';
+const VERSION = '2.1';
 
 var player;
 
@@ -173,12 +173,12 @@ var formatsave = {
   },
 }
 
-function transformToDecimal(object)
+function transformToDecimal(object, tobj)
 {
 	for(i in object)
 	{
-		if(typeof(object[i]) == 'string' && !isNaN(N(object[i]).mag)) object[i] = N(object[i]);
-		if(typeof(object[i]) == 'object') transformToDecimal(object[i]);
+		if(typeof(object[i]) == 'string' && (tobj == undefined || typeof(tobj[i]) != 'string') && !isNaN(N(object[i]).mag)) object[i] = N(object[i]);
+		if(typeof(object[i]) == 'object') transformToDecimal(object[i], tobj == undefined ? null : tobj[i]);
 	}
 }
 
@@ -191,7 +191,7 @@ function data_input()
 {
 	if (!localStorage.IDR2savefile) return;
 	else player = JSON.parse(formatsave.decode(localStorage.IDR2savefile));
-	transformToDecimal(player);
+	transformToDecimal(player, playerTemp);
 }
 
 async function jtb(text) {
@@ -213,7 +213,7 @@ function import_save()
 	let userInput = prompt("导入：", "输入存档");
 	if (userInput != null && userInput !== "") {
 		player = JSON.parse(formatsave.decode(userInput));
-		transformToDecimal(player);
+		transformToDecimal(player, playerTemp);
 		data_print();
 		location.reload();
 	}
