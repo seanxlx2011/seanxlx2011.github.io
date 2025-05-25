@@ -18,6 +18,7 @@ var can = {
 		description()
 		{
 			let disp = '更新日志：<br><br>';
+			disp += '2.1.1(2025/5/25)<br>修复两个bug。<br><br>';
 			disp += '2.1(2025/5/25)<br>修复一个bug。<br>加入了位面切片。<br>Endgame: 10000世界信息。<br><br>';
 			disp += '2.0.1(2025/5/4)<br>加入了世界前所有内容、世界阶段前半部分内容。<br>Endgame: 1e880+数据，50+世界信息。<br><br>';
 			disp += '2.0(2025/4/19)<br>加入了数据、前5个传输节点、跃迁。<br>Endgame：1e35数据。<br><br>';

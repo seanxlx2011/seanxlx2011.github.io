@@ -433,7 +433,7 @@ const formula = {
 	slicee()
 	{
 		let base = N(1.5);
-		base = res.val('slicereal').pow(7);
+		base = res.val('slicereal').add(1).pow(7);
 		return base;
 	},
 	hassliceb(id)
@@ -476,7 +476,7 @@ const formula = {
 		}
 		else if(id == 2)
 		{
-			base = N(1.025).pow(player.tag.sliceb[2].mul(4).pow(2).add(1).log(2)).sub(0.025);
+			base = N(1.025).pow(player.tag.sliceb[2].mul(4).pow(2).add(1).log(2));
 		}
 		return base;
 	}
