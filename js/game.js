@@ -43,7 +43,7 @@ const infobox = {
 
 function automation()
 {
-	if(formula.haswc(1) && player.tag.autodn)
+	if(player.tag.autodn)
 	{
 		if(player.cd_counter.autodn == undefined) player.cd_counter.autodn = Date.now();
 		if(formula.autocd('autodn').lt(Date.now() - player.cd_counter.autodn))
