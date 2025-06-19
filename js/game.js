@@ -102,6 +102,12 @@ function produce()
 		player.tag.unlau = true;
 	}
 	
+	if(player.tag.boostnr != true && res.val('boost').gte(50))
+	{
+		infobox.create('跃迁不再重置', '跃迁不再重置任何东西。<br>效果永久生效。');
+		player.tag.boostnr = true;
+	}
+	
 	for(let i in player.resource)
 	{
 		if(res[i].produce != undefined)

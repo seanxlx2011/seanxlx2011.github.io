@@ -18,6 +18,7 @@ var can = {
 		description()
 		{
 			let disp = '更新日志：<br><br>';
+			disp += '2.1.2(2025/6/10)<br>修复一个bug。<br>修复一个显示错误。<br>加入了铭刻和位面。<br>Endgame: 1e40世界信息、2位面。<br><br>';
 			disp += '2.1.1(2025/5/25)<br>修复两个bug。<br><br>';
 			disp += '2.1(2025/5/25)<br>修复一个bug。<br>加入了位面切片。<br>Endgame: 10000世界信息。<br><br>';
 			disp += '2.0.1(2025/5/4)<br>加入了世界前所有内容、世界阶段前半部分内容。<br>Endgame: 1e880+数据，50+世界信息。<br><br>';
@@ -56,8 +57,20 @@ var can = {
 		{
 			if(res.val('data').gte(formula.boostc()))
 			{
-				res.resets.boost();
-				res.add('boost', 1);
+				if(res.val('plane').gte(2))
+				{
+					let basec = N(1e3);
+					let multc = N(1e4);
+					let base = res.val('data').div(basec).log(multc).add(1);
+					if(base.gte(10)) base = N(10).add(base.sub(10).root(formula.boostsc(0)));
+					base = base.floor();
+					res.set('boost', res.val('boost').max(base));
+				}
+				else
+				{
+					res.add('boost', 1);
+				}
+				if(!player.tag.boostnr) res.resets.boost();
 			}
 		},
 		unlocked(){return true;},
@@ -80,11 +93,11 @@ var can = {
 		description()
 		{
 			let milestone = [N(1), N(2), N(3), N(5), N(7), N(10), N(12), N(14)
-			, N(15), N(16)], next, has_next = false;
+			, N(15), N(16), N(50)], next, has_next = false;
 			let ms_desc = ['解锁2号传输节点。', '解锁3号传输节点。', '解锁4号传输节点，跃迁增幅1号传输节点。当前：×' + notation(formula.booste(2))
 			, '解锁5号传输节点，节点升级效果+0.5。', '解锁购买最大按钮。', '解锁6号传输节点。'
 			, '跃迁增幅前4个传输节点。当前：×' + notation(formula.booste(6)), '解锁跃迁数据。'
-			, '解锁7号传输节点。', '解锁8号传输节点。'];
+			, '解锁7号传输节点。', '解锁8号传输节点。', '跃迁的重置项目失效（永久性）。'];
 			for(let i = 0;i < milestone.length;i++)
 			{
 				if(res.val('boost').lt(milestone[i]))
@@ -155,7 +168,7 @@ var can = {
 		posy: 400,
 		description()
 		{
-			return '达到' + format(N(2).pow(128)) + '倍之后，<br>购买乘数将被软上限！<br>(e^0.75)';
+			return '达到' + format(formula.dnbscs()) + '倍之后，<br>购买乘数将被软上限！<br>(e^0.75)';
 		},
 		unlocked(){return res.val('boost').gte(14);},
 	},
@@ -170,30 +183,6 @@ var can = {
 		click(){},
 		unlocked(){return true;},
 	},
-	'dn1b': {
-		posx: -200,
-		posy: 400,
-		branches: ['dn1'],
-		description()
-		{
-			return '升级<br>×' + notation(formula.dnbe(), 1) + '<br>价格：' + notation(formula.dnbc(1), 0);
-		},
-		lightning()
-		{
-			return res.val('data').gte(formula.dnbc(1));
-		},
-		click()
-		{
-			if(res.val('data').gte(formula.dnbc(1)))
-			{
-				res.func('data', formula.dnbc(1), Decimal.sub);
-				res.add('dn1b', 1);
-				res.add('dn1', 1);
-				if(player.tag.inwc == 8) player.tag.lbdb = 1;
-			}
-		},
-		unlocked(){return true;},
-	},
 	'dn2': {
 		posx: -200,
 		posy: 100,
@@ -203,30 +192,6 @@ var can = {
 			return '2号传输节点<br>' + notation(res.val('dn2'), 0) + '<br>×' + notation(formula.dnbm(2), 1);
 		},
 		click(){},
-		unlocked(){return res.val('boost').gte(1);},
-	},
-	'dn2b': {
-		posx: -400,
-		posy: 200,
-		branches: ['dn2'],
-		description()
-		{
-			return '升级<br>×' + notation(formula.dnbe(), 1) + '<br>价格：' + notation(formula.dnbc(2), 0);
-		},
-		lightning()
-		{
-			return res.val('data').gte(formula.dnbc(2));
-		},
-		click()
-		{
-			if(res.val('data').gte(formula.dnbc(2)))
-			{
-				res.func('data', formula.dnbc(2), Decimal.sub);
-				res.add('dn2b', 1);
-				res.add('dn2', 1);
-				if(player.tag.inwc == 8) player.tag.lbdb = 2;
-			}
-		},
 		unlocked(){return res.val('boost').gte(1);},
 	},
 	'dn3': {
@@ -240,30 +205,6 @@ var can = {
 		click(){},
 		unlocked(){return res.val('boost').gte(2);},
 	},
-	'dn3b': {
-		posx: -400,
-		posy: -200,
-		branches: ['dn3'],
-		description()
-		{
-			return '升级<br>×' + notation(formula.dnbe(), 1) + '<br>价格：' + notation(formula.dnbc(3), 0);
-		},
-		lightning()
-		{
-			return res.val('data').gte(formula.dnbc(3));
-		},
-		click()
-		{
-			if(res.val('data').gte(formula.dnbc(3)))
-			{
-				res.func('data', formula.dnbc(3), Decimal.sub);
-				res.add('dn3b', 1);
-				res.add('dn3', 1);
-				if(player.tag.inwc == 8) player.tag.lbdb = 3;
-			}
-		},
-		unlocked(){return res.val('boost').gte(2);},
-	},
 	'dn4': {
 		posx: -100,
 		posy: -200,
@@ -273,30 +214,6 @@ var can = {
 			return '4号传输节点<br>' + notation(res.val('dn4'), 0) + '<br>×' + notation(formula.dnbm(4), 1);
 		},
 		click(){},
-		unlocked(){return res.val('boost').gte(3);},
-	},
-	'dn4b': {
-		posx: -200,
-		posy: -400,
-		branches: ['dn4'],
-		description()
-		{
-			return '升级<br>×' + notation(formula.dnbe(), 1) + '<br>价格：' + notation(formula.dnbc(4), 0);
-		},
-		lightning()
-		{
-			return res.val('data').gte(formula.dnbc(4));
-		},
-		click()
-		{
-			if(res.val('data').gte(formula.dnbc(4)))
-			{
-				res.func('data', formula.dnbc(4), Decimal.sub);
-				res.add('dn4b', 1);
-				res.add('dn4', 1);
-				if(player.tag.inwc == 8) player.tag.lbdb = 4;
-			}
-		},
 		unlocked(){return res.val('boost').gte(3);},
 	},
 	'dn5': {
@@ -310,30 +227,6 @@ var can = {
 		click(){},
 		unlocked(){return res.val('boost').gte(5);},
 	},
-	'dn5b': {
-		posx: 200,
-		posy: -400,
-		branches: ['dn5'],
-		description()
-		{
-			return '升级<br>×' + notation(formula.dnbe(), 1) + '<br>价格：' + notation(formula.dnbc(5), 0);
-		},
-		lightning()
-		{
-			return res.val('data').gte(formula.dnbc(5));
-		},
-		click()
-		{
-			if(res.val('data').gte(formula.dnbc(5)))
-			{
-				res.func('data', formula.dnbc(5), Decimal.sub);
-				res.add('dn5b', 1);
-				res.add('dn5', 1);
-				if(player.tag.inwc == 8) player.tag.lbdb = 5;
-			}
-		},
-		unlocked(){return res.val('boost').gte(5);},
-	},
 	'dn6': {
 		posx: 200,
 		posy: -100,
@@ -343,30 +236,6 @@ var can = {
 			return '6号传输节点<br>' + notation(res.val('dn6'), 0) + '<br>×' + notation(formula.dnbm(6), 1);
 		},
 		click(){},
-		unlocked(){return res.val('boost').gte(10);},
-	},
-	'dn6b': {
-		posx: 400,
-		posy: -200,
-		branches: ['dn6'],
-		description()
-		{
-			return '升级<br>×' + notation(formula.dnbe(), 1) + '<br>价格：' + notation(formula.dnbc(6), 0);
-		},
-		lightning()
-		{
-			return res.val('data').gte(formula.dnbc(6));
-		},
-		click()
-		{
-			if(res.val('data').gte(formula.dnbc(6)))
-			{
-				res.func('data', formula.dnbc(6), Decimal.sub);
-				res.add('dn6b', 1);
-				res.add('dn6', 1);
-				if(player.tag.inwc == 8) player.tag.lbdb = 6;
-			}
-		},
 		unlocked(){return res.val('boost').gte(10);},
 	},
 	'dn7': {
@@ -380,30 +249,6 @@ var can = {
 		click(){},
 		unlocked(){return res.val('boost').gte(15);},
 	},
-	'dn7b': {
-		posx: 400,
-		posy: 200,
-		branches: ['dn7'],
-		description()
-		{
-			return '升级<br>×' + notation(formula.dnbe(), 1) + '<br>价格：' + notation(formula.dnbc(7), 0);
-		},
-		lightning()
-		{
-			return res.val('data').gte(formula.dnbc(7));
-		},
-		click()
-		{
-			if(res.val('data').gte(formula.dnbc(7)))
-			{
-				res.func('data', formula.dnbc(7), Decimal.sub);
-				res.add('dn7b', 1);
-				res.add('dn7', 1);
-				if(player.tag.inwc == 8) player.tag.lbdb = 7;
-			}
-		},
-		unlocked(){return res.val('boost').gte(15);},
-	},
 	'dn8': {
 		posx: 100,
 		posy: 200,
@@ -413,30 +258,6 @@ var can = {
 			return '8号传输节点<br>' + notation(res.val('dn8'), 0) + '<br>×' + notation(formula.dnbm(8), 1);
 		},
 		click(){},
-		unlocked(){return res.val('boost').gte(16);},
-	},
-	'dn8b': {
-		posx: 200,
-		posy: 400,
-		branches: ['dn8'],
-		description()
-		{
-			return '升级<br>×' + notation(formula.dnbe(), 1) + '<br>价格：' + notation(formula.dnbc(8), 0);
-		},
-		lightning()
-		{
-			return res.val('data').gte(formula.dnbc(8));
-		},
-		click()
-		{
-			if(res.val('data').gte(formula.dnbc(8)))
-			{
-				res.func('data', formula.dnbc(8), Decimal.sub);
-				res.add('dn8b', 1);
-				res.add('dn8', 1);
-				if(player.tag.inwc == 8) player.tag.lbdb = 8;
-			}
-		},
 		unlocked(){return res.val('boost').gte(16);},
 	},
 	'buymaxdn': {
@@ -456,6 +277,7 @@ var can = {
 				if(res.val('data').lt(basec[i])) continue;
 				if(!can['dn' + i + 'b'].unlocked()) break;
 				let bm = res.val('data').div(basec[i]).log10().div(multcl[i]).add(1).floor().max(res.val('dn' + i + 'b'));
+				if(bm.gte(formula.maxdnl(i))) bm = formula.maxdnl(i);
 				if(bm.gte(res.val('dn' + i + 'b')))
 				{
 					res.add('dn' + i, (bm.sub(res.val('dn' + i + 'b'))));
@@ -474,6 +296,17 @@ var can = {
 			return '初阶自动化';
 		},
 		unlocked(){return player.tag.unlau == true;},
+	},
+	'autoPL1': {
+		color(){return 'blue';},
+		posx: -10000,
+		posy: 10500,
+		branches: ['autoPL0'],
+		description()
+		{
+			return '世界自动化';
+		},
+		unlocked(){return player.tag.unlPL1au == true;},
 	},
 	'autodn': {
 		posx: -10200,
@@ -497,6 +330,7 @@ var can = {
 		branches: ['autodn'],
 		description()
 		{
+			if(res.val('autodn').gte(9)) return '延迟已缩减到最小';
 			return '自动传输节点<br>延迟-100ms<br>价格：' + notation(N(3).pow(res.val('autodn')), 0) + '世界信息';
 		},
 		lightning()
@@ -529,8 +363,8 @@ var can = {
 		unlocked(){return formula.haswc(2);},
 	},
 	'autobdeb': {
-		posx: -10200,
-		posy: 10400,
+		get posx(){return player.tag.unlPL1au ? -10400 : -10200},
+		get posy(){return player.tag.unlPL1au ? 10200 : 10400},
 		branches: ['autoboost'],
 		description()
 		{
@@ -542,6 +376,16 @@ var can = {
 			else player.tag.autobdeb = false;
 		},
 		unlocked(){return formula.haswc(2);},
+	},
+	'autoinsc': {
+		posx: -9800,
+		posy: 10500,
+		branches: ['autoPL1'],
+		description()
+		{
+			return '铭刻自动机<br>自动获取100%/s';
+		},
+		unlocked(){return player.tag.unlomginsc;},
 	},
 	'PL1info': {
 		color(){return 'blue';},
@@ -621,13 +465,236 @@ var can = {
 		branches: ['PL1info'],
 		description()
 		{
-			return '铭刻<br>敬请期待';
+			return '铭刻<br>' + notation(res.val('insc'), 0) + '<br>点击+' + notation(formula.inscg(), 1);
+		},
+		click()
+		{
+			res.add('insc', formula.inscg());
 		},
 		unlocked(){return player.tag['unlinsc'];},
+	},
+	'insc_alpha': {
+		color(){return 'blue';},
+		posx: -200,
+		posy: 10400,
+		branches: ['insc'],
+		description()
+		{
+			return 'α铭刻<br>' + notation(res.val('insc_alpha'), 1) + '<br>转化后+' + notation(res.val('insc').mul(formula.insc_rate(1)), 1) + '<br>切片×' + notation(formula.insce(1), 1);
+		},
+		click()
+		{
+			res.add('insc_alpha', res.val('insc').mul(formula.insc_rate(1)));
+			res.set('insc', N(0));
+		},
+		unlocked(){return player.tag['unlinsc'];},
+	},
+	'insc_beta': {
+		color(){return 'blue';},
+		posx: -400,
+		posy: 10600,
+		branches: ['insc'],
+		description()
+		{
+			return 'β铭刻<br>' + notation(res.val('insc_beta'), 1) + '<br>转化后+' + notation(res.val('insc').mul(formula.insc_rate(2)), 1) + '<br>节点×' + notation(formula.insce(2), 1);
+		},
+		click()
+		{
+			res.add('insc_beta', res.val('insc').mul(formula.insc_rate(2)));
+			res.set('insc', N(0));
+		},
+		unlocked(){return player.tag['unlinsc'];},
+	},
+	'insc_gamma': {
+		color(){return 'blue';},
+		posx: -600,
+		posy: 10400,
+		branches: ['insc'],
+		description()
+		{
+			return 'γ铭刻<br>' + notation(res.val('insc_gamma'), 1) + '<br>转化后+' + notation(res.val('insc').mul(formula.insc_rate(3)), 1) + '<br>节点升级效果<br>+' + notation(formula.insce(3), 3);
+		},
+		click()
+		{
+			res.add('insc_gamma', res.val('insc').mul(formula.insc_rate(3)));
+			res.set('insc', N(0));
+		},
+		unlocked(){return player.tag['unlinsc'];},
+	},
+	'insc_omega': {
+		color(){return 'blue';},
+		posx: -400,
+		posy: 10000,
+		branches: ['insc'],
+		description()
+		{
+			if(formula.inscomgg().lt(1) && !(player.tag.unlomginsc)) return '???<br>解锁进度：<br>' + notation(formula.inscomgg().mul(100), 2) + '%';
+			else if(formula.inscomgg().lt(1)) return 'ω铭刻<br>' + notation(res.val('insc_omega'), 1) + '<br>重置前四种铭刻<br>' + notation(formula.inscomgg().mul(100), 2) + '%';
+			else return 'ω铭刻<br>' + notation(res.val('insc_omega'), 1) + '<br>重置前四种铭刻<br>转化后+' + notation(formula.inscomgg(), 1);
+		},
+		click()
+		{
+			if(formula.inscomgg().lt(1)) return;
+			res.add('insc_omega', formula.inscomgg());
+			res.set('insc', N(0));
+			res.set('insc_alpha', N(0));
+			res.set('insc_beta', N(0));
+			res.set('insc_gamma', N(0));
+			player.tag.unlomginsc = true;
+			player.tag.unlPL1au = true;
+		},
+		unlocked(){return player.tag['unlinsc'];},
+	},
+	'insc_omega_desc': {
+		texttype: true,
+		posx: -600,
+		posy: 10200,
+		branches: [],
+		description()
+		{
+			let disp = '<span style="color: ' + (player.tag['unlomginsc'] ? 'lightgreen' : 'grey') + '">首次进行ω铭刻重置后，将解锁铭刻自动机</span>';
+			if(formula.inscpsie().gte(10)) disp += '<br><span style="color: red">ψ铭刻效果在^10到达对数软上限！</span>';
+			return disp;
+		},
+		unlocked(){return player.tag['unlinsc'];},
+	},
+	'insc_psi': {
+		color(){return 'blue';},
+		posx: -300,
+		posy: 10200,
+		branches: ['insc', 'insc_omega'],
+		description()
+		{
+			return 'ψ铭刻<br>' + notation(res.val('insc_psi'), 1) + '<br>+' + notation(formula.inscpsig(), 1) + '/s<br>增产基本铭刻<br>^' + notation(formula.inscpsie(), 2);
+		},
+		click()
+		{
+			res.add('insc', formula.inscg());
+		},
+		unlocked(){return player.tag['unlinsc'];},
+	},
+	'plane': {
+		corrupted: true,
+		color(){return res.val('PL1info').gte(formula.planec()) ? 'cyan' : 'blue';},
+		posx: -800,
+		posy: 9600,
+		branches: ['slice'],
+		description()
+		{
+			return '位面<br>' + notation(res.val('plane'), 0) + '<br>' + notation(formula.planec()) + '世界信息';
+		},
+		lightning()
+		{
+			return res.val('PL1info').gte(formula.planec());
+		},
+		click()
+		{
+			if(res.val('PL1info').gte(formula.planec()))
+			{
+				res.init('slice');
+				res.init('slicereal');
+				player.tag.sliceb = [N(0), N(0), N(0), N(0), N(0), N(0)];
+				res.resets.world();
+				
+				res.add('plane', 1);
+			}
+		},
+		unlocked(){return res.val('slicereal').gte(formula.slicecap()) || res.val('plane').gte(1);},
+	},
+	'planed': {
+		corrupted: true,
+		color(){return res.val('PL1info').gte(formula.planec()) ? 'cyan' : 'blue';},
+		posx: -800,
+		posy: 9400,
+		branches: ['plane'],
+		description()
+		{
+			return '减少一个位面';
+		},
+		click()
+		{
+			if(res.val('plane').gte(1)) res.func('plane', 1, Decimal.sub);
+		},
+		unlocked(){return res.val('plane').gte(1);},
+	},
+	'planee': {
+		texttype: true,
+		posx: -1000,
+		posy: 9600,
+		branches: [],
+		description()
+		{
+			let milestone = [N(1), N(2)], next, has_next = false;
+			let ms_desc = ['解锁最大化位面切片升级', '解锁最大化跃迁'];
+			for(let i = 0;i < milestone.length;i++)
+			{
+				if(res.val('plane').lt(milestone[i]))
+				{
+					has_next = true;
+					next = milestone[i];
+					break;
+				}
+			}
+			let disp = '创造位面将重置位面切片及其升级。<br>位面基本效果：<br>';
+			disp += '<span style="color: red;">(-)位面切片产量÷' + notation(formula.planee(0)) + '->' + notation(formula.planee(0, true)) + (formula.planee(0).gte('1.798e308') ? '(受软上限限制)' : '') + '</span><br>';
+			disp += '<span style="color: lightgreen;">(+)位面切片升级价格÷' + notation(formula.planee(1)) + '->' + notation(formula.planee(1, true)) + '</span><br>';
+			if(res.val('plane').gte(1)) disp += '<span style="color: lightgreen;">(+)位面切片效果指数+' + notation(formula.planee(2), 0) + '->' + notation(formula.planee(2, true), 0) + '</span><br>';
+			
+			disp += '位面里程碑效果：<br>';
+			if(has_next) disp += '(下一个在' + notation(next, 0) + '位面)<br>';
+			for(let i = 0;i < milestone.length;i++)
+			{
+				if(res.val('plane').gte(milestone[i]))
+				{
+					disp += '在' + notation(milestone[i], 0) + '位面，' + ms_desc[i] + '<br>';
+				}
+			}
+			return disp;
+		},
+		unlocked(){return true;},
 	},
 };
 
 var models = {
+	'dnxb': {
+		list: [1, 2, 3, 4, 5, 6, 7, 8],
+		para(x)
+		{
+			let px = [0, -200, -400, -400, -200, 200, 400, 400, 200];
+			let py = [0, 400, 200, -200, -400, -400, -200, 200, 400];
+			let ul = [0, 1, 2, 3, 5, 10, 15, 16];
+			let dnxb = {
+				posx: px[x],
+				posy: py[x],
+				unl: ul[x],
+				branches: ['dn' + (x)],
+				description()
+				{
+					if(res.val('dn' + x + 'b').gte(formula.maxdnl(x)))
+					{
+						return '已达到最大等级';
+					}
+					else return '升级(' + notation(res.val('dn' + x + 'b').div(formula.maxdnl(x)).mul(100), 0) + '%)<br>×' + notation(formula.dnbe(), 1) + '<br>价格：' + notation(formula.dnbc(x), 0);
+				},
+				lightning()
+				{
+					return res.val('data').gte(formula.dnbc(x)) || res.val('dn' + x + 'b').gte(formula.maxdnl(x));
+				},
+				click()
+				{
+					if(res.val('data').gte(formula.dnbc(x)) && !(res.val('dn' + x + 'b').gte(formula.maxdnl(x))))
+					{
+						res.func('data', formula.dnbc(x), Decimal.sub);
+						res.add('dn' + x + 'b', 1);
+						res.add('dn' + x, 1);
+						if(player.tag.inwc == 8) player.tag.lbdb = 1;
+					}
+				},
+				unlocked(){return res.val('boost').gte(this.unl);},
+			};
+			return ['dn' + x + 'b', dnxb];
+		},
+	},
 	'wu': {
 		list: [0, 1, 2, 3, 4, 5, 6, 7, 8],
 		para(x)
@@ -649,7 +716,7 @@ var models = {
 				click()
 				{
 					if(player.tag.haswu == undefined) player.tag.haswu = 0;
-					if(res.val('PL1info').gte(formula.wuc(this.id)))
+					if(res.val('PL1info').gte(formula.wuc(this.id)) && !formula.haswu(this.id))
 					{
 						res.func('PL1info', formula.wuc(this.id), Decimal.sub);
 						player.tag.wu = player.tag.wu | (1 << this.id);
@@ -724,9 +791,21 @@ var models = {
 				{
 					if(res.val('slicereal').gte(formula.slicebc(this.id)))
 					{
-						res.set('slice', res.val('slicereal').sub(formula.slicebc(this.id)).root(formula.slicep()));
-						let h = formula.hassliceb(this.id);
-						player.tag.sliceb[this.id] = player.tag.sliceb[this.id].add(1);
+						if(res.val('plane').gte(1))
+						{
+							let bs = [N(5), N(12.5), N(17.5), N(10000), N(1e16), N(1e20)];
+							let basex = [N(1.5), N(2), N(4), N(7.5), N(1e64), N(1e80)];
+							let multiple = N(1);
+							if(res.val('plane').gte(1)) multiple = multiple.div(formula.planee(1));
+							let base = res.val('slicereal').div(multiple).div(bs[this.id]).log(basex[this.id]).add(1).floor();
+							player.tag.sliceb[this.id] = player.tag.sliceb[this.id].max(base);
+						}
+						else
+						{
+							res.set('slice', res.val('slicereal').sub(formula.slicebc(this.id)).root(formula.slicep()));
+							let h = formula.hassliceb(this.id);
+							player.tag.sliceb[this.id] = player.tag.sliceb[this.id].add(1);
+						}
 					}
 				},
 				unlocked(){return formula.haswu(8);},
@@ -743,7 +822,7 @@ function load_can_model()
 		let m = models[i];
 		for(let j in m.list)
 		{
-			let p = m.para(j);
+			let p = m.para(m.list[j]);
 			can[p[0]] = p[1];
 		}
 	}

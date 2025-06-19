@@ -86,7 +86,7 @@ const res = {
 	},
 	'slice': {
 		init(){return N(0);},
-		produce(diff){res.add('slice', formula.sliceg().mul(diff));},
+		produce(diff){res.add('slice', formula.sliceg().mul(diff)); res.set('slice', res.val('slice').min(formula.slicecap().root(formula.slicep())))},
 	},
 	'slicereal': {
 		init(){return N(0);},
@@ -94,6 +94,7 @@ const res = {
 	},
 	'insc': {
 		init(){return N(0);},
+		produce(diff){if(player.tag.unlomginsc) res.add('insc', formula.inscg().mul(diff));},
 	},
 	'insc_alpha': {
 		init(){return N(0);},
@@ -105,6 +106,13 @@ const res = {
 		init(){return N(0);},
 	},
 	'insc_omega': {
+		init(){return N(0);},
+	},
+	'insc_psi': {
+		init(){return N(0);},
+		produce(diff){res.add('insc_psi', formula.inscpsig().mul(diff));},
+	},
+	'plane': {
 		init(){return N(0);},
 	},
 	
@@ -206,6 +214,7 @@ const formula = {
 		if(formula.haswu(0)) base = base.add(0.1);
 		if(formula.haswc(7)) base = base.add(0.2);
 		if(formula.hassliceb(1)) base = base.add(formula.slicebe(1));
+		if(player.tag['unlinsc']) base = base.add(formula.insce(3));
 		
 		if(player.tag.inwc == 0) base = base.pow(0.5);
 		if(player.tag.inwc == 7) base = base.pow(0.1);
@@ -221,7 +230,7 @@ const formula = {
 	dnbet(x)
 	{
 		let base = formula.dnbe().pow(res.val('dn' + x + 'b'));
-		if(base.gte(N(2).pow(128))) base = N(2).pow(N(127).add(base.max(1).log2().sub(127).pow(0.75)));
+		if(base.gte(formula.dnbscs())) base = N(2).pow(N(127).add(base.max(1).log2().sub(127).pow(0.75)));
 		return base;
 	},
 	dnbm(x)
@@ -235,10 +244,17 @@ const formula = {
 		if(formula.haswu(4)) base = base.mul(formula.wue(4));
 		if(formula.haswu(5)) base = base.mul(formula.wue(5));
 		if(formula.haswc(5) && x != 8) base = base.mul(res.val('dn' + (x + 1)).max(10).log10());
-		if(formula.haswu(8)) base = base.mul(formula.slicee());
+		if(formula.haswu(8)) base = base.mul(formula.slicee());;
+		if(player.tag['unlinsc']) base = base.mul(formula.insce(2));
 		if(player.tag.inwc == 1) base = base.pow(0.9);
 		if(player.tag.inwc == 5 && x == 7) base = N(0);
 		if(player.tag.inwc == 8 && x != player.tag.lbdb) base = N(0);
+		return base;
+	},
+	dnbscs()
+	{
+		let base = N(2).pow(128);
+		if(formula.hassliceb(3)) base = base.pow(formula.slicebe(3));
 		return base;
 	},
 	boostc()
@@ -324,7 +340,7 @@ const formula = {
 	{
 		let list = ['节点升级效果+0.1', '跃迁超级折算<br>弱化10%', '跃迁数据获取×2',
 		'基于数据，<br>节点×' + notation(formula.wue(3), 1), '基于世界信息，<br>节点×' + notation(formula.wue(4), 1), '基于跃迁，<br>节点×' + notation(formula.wue(5), 1),
-		'解锁自动化', '解锁挑战', '解锁位面切片<br>(Coming soon)'];
+		'解锁自动化', '解锁挑战', '解锁位面切片'];
 		return list[id];
 	},
 	wue(id)
@@ -419,6 +435,8 @@ const formula = {
 		if(res.val('data').lt('1e900')) return N(0);
 		let base = res.val('data').root(900).sub(9).mul(10).mul(res.val('PL1info').mul(10).add(1).root(5));
 		if(formula.hassliceb(0)) base = base.mul(formula.slicebe(0));
+		if(player.tag['unlinsc']) base = base.mul(formula.insce(1));
+		if(res.val('plane').gte(1)) base = base.div(formula.planee(0));
 		return base;
 	},
 	slicegps()
@@ -432,8 +450,11 @@ const formula = {
 	},
 	slicee()
 	{
+		let exp = N(7);
+		exp = exp.add(formula.slicebe(4));
+		exp = exp.add(formula.planee(2));
 		let base = N(1.5);
-		base = res.val('slicereal').add(1).pow(7);
+		base = res.val('slicereal').add(1).pow(exp);
 		return base;
 	},
 	hassliceb(id)
@@ -448,18 +469,20 @@ const formula = {
 	},
 	slicebc(id)
 	{
-		let base = [N(5), N(12.5), N(17.5), N(1e6), N(1e9), N(1e12)];
-		let basex = [N(1.5), N(2), N(4), N(100), N(1000), N(1e4)];
-		return base[id].mul(basex[id].pow(formula.slicebl(id)));
+		let bs = [N(5), N(12.5), N(17.5), N(10000), N(1e16), N(1e20)];
+		let basex = [N(1.5), N(2), N(4), N(7.5), N(1e64), N(1e80)];
+		let base = bs[id].mul(basex[id].pow(formula.slicebl(id)));
+		if(res.val('plane').gte(1)) base = base.div(formula.planee(1));
+		return base;
 	},
 	slicebd(id)
 	{
 		let disp = ['增加切片产量。<br>当前：×' + notation(formula.slicebe(0), 1)
 		, '增加节点升级效果。<br>当前：+' + notation(formula.slicebe(1), 1)
 		, '增幅跃迁数据效果<br>(软上限后)。<br>当前：^' + notation(formula.slicebe(2), 2)
-		, '敬请期待'
-		, '敬请期待'
-		, '敬请期待'];
+		, '延迟节点升级软上限。<br>当前：^' + notation(formula.slicebe(3), 2)
+		, '增加切片效果指数。<br>当前：+' + notation(formula.slicebe(4), 0)
+		, '基于位面减少<br>位面效果惩罚。<br>当前：^' + notation(formula.slicebe(5), 2)];
 		return disp[id];
 	},
 	slicebe(id)
@@ -478,6 +501,118 @@ const formula = {
 		{
 			base = N(1.025).pow(player.tag.sliceb[2].mul(4).pow(2).add(1).log(2));
 		}
+		else if(id == 3)
+		{
+			base = N(1).add(player.tag.sliceb[3].mul(10).pow(2.5).add(1).log10()).add(N(1.075).pow(player.tag.sliceb[3].pow(2).add(1).log(2)).sub(1));
+		}
+		else if(id == 4)
+		{
+			base = N(8).mul(player.tag.sliceb[4]);
+		}
+		else if(id == 5)
+		{
+			base = N(1).div(player.tag.sliceb[5].mul(0.05).mul(N(1).add(res.val('plane').mul(0.5))).add(1));
+		}
 		return base;
-	}
+	},
+	maxdnl(id)
+	{
+		let base = N(1100).sub(N(100).mul(id));
+		return base;
+	},
+	insc_rate(id)
+	{
+		if(id == 1)
+		{
+			let base = N(0.05);
+			return base;
+		}
+		else if(id == 2)
+		{
+			let base = N(0.001);
+			return base;
+		}
+		else if(id == 3)
+		{
+			let base = N(0.00005);
+			return base;
+		}
+	},
+	inscg(id)
+	{
+		let base = N(1).add(res.val('PL1info').div(100).root(2));
+		if(player.tag.unlomginsc) base = base.pow(formula.inscpsie());
+		return base;
+	},
+	insce(id)
+	{
+		if(id == 1)
+		{
+			let base = res.val('insc_alpha').mul(5).add(1).root(1.1);
+			if(base.gte(1e20)) base = base.div(1e20).pow(0.5).mul(1e20);
+			return base;
+		}
+		else if(id == 2)
+		{
+			let base = res.val('insc_beta').mul(15).add(1).pow(3);
+			return base;
+		}
+		else if(id == 3)
+		{
+			let base = res.val('insc_gamma').add(1).log(5);
+			return base;
+		}
+	},
+	inscomgg()
+	{
+		let base = res.val('insc_alpha').mul(res.val('insc_beta')).mul(res.val('insc_gamma')).div(1e3).root(10);
+		return base;
+	},
+	inscpsig()
+	{
+		let base = N(10).pow(res.val('insc_omega').max(1).log10().pow(1.5)).mul(5).sub(4);
+		return base;
+	},
+	inscpsie()
+	{
+		let base = res.val('insc_psi').add(100).log(100);
+		if(base.gte(2)) base = base.sub(1).pow(0.75).add(1);
+		if(base.gte(10)) base = base.sub(9).log10().add(10);
+		return base;
+	},
+	slicecap()
+	{
+		let base = N(2).pow(53);
+		return base;
+	},
+	planec()
+	{
+		let base = N(1e30);
+		let exp = N(10);
+		let exp2 = N(1.25);
+		base = base.mul(exp.pow(exp2.mul(res.val('plane'))));
+		return base;
+	},
+	planee(id, next = false)
+	{
+		let pl = res.val('plane');
+		if(next) pl = pl.add(1);
+		if(id == 0)
+		{
+			let base = N(2).pow(200).pow(pl);
+			base = base.pow(formula.slicebe(5));
+			if(base.gte('1.798e308')) base = N(2).pow(N(1023).add(base.log(2).sub(1023).pow(0.8)));
+			return base;
+		}
+		else if(id == 1)
+		{
+			let base = N(2).pow(25).pow(pl);
+			return base;
+		}
+		else if(id == 2)
+		{
+			let base = N(5).mul(pl).sub(5).max(0);
+			return base;
+		}
+	},
 }
